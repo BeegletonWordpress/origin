@@ -6,7 +6,8 @@
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
-		"build": "wp-scripts build --blocks-manifest",
+		"compile": "wp-scripts start",
+		"build": "wp-scripts build",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
@@ -20,6 +21,9 @@
 		"@wordpress/i18n": "latest"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^31.5.0"
+		"@tailwindcss/postcss": "^4.2.1",
+		"@wordpress/scripts": "^31.5.0",
+		"glob": "^13.0.6",
+		"tailwindcss": "^4.2.1"
 	}
 }
