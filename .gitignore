@@ -1,0 +1,5 @@
+/uploads
+/themes/*
+!/themes/astra-child
+/plugins/**/build
+/upgrade
