@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-footer-column",
+	"version": "0.1.0",
+	"title": "My Footer Column",
+	"category": "theme",
+	"icon": "columns",
+	"description": "A column inside the custom footer.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
