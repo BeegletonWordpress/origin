@@ -4,9 +4,13 @@ import metadata from './block.json';
 import './style.scss';
 import './editor.scss';
 
-const BLOCK_CLASSES = "flex flex-col gap-8 p-8 bg-gray-900 text-white";
-const ALLOWED_BLOCKS = ["create-block/my-footer-row"];
-const TEMPLATE = [["create-block/my-footer-row"]];
+const BLOCK_CLASSES = "flex flex-col md:flex-row gap-8 w-full";
+const ALLOWED_BLOCKS = ["create-block/my-footer-column"];
+const TEMPLATE = [
+	["create-block/my-footer-column"],
+	["create-block/my-footer-column"],
+	["create-block/my-footer-column"],
+];
 
 registerBlockType( metadata.name, {
 	edit: function Edit() {
@@ -16,7 +20,7 @@ registerBlockType( metadata.name, {
 			{ 
 				allowedBlocks: ALLOWED_BLOCKS, 
 				template: TEMPLATE, 
-				orientation: "vertical" 
+				orientation: "horizontal" 
 			}
 		);
 
@@ -28,13 +32,13 @@ registerBlockType( metadata.name, {
 	},
 	save: function save() {
 		return (
-			<footer
+			<div
 				{...useBlockProps.save({
 					className: BLOCK_CLASSES,
 				})}
 			>
 				<InnerBlocks.Content />
-			</footer>
+			</div>
 		);
 	},
 } );

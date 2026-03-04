@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "create-block/my-footer-column",
+	"name": "create-block/my-footer-row",
 	"version": "0.1.0",
-	"title": "My Footer Column",
+	"title": "My Footer Row",
 	"category": "theme",
-	"icon": "columns",
-	"description": "A column inside the custom footer.",
-	"parent": ["create-block/my-footer-row"],
+	"icon": "minus",
+	"description": "A row inside the custom footer.",
+	"parent": ["create-block/my-footer-block"],
 	"example": {},
 	"supports": {
 		"html": false
