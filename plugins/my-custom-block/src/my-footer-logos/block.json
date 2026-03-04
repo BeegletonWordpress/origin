@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-footer-logos",
+	"version": "0.1.0",
+	"title": "My Footer Logos",
+	"category": "theme",
+	"icon": "layout",
+	"description": "Logo column within the footer.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": ["file:./index.css", "file:./style-index.css"],
+	"viewScript": "file:./view.js"
+}
