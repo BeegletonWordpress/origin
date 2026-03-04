@@ -1,0 +1,45 @@
+import { registerBlockType } from "@wordpress/blocks";
+import {
+	InnerBlocks,
+	useBlockProps,
+	useInnerBlocksProps,
+} from "@wordpress/block-editor";
+import metadata from "./block.json";
+import "../index.css";
+import "./style.css";
+import "./editor.css";
+
+const BLOCK_CLASSES = "sticky top-0 z-50 w-full";
+const ALLOWED_BLOCKS = ["create-block/my-header-row"];
+const TEMPLATE = [["create-block/my-header-row"]];
+
+registerBlockType(metadata.name, {
+	edit: function Edit() {
+		const blockProps = useBlockProps();
+		const innerBlocksProps = useInnerBlocksProps(
+			{ className: BLOCK_CLASSES },
+			{
+				allowedBlocks: ALLOWED_BLOCKS,
+				template: TEMPLATE,
+				orientation: "vertical",
+			},
+		);
+
+		return (
+			<div {...blockProps}>
+				<div {...innerBlocksProps} />
+			</div>
+		);
+	},
+	save: function save() {
+		return (
+			<div
+				{...useBlockProps.save({
+					className: BLOCK_CLASSES,
+				})}
+			>
+				<InnerBlocks.Content />
+			</div>
+		);
+	},
+});

@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-header-column",
+	"version": "0.1.0",
+	"title": "My Header Column",
+	"category": "theme",
+	"icon": "columns",
+	"description": "A column inside the custom header.",
+	"parent": ["create-block/my-header-row"],
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

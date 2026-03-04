@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-header-block",
+	"version": "0.1.0",
+	"title": "My Header Block",
+	"category": "theme",
+	"icon": "layout",
+	"description": "Custom header made for Beegleton with dynamic columns.",
+	"example": {},
+	"supports": {
+		"align": ["full", "wide"],
+		"html": false
+	},
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": ["file:./index.css", "file:./style-index.css"],
+	"viewScript": "file:./view.js"
+}
