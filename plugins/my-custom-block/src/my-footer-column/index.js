@@ -1,8 +1,13 @@
-import { registerBlockType } from '@wordpress/blocks';
-import { InnerBlocks, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import metadata from './block.json';
-import './style.scss';
-import './editor.scss';
+import { registerBlockType } from "@wordpress/blocks";
+import {
+	InnerBlocks,
+	useBlockProps,
+	useInnerBlocksProps,
+} from "@wordpress/block-editor";
+import metadata from "./block.json";
+import "../index.css";
+import "./style.css";
+import "./editor.css";
 
 const BLOCK_CLASSES = "flex flex-col gap-4 flex-1";
 const ALLOWED_BLOCKS = ["core/paragraph", "core/list"];
@@ -11,15 +16,15 @@ const TEMPLATE = [
 	["core/list"],
 ];
 
-registerBlockType( metadata.name, {
+registerBlockType(metadata.name, {
 	edit: function Edit() {
 		const blockProps = useBlockProps();
 		const innerBlocksProps = useInnerBlocksProps(
 			{ className: BLOCK_CLASSES },
-			{ 
-				allowedBlocks: ALLOWED_BLOCKS, 
-				template: TEMPLATE 
-			}
+			{
+				allowedBlocks: ALLOWED_BLOCKS,
+				template: TEMPLATE,
+			},
 		);
 
 		return (
@@ -39,4 +44,4 @@ registerBlockType( metadata.name, {
 			</div>
 		);
 	},
-} );
+});

@@ -14,7 +14,6 @@
  */
 
 function create_block_my_custom_block_block_init() {
-    register_block_type( __DIR__ . '/build/my-custom-block' );
     register_block_type( __DIR__ . '/build/my-footer-block' );
     register_block_type( __DIR__ . '/build/my-footer-row' );
     register_block_type( __DIR__ . '/build/my-footer-column' );

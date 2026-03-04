@@ -1,23 +1,28 @@
-import { registerBlockType } from '@wordpress/blocks';
-import { InnerBlocks, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import metadata from './block.json';
-import './style.scss';
-import './editor.scss';
+import { registerBlockType } from "@wordpress/blocks";
+import {
+	InnerBlocks,
+	useBlockProps,
+	useInnerBlocksProps,
+} from "@wordpress/block-editor";
+import metadata from "./block.json";
+import "../index.css";
+import "./style.css";
+import "./editor.css";
 
-const BLOCK_CLASSES = "flex flex-col gap-8 p-8 bg-gray-900 text-white";
+const BLOCK_CLASSES = "flex flex-col gap-8 p-8";
 const ALLOWED_BLOCKS = ["create-block/my-footer-row"];
 const TEMPLATE = [["create-block/my-footer-row"]];
 
-registerBlockType( metadata.name, {
+registerBlockType(metadata.name, {
 	edit: function Edit() {
 		const blockProps = useBlockProps();
 		const innerBlocksProps = useInnerBlocksProps(
 			{ className: BLOCK_CLASSES },
-			{ 
-				allowedBlocks: ALLOWED_BLOCKS, 
-				template: TEMPLATE, 
-				orientation: "vertical" 
-			}
+			{
+				allowedBlocks: ALLOWED_BLOCKS,
+				template: TEMPLATE,
+				orientation: "vertical",
+			},
 		);
 
 		return (
@@ -28,13 +33,13 @@ registerBlockType( metadata.name, {
 	},
 	save: function save() {
 		return (
-			<footer
+			<div
 				{...useBlockProps.save({
 					className: BLOCK_CLASSES,
 				})}
 			>
 				<InnerBlocks.Content />
-			</footer>
+			</div>
 		);
 	},
-} );
+});
