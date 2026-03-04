@@ -9,7 +9,14 @@
 	"description": "Custom footer made for Beegleton with dynamic columns.",
 	"example": {},
 	"supports": {
+		"align": ["full", "wide"],
 		"html": false
+	},
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		}
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",

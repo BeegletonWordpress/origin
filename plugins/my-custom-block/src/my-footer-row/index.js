@@ -9,7 +9,7 @@ import "../index.css";
 import "./style.css";
 import "./editor.css";
 
-const BLOCK_CLASSES = "flex flex-col md:flex-row gap-8 w-full";
+const BLOCK_CLASSES = "flex flex-col md:flex-row md:flex-wrap gap-8 w-full";
 const ALLOWED_BLOCKS = ["create-block/my-footer-column"];
 const TEMPLATE = [
 	["create-block/my-footer-column"],

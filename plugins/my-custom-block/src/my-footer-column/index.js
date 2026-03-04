@@ -9,8 +9,14 @@ import "../index.css";
 import "./style.css";
 import "./editor.css";
 
-const BLOCK_CLASSES = "flex flex-col gap-4 flex-1";
-const ALLOWED_BLOCKS = ["core/paragraph", "core/list"];
+const BLOCK_CLASSES = "flex flex-col gap-4 flex-auto min-w-48";
+const ALLOWED_BLOCKS = [
+	"core/paragraph",
+	"core/list",
+	"core/heading",
+	"core/html",
+	"core/social-links",
+];
 const TEMPLATE = [
 	["core/paragraph", { placeholder: "A column heading" }],
 	["core/list"],
