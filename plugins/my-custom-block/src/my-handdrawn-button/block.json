@@ -1,0 +1,52 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-handdrawn-button",
+	"version": "0.1.0",
+	"title": "My Handdrawn Button",
+	"category": "theme",
+	"icon": "button",
+	"description": "A custom button with an irregular, hand-drawn look.",
+	"example": {
+		"attributes": {
+			"text": "Get Started",
+			"backgroundColor": "primary"
+		}
+	},
+	"supports": {
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		},
+		"align": ["left", "center", "right"],
+		"html": false
+	},
+	"attributes": {
+		"text": {
+			"type": "string",
+			"default": "Button Text"
+		},
+		"url": {
+			"type": "string"
+		},
+		"linkTarget": {
+			"type": "string"
+		},
+		"rel": {
+			"type": "string"
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": ["file:./index.css", "file:./style-index.css"],
+	"editorStyle": "file:./editor.css"
+}

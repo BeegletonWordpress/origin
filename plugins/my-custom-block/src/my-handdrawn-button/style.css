@@ -1,0 +1,23 @@
+/* Frontend and Editor styles */
+.wp-block-create-block-my-handdrawn-button {
+	text-decoration: none !important;
+	color: inherit;
+	background-color: transparent !important; /* Hide default block bg */
+}
+
+/* Force the SVG to use the background color if set via WP UI */
+.wp-block-create-block-my-handdrawn-button svg path {
+	fill: var(--wp--style--color--background, currentColor);
+	stroke: var(--wp--style--color--background, currentColor);
+	transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+/* If no background color is set, default to a nice dark color or inherit from text */
+.wp-block-create-block-my-handdrawn-button:not([class*="has-background"]) svg path {
+	/* You can set a default fallback here if you want */
+}
+
+/* Handle Hover Effects */
+.wp-block-create-block-my-handdrawn-button:hover svg path {
+	filter: brightness(1.1);
+}

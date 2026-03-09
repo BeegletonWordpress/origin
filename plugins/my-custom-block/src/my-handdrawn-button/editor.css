@@ -1,0 +1,4 @@
+/* Editor-specific overrides for the button */
+.wp-block-create-block-my-handdrawn-button {
+    cursor: pointer;
+}
