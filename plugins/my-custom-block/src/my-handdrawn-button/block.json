@@ -43,6 +43,10 @@
 		},
 		"rel": {
 			"type": "string"
+		},
+		"isSubmit": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "my-custom-block",

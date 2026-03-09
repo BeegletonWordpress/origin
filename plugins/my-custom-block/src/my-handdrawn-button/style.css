@@ -2,22 +2,43 @@
 .wp-block-create-block-my-handdrawn-button {
 	text-decoration: none !important;
 	color: inherit;
-	background-color: transparent !important; /* Hide default block bg */
+	background-color: transparent !important;
+	border: none;
+	padding: 0;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	appearance: none;
+	cursor: pointer;
 }
 
-/* Force the SVG to use the background color if set via WP UI */
+/* Force the SVG to use the background color variable if set (custom hex) */
 .wp-block-create-block-my-handdrawn-button svg path {
-	fill: var(--wp--style--color--background, currentColor);
-	stroke: var(--wp--style--color--background, currentColor);
+	fill: var(--wp--style--color--background, #3B3632);
+	stroke: var(--wp--style--color--background, #3B3632);
 	transition: fill 0.2s ease, stroke 0.2s ease;
 }
 
-/* If no background color is set, default to a nice dark color or inherit from text */
-.wp-block-create-block-my-handdrawn-button:not([class*="has-background"]) svg path {
-	/* You can set a default fallback here if you want */
+/* 
+   Support for WordPress Palette Classes:
+   When a palette background is chosen, the parent gets a class like 'has-primary-background-color'.
+   We want the SVG path to inherit that background color.
+*/
+.wp-block-create-block-my-handdrawn-button[class*="has-"][class*="-background-color"] svg path {
+	fill: currentColor;
+	stroke: currentColor;
+}
+
+/* Reset the text wrapper so it doesn't take the background color if we used the trick above */
+.wp-block-create-block-my-handdrawn-button[class*="has-"][class*="-background-color"] .relative.z-10 {
+	color: var(--wp--style--color--text, inherit);
 }
 
 /* Handle Hover Effects */
 .wp-block-create-block-my-handdrawn-button:hover svg path {
 	filter: brightness(1.1);
+}
+
+.wp-block-create-block-my-handdrawn-button:active {
+	transform: scale(0.95);
 }

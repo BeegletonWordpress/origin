@@ -11,6 +11,7 @@ import {
 	ToolbarButton, 
 	Popover,
 	PanelBody,
+	ToggleControl,
 } from "@wordpress/components";
 import { link } from "@wordpress/icons";
 import { useState } from "@wordpress/element";
@@ -22,11 +23,11 @@ import "./editor.css";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { text, url, linkTarget, rel } = attributes;
+		const { text, url, linkTarget, rel, isSubmit } = attributes;
 		const [isEditingURL, setIsEditingURL] = useState(false);
 		
 		const blockProps = useBlockProps({
-			className: "relative inline-block px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95"
+			className: "relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer"
 		});
 
 		const onLinkChange = (newValues) => {
@@ -40,17 +41,30 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<BlockControls>
-					<ToolbarGroup>
-						<ToolbarButton
-							icon={link}
-							title="Link"
-							onClick={() => setIsEditingURL(!isEditingURL)}
-							isActive={!!url}
-						/>
-					</ToolbarGroup>
+					{!isSubmit && (
+						<ToolbarGroup>
+							<ToolbarButton
+								icon={link}
+								title="Link"
+								onClick={() => setIsEditingURL(!isEditingURL)}
+								isActive={!!url}
+							/>
+						</ToolbarGroup>
+					)}
 				</BlockControls>
 
-				{isEditingURL && (
+				<InspectorControls>
+					<PanelBody title="Button Settings">
+						<ToggleControl
+							label="Is Submit Button?"
+							help="Use this for form submissions."
+							checked={isSubmit}
+							onChange={(val) => setAttributes({ isSubmit: val, url: val ? undefined : url })}
+						/>
+					</PanelBody>
+				</InspectorControls>
+
+				{isEditingURL && !isSubmit && (
 					<Popover
 						onClose={() => setIsEditingURL(false)}
 						anchor={blockProps.ref}
@@ -65,34 +79,42 @@ registerBlockType(metadata.name, {
 
 				<div {...blockProps}>
 					{HAND_DRAWN_BUTTON_SHAPE}
-					<RichText
-						tagName="span"
-						value={text}
-						onChange={(val) => setAttributes({ text: val })}
-						placeholder="Add text..."
-						allowedFormats={[]} // Keep it simple for buttons
-					/>
+					<div className="relative z-10">
+						<RichText
+							tagName="span"
+							value={text}
+							onChange={(val) => setAttributes({ text: val })}
+							placeholder="Add text..."
+							allowedFormats={[]}
+						/>
+					</div>
 				</div>
 			</>
 		);
 	},
 	save: function save({ attributes }) {
-		const { text, url, linkTarget, rel } = attributes;
+		const { text, url, linkTarget, rel, isSubmit } = attributes;
 		const blockProps = useBlockProps.save({
-			className: "relative inline-block px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95"
+			className: "relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95"
 		});
 
-		const Tag = url ? "a" : "span";
+		// Logic for dynamic tag selection
+		const isLink = !!url && !isSubmit;
+		const Tag = isLink ? "a" : "button";
+		const typeProps = Tag === "button" ? { type: isSubmit ? "submit" : "button" } : {};
 
 		return (
 			<Tag
 				{...blockProps}
-				href={url}
-				target={linkTarget}
-				rel={rel}
+				href={isLink ? url : undefined}
+				target={isLink ? linkTarget : undefined}
+				rel={isLink ? rel : undefined}
+				{...typeProps}
 			>
 				{HAND_DRAWN_BUTTON_SHAPE}
-				<RichText.Content tagName="span" value={text} />
+				<div className="relative z-10">
+					<RichText.Content tagName="span" value={text} />
+				</div>
 			</Tag>
 		);
 	},
