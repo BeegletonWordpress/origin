@@ -5,23 +5,14 @@ import {
 	useInnerBlocksProps,
 } from "@wordpress/block-editor";
 import metadata from "./block.json";
-import "../index.css";
+import "../../index.css";
 import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES =
-	"flex flex-col gap-4 flex-auto min-w-48 [&_h2]:text-center";
-const ALLOWED_BLOCKS = [
-	"core/paragraph",
-	"core/list",
-	"core/heading",
-	"core/html",
-	"core/social-links",
-];
-const TEMPLATE = [
-	["core/paragraph", { placeholder: "A column heading" }],
-	["core/list"],
-];
+	"max-w-7xl mx-auto flex items-center justify-between px-8";
+const ALLOWED_BLOCKS = ["create-block/my-header-column", "core/site-logo"];
+const TEMPLATE = [["core/site-logo"], ["create-block/my-header-column"]];
 
 registerBlockType(metadata.name, {
 	edit: function Edit() {
@@ -31,6 +22,7 @@ registerBlockType(metadata.name, {
 			{
 				allowedBlocks: ALLOWED_BLOCKS,
 				template: TEMPLATE,
+				orientation: "horizontal",
 			},
 		);
 

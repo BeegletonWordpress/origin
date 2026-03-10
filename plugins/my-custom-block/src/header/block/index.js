@@ -5,17 +5,13 @@ import {
 	useInnerBlocksProps,
 } from "@wordpress/block-editor";
 import metadata from "./block.json";
-import "../index.css";
+import "../../index.css";
 import "./style.css";
 import "./editor.css";
 
-const BLOCK_CLASSES =
-	"flex flex-row flex-wrap gap-8 items-center justify-center w-full";
-const ALLOWED_BLOCKS = ["create-block/my-footer-logo-item"];
-const TEMPLATE = [
-	["create-block/my-footer-logo-item"],
-	["create-block/my-footer-logo-item"],
-];
+const BLOCK_CLASSES = "sticky top-0 z-50 w-full";
+const ALLOWED_BLOCKS = ["create-block/my-header-row"];
+const TEMPLATE = [["create-block/my-header-row"]];
 
 registerBlockType(metadata.name, {
 	edit: function Edit() {
@@ -25,7 +21,7 @@ registerBlockType(metadata.name, {
 			{
 				allowedBlocks: ALLOWED_BLOCKS,
 				template: TEMPLATE,
-				orientation: "horizontal",
+				orientation: "vertical",
 			},
 		);
 
@@ -36,9 +32,12 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: function save() {
-		const blockProps = useBlockProps.save({ className: BLOCK_CLASSES });
 		return (
-			<div {...blockProps}>
+			<div
+				{...useBlockProps.save({
+					className: BLOCK_CLASSES,
+				})}
+			>
 				<InnerBlocks.Content />
 			</div>
 		);

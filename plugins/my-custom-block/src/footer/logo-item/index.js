@@ -6,7 +6,7 @@ import {
 } from "@wordpress/block-editor";
 import { PanelBody, TextControl } from "@wordpress/components";
 import metadata from "./block.json";
-import "../index.css";
+import "../../index.css";
 import "./style.css";
 import "./editor.css";
 
