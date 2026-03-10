@@ -6,9 +6,9 @@ import {
 	BlockControls,
 	InspectorControls,
 } from "@wordpress/block-editor";
-import { 
-	ToolbarGroup, 
-	ToolbarButton, 
+import {
+	ToolbarGroup,
+	ToolbarButton,
 	Popover,
 	PanelBody,
 	ToggleControl,
@@ -25,9 +25,10 @@ registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
 		const { text, url, linkTarget, rel, isSubmit } = attributes;
 		const [isEditingURL, setIsEditingURL] = useState(false);
-		
+
 		const blockProps = useBlockProps({
-			className: "relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+			className:
+				"relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer",
 		});
 
 		const onLinkChange = (newValues) => {
@@ -59,7 +60,9 @@ registerBlockType(metadata.name, {
 							label="Is Submit Button?"
 							help="Use this for form submissions."
 							checked={isSubmit}
-							onChange={(val) => setAttributes({ isSubmit: val, url: val ? undefined : url })}
+							onChange={(val) =>
+								setAttributes({ isSubmit: val, url: val ? undefined : url })
+							}
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -95,13 +98,15 @@ registerBlockType(metadata.name, {
 	save: function save({ attributes }) {
 		const { text, url, linkTarget, rel, isSubmit } = attributes;
 		const blockProps = useBlockProps.save({
-			className: "relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95"
+			className:
+				"relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95",
 		});
 
 		// Logic for dynamic tag selection
 		const isLink = !!url && !isSubmit;
 		const Tag = isLink ? "a" : "button";
-		const typeProps = Tag === "button" ? { type: isSubmit ? "submit" : "button" } : {};
+		const typeProps =
+			Tag === "button" ? { type: isSubmit ? "submit" : "button" } : {};
 
 		return (
 			<Tag

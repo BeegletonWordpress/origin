@@ -9,7 +9,8 @@ import "../index.css";
 import "./style.css";
 import "./editor.css";
 
-const BLOCK_CLASSES = "flex flex-col gap-4 flex-auto min-w-48";
+const BLOCK_CLASSES =
+	"flex flex-col gap-4 flex-auto min-w-48 [&_h2]:text-center";
 const ALLOWED_BLOCKS = [
 	"core/paragraph",
 	"core/list",

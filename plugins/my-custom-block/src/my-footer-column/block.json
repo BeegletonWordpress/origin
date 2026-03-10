@@ -10,7 +10,12 @@
 	"parent": ["create-block/my-footer-row"],
 	"example": {},
 	"supports": {
-		"html": false
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true,
+			"blockGap": true
+		}
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
