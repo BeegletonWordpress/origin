@@ -1,0 +1,4 @@
+/* Frontend and Editor styles */
+.wp-block-create-block-my-handdrawn-card > svg path {
+	stroke: var(--handdrawn-stroke-color, #bbc7e7);
+}

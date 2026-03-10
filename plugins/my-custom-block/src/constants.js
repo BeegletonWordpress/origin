@@ -14,3 +14,22 @@ export const HAND_DRAWN_BUTTON_SHAPE = (
 		/>
 	</svg>
 );
+
+export const HAND_DRAWN_CARD_SHAPE = (
+	<svg
+		width="435"
+		height="513"
+		viewBox="0 0 435 513"
+		fill="none"
+		preserveAspectRatio="none"
+		xmlns="http://www.w3.org/2000/svg"
+		className="absolute inset-0 w-full h-full z-0"
+	>
+		<path
+			d="M12.1134 505.05C8.21847 504.923 4.8967 497.146 4.83077 487.94C4.16797 413.386 1.63287 114.942 2.80562 34.7957C2.99309 22.7846 6.7556 13.6323 11.8192 13.0273C58.8364 7.36632 285.56 -16.3353 414.016 33.9799C419.293 36.0075 423.423 46.9942 423.67 59.5143L432.478 482.762C432.738 495.583 428.84 505.949 423.496 506.642C368.69 513.484 62.8885 506.316 12.1134 505.05Z"
+			strokeWidth="5"
+			strokeMiterlimit="10"
+			vectorEffect="non-scaling-stroke"
+		/>
+	</svg>
+);
