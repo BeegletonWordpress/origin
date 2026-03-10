@@ -37,6 +37,8 @@
 
 /* Handle Hover Effects */
 .wp-block-create-block-my-handdrawn-button:hover svg path {
+	fill: var(--handdrawn-hover-bg-color, var(--handdrawn-bg-color, #3B3632));
+	stroke: var(--handdrawn-hover-bg-color, var(--handdrawn-bg-color, #3B3632));
 	filter: brightness(1.1);
 }
 

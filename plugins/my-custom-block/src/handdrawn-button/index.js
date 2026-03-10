@@ -5,6 +5,7 @@ import {
 	__experimentalLinkControl as LinkControl,
 	BlockControls,
 	InspectorControls,
+	ColorPalette,
 } from "@wordpress/block-editor";
 import {
 	ToolbarGroup,
@@ -23,8 +24,16 @@ import "./editor.css";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { text, url, linkTarget, rel, isSubmit, backgroundColor, style } =
-			attributes;
+		const {
+			text,
+			url,
+			linkTarget,
+			rel,
+			isSubmit,
+			backgroundColor,
+			hoverBackgroundColor,
+			style,
+		} = attributes;
 		const [isEditingURL, setIsEditingURL] = useState(false);
 
 		// Handle both palette colors (backgroundColor slug) and custom hex (style.color.background)
@@ -38,6 +47,7 @@ registerBlockType(metadata.name, {
 				"relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer",
 			style: {
 				"--handdrawn-bg-color": customBgColor || undefined,
+				"--handdrawn-hover-bg-color": hoverBackgroundColor || undefined,
 			},
 		});
 
@@ -75,6 +85,13 @@ registerBlockType(metadata.name, {
 							}
 						/>
 					</PanelBody>
+					<PanelBody title="Hover Colors">
+						<p>Hover Background Color</p>
+						<ColorPalette
+							value={hoverBackgroundColor}
+							onChange={(val) => setAttributes({ hoverBackgroundColor: val })}
+						/>
+					</PanelBody>
 				</InspectorControls>
 
 				{isEditingURL && !isSubmit && (
@@ -106,8 +123,16 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: function save({ attributes }) {
-		const { text, url, linkTarget, rel, isSubmit, backgroundColor, style } =
-			attributes;
+		const {
+			text,
+			url,
+			linkTarget,
+			rel,
+			isSubmit,
+			backgroundColor,
+			hoverBackgroundColor,
+			style,
+		} = attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -119,6 +144,7 @@ registerBlockType(metadata.name, {
 				"relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95",
 			style: {
 				"--handdrawn-bg-color": customBgColor || undefined,
+				"--handdrawn-hover-bg-color": hoverBackgroundColor || undefined,
 			},
 		});
 

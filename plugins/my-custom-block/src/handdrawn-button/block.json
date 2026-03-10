@@ -47,6 +47,9 @@
 		"isSubmit": {
 			"type": "boolean",
 			"default": false
+		},
+		"hoverBackgroundColor": {
+			"type": "string"
 		}
 	},
 	"textdomain": "my-custom-block",
