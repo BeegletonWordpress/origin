@@ -23,12 +23,22 @@ import "./editor.css";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { text, url, linkTarget, rel, isSubmit } = attributes;
+		const { text, url, linkTarget, rel, isSubmit, backgroundColor, style } =
+			attributes;
 		const [isEditingURL, setIsEditingURL] = useState(false);
+
+		// Handle both palette colors (backgroundColor slug) and custom hex (style.color.background)
+		let customBgColor = style?.color?.background;
+		if (backgroundColor) {
+			customBgColor = `var(--wp--preset--color--${backgroundColor})`;
+		}
 
 		const blockProps = useBlockProps({
 			className:
 				"relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer",
+			style: {
+				"--handdrawn-bg-color": customBgColor || undefined,
+			},
 		});
 
 		const onLinkChange = (newValues) => {
@@ -96,10 +106,20 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: function save({ attributes }) {
-		const { text, url, linkTarget, rel, isSubmit } = attributes;
+		const { text, url, linkTarget, rel, isSubmit, backgroundColor, style } =
+			attributes;
+
+		let customBgColor = style?.color?.background;
+		if (backgroundColor) {
+			customBgColor = `var(--wp--preset--color--${backgroundColor})`;
+		}
+
 		const blockProps = useBlockProps.save({
 			className:
 				"relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95",
+			style: {
+				"--handdrawn-bg-color": customBgColor || undefined,
+			},
 		});
 
 		// Logic for dynamic tag selection
