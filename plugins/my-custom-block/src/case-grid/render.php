@@ -27,7 +27,7 @@ if ($query->have_posts()) : ?>
 					<?php the_title(); ?>
 				</h3>
 				
-				<div class="text-gray-700 mb-6 flex-grow leading-relaxed">
+				<div class="text-gray-700 mb-6 grow leading-relaxed">
 					<?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
 				</div>
 
