@@ -11,7 +11,7 @@ import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES =
-	"relative inline-flex flex-col w-full h-full !max-w-md min-h-[500px]";
+	"relative flex flex-col w-full h-full !max-w-md min-h-[500px] flex-1 basis-[350px]";
 const WRAPPER_CLASSES =
 	"relative z-10 flex flex-col gap-4 p-10 justify-between flex-1 items-center";
 
