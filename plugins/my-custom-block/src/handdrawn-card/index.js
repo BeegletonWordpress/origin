@@ -1,34 +1,57 @@
 import { registerBlockType } from "@wordpress/blocks";
 import {
-	RichText,
 	useBlockProps,
-	__experimentalLinkControl as LinkControl,
-	BlockControls,
-	InspectorControls,
-	ColorPalette,
+	useInnerBlocksProps,
 	InnerBlocks,
 } from "@wordpress/block-editor";
-import {
-	ToolbarGroup,
-	ToolbarButton,
-	Popover,
-	PanelBody,
-	ToggleControl,
-} from "@wordpress/components";
-import { link } from "@wordpress/icons";
-import { useState } from "@wordpress/element";
 import metadata from "./block.json";
 import { HAND_DRAWN_CARD_SHAPE } from "../constants";
 import "../index.css";
 import "./style.css";
 import "./editor.css";
 
-const TEMPLATE = [["create-block/my-handdrawn-button", { text: "Click Here" }]];
+const BLOCK_CLASSES =
+	"relative inline-flex flex-col w-full h-full !max-w-md min-h-[500px]";
+const WRAPPER_CLASSES =
+	"relative z-10 flex flex-col gap-4 p-10 justify-between flex-1 items-center";
+
+const TEMPLATE = [
+	[
+		"core/group",
+		{
+			style: { spacing: { blockGap: "0rem" } },
+			layout: {
+				type: "flex",
+				orientation: "vertical",
+				justifyContent: "center",
+			},
+		},
+		[
+			[
+				"core/heading",
+				{ level: 3, placeholder: "Card Header", content: "Card Header" },
+			],
+			[
+				"core/heading",
+				{
+					style: {
+						spacing: { margin: { top: "0rem", bottom: "2rem" } },
+						typography: { lineHeight: "1.5rem" },
+					},
+					level: 4,
+					placeholder: "Card Subheader",
+					content: "Card Subheader",
+				},
+			],
+			["core/paragraph", { placeholder: "Add body text here..." }],
+		],
+	],
+	["create-block/my-handdrawn-button", { text: "Click Here" }],
+];
 
 registerBlockType(metadata.name, {
-	edit: function Edit({ attributes, setAttributes }) {
-		const { headerText, subHeaderText, bodyText, backgroundColor, style } =
-			attributes;
+	edit: function Edit({ attributes }) {
+		const { backgroundColor, style } = attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -36,49 +59,31 @@ registerBlockType(metadata.name, {
 		}
 
 		const blockProps = useBlockProps({
-			className: "relative inline-block w-full h-full",
+			className: BLOCK_CLASSES,
 			style: {
 				"--handdrawn-stroke-color":
 					customBgColor || "var(--wp--preset--color--primary, #000)",
 			},
 		});
 
+		const innerBlocksProps = useInnerBlocksProps(
+			{ className: WRAPPER_CLASSES },
+			{
+				template: TEMPLATE,
+				templateLock: "all",
+				allowedBlocks: ["create-block/my-handdrawn-button"],
+			},
+		);
+
 		return (
-			<>
-				<div {...blockProps}>
-					{HAND_DRAWN_CARD_SHAPE}
-					<div className="relative z-10 flex flex-col gap-4 p-6">
-						<RichText
-							tagName="h3"
-							value={headerText}
-							onChange={(val) => setAttributes({ headerText: val })}
-							placeholder="Add header text..."
-						/>
-						<RichText
-							tagName="h4"
-							value={subHeaderText}
-							onChange={(val) => setAttributes({ subHeaderText: val })}
-							placeholder="Add subheader text..."
-						/>
-						<RichText
-							tagName="p"
-							value={bodyText}
-							onChange={(val) => setAttributes({ bodyText: val })}
-							placeholder="Add body text..."
-						/>
-						<InnerBlocks
-							allowedBlocks={["create-block/my-handdrawn-button"]}
-							template={TEMPLATE}
-							templateLock={false}
-						/>
-					</div>
-				</div>
-			</>
+			<div {...blockProps}>
+				{HAND_DRAWN_CARD_SHAPE}
+				<div {...innerBlocksProps} />
+			</div>
 		);
 	},
 	save: function save({ attributes }) {
-		const { headerText, subHeaderText, bodyText, backgroundColor, style } =
-			attributes;
+		const { backgroundColor, style } = attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -86,7 +91,7 @@ registerBlockType(metadata.name, {
 		}
 
 		const blockProps = useBlockProps.save({
-			className: "relative inline-block w-full h-full",
+			className: BLOCK_CLASSES,
 			style: {
 				"--handdrawn-stroke-color":
 					customBgColor || "var(--wp--preset--color--primary, #000)",
@@ -96,10 +101,7 @@ registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				{HAND_DRAWN_CARD_SHAPE}
-				<div className="relative z-10 flex flex-col gap-4 p-6">
-					<RichText.Content tagName="h3" value={headerText} />
-					<RichText.Content tagName="h4" value={subHeaderText} />
-					<RichText.Content tagName="p" value={bodyText} />
+				<div className={WRAPPER_CLASSES}>
 					<InnerBlocks.Content />
 				</div>
 			</div>

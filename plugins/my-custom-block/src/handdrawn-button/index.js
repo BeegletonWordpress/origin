@@ -44,7 +44,7 @@ registerBlockType(metadata.name, {
 
 		const blockProps = useBlockProps({
 			className:
-				"relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer",
+				"relative inline-flex items-center justify-center font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer uppercase",
 			style: {
 				"--handdrawn-bg-color": customBgColor || undefined,
 				"--handdrawn-hover-bg-color": hoverBackgroundColor || undefined,
@@ -141,7 +141,7 @@ registerBlockType(metadata.name, {
 
 		const blockProps = useBlockProps.save({
 			className:
-				"relative inline-flex items-center justify-center px-10 py-4 font-bold transition-transform hover:scale-105 active:scale-95",
+				"relative inline-flex items-center justify-center font-bold transition-transform hover:scale-105 active:scale-95 uppercase",
 			style: {
 				"--handdrawn-bg-color": customBgColor || undefined,
 				"--handdrawn-hover-bg-color": hoverBackgroundColor || undefined,

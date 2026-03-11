@@ -9,11 +9,7 @@
 	"description": "A custom card with an irregular, hand-drawn look.",
 	"example": {
 		"attributes": {
-			"text": "Get Started",
-			"backgroundColor": "primary",
-			"headerText": "Card Header",
-			"subHeaderText": "Card Subheader",
-			"bodyText": "This is the body of the card. You can add more text here to describe the content of the card."
+			"backgroundColor": "primary"
 		}
 	},
 	"supports": {
@@ -26,25 +22,25 @@
 			"padding": true,
 			"margin": true
 		},
+		"align": ["left", "center", "right"],
+		"html": false,
 		"typography": {
 			"fontSize": true,
-			"lineHeight": true
-		},
-		"align": ["left", "center", "right"],
-		"html": false
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
 	},
 	"attributes": {
-		"headerText": {
-			"type": "string",
-			"default": "Card Header"
-		},
-		"subHeaderText": {
-			"type": "string",
-			"default": "Card Subheader"
-		},
-		"bodyText": {
-			"type": "string",
-			"default": "This is the body of the card. You can add more text here to describe the content of the card."
+		"style": {
+			"type": "object"
 		}
 	},
 	"textdomain": "my-custom-block",

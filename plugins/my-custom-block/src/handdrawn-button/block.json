@@ -7,12 +7,6 @@
 	"category": "theme",
 	"icon": "button",
 	"description": "A custom button with an irregular, hand-drawn look.",
-	"example": {
-		"attributes": {
-			"text": "Get Started",
-			"backgroundColor": "primary"
-		}
-	},
 	"supports": {
 		"color": {
 			"background": true,
@@ -31,6 +25,27 @@
 		"html": false
 	},
 	"attributes": {
+		"style": {
+			"type": "object",
+			"default": {
+				"color": {
+					"background": "var(--wp--preset--color--primary)",
+					"text": "#fff"
+				},
+				"spacing": {
+					"padding": {
+						"top": "13px",
+						"right": "35px",
+						"bottom": "13px",
+						"left": "35px"
+					}
+				},
+				"typography": {
+					"fontSize": "1rem",
+					"lineHeight": "1.5"
+				}
+			}
+		},
 		"text": {
 			"type": "string",
 			"default": "Button Text"
