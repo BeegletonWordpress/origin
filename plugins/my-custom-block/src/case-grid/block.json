@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-case-grid",
+	"version": "0.1.0",
+	"title": "My Case Grid",
+	"category": "theme",
+	"icon": "grid-view",
+	"description": "Displays customer cases in a 3-column grid.",
+	"attributes": {
+		"postsPerPage": {
+			"type": "number",
+			"default": 3
+		},
+		"selectedCategory": {
+			"type": "number"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}
