@@ -8,7 +8,6 @@ import metadata from "./block.json";
 
 const BACKGROUND_SVG = (
 	<svg
-		id="Lager_1"
 		xmlns="http://www.w3.org/2000/svg"
 		version="1.1"
 		viewBox="0 0 1207.9 194.1"
