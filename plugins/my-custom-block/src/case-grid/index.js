@@ -83,7 +83,7 @@ registerBlockType(metadata.name, {
 						className="min-h-50"
 					/>
 				) : posts?.length > 0 ? (
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full opacity-70 pointer-events-none">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full pointer-events-none">
 						{posts.map((post) => {
 							// Extract featured image URL from the embedded data
 							const featuredImage =
@@ -92,12 +92,9 @@ registerBlockType(metadata.name, {
 								post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
 
 							return (
-								<article
-									key={post.id}
-									className="flex flex-col h-full bg-white"
-								>
+								<article key={post.id} className="flex flex-col h-full">
 									{featuredImage && (
-										<div className="mb-6 aspect-video w-full overflow-hidden bg-gray-100">
+										<div className="mb-6 aspect-3/4 w-full overflow-hidden">
 											<img
 												src={featuredImage}
 												alt=""
@@ -111,15 +108,11 @@ registerBlockType(metadata.name, {
 									</h3>
 
 									<div
-										className="text-gray-700 mb-6 grow leading-relaxed line-clamp-3"
+										className="mb-6 grow leading-relaxed line-clamp-3"
 										dangerouslySetInnerHTML={{
 											__html: post.excerpt?.rendered,
 										}}
 									/>
-
-									<span className="mt-auto font-bold uppercase text-sm tracking-widest border-b-2 border-black pb-1 self-start">
-										LÄS CASE
-									</span>
 								</article>
 							);
 						})}
