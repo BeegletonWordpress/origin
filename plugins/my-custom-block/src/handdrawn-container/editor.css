@@ -1,0 +1,4 @@
+.wp-block-my-custom-block-handdrawn-container {
+	min-height: 150px;
+	outline: 1px dashed rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,3 @@
+.wp-block-my-custom-block-handdrawn-container {
+	min-height: 200px; /* Default height to ensure background is visible */
+}
