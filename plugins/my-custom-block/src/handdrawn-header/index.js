@@ -14,7 +14,7 @@ const UnderlineSVG = ({ spacing, color }) => (
 		xmlns="http://www.w3.org/2000/svg"
 		version="1.1"
 		viewBox="0 0 472.7 31.5"
-		className="absolute left-0 w-full h-auto pointer-events-none"
+		className="absolute left-0 w-full h-10 pointer-events-none"
 		style={{
 			bottom: `-${spacing}rem`,
 			color: color || "inherit",
@@ -30,28 +30,36 @@ const UnderlineSVG = ({ spacing, color }) => (
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { underlineSpacing, svgColor } = attributes;
+		const { underlineSpacing, svgColor, minWidth } = attributes;
 
 		const blockProps = useBlockProps({
-			className: "relative",
 			style: {
 				marginBottom: `${underlineSpacing}rem`,
 			},
 		});
 
-		const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
-			allowedBlocks: ["core/heading"],
-			template: [
-				[
-					"core/heading",
-					{
-						level: 2,
-						placeholder: "Add a header...",
-					},
+		const { children, ...innerBlocksProps } = useInnerBlocksProps(
+			{
+				className: "relative inline-block w-auto",
+				style: {
+					minWidth: `${minWidth}px`,
+				},
+			},
+			{
+				allowedBlocks: ["core/heading"],
+				template: [
+					[
+						"core/heading",
+						{
+							level: 2,
+							placeholder: "Add a header...",
+							className: "inline-block",
+						},
+					],
 				],
-			],
-			templateLock: "all",
-		});
+				templateLock: "all",
+			},
+		);
 
 		return (
 			<>
@@ -60,12 +68,18 @@ registerBlockType(metadata.name, {
 						<RangeControl
 							label="Underline Spacing (rem)"
 							value={underlineSpacing}
-							onChange={(value) =>
-								setAttributes({ underlineSpacing: value })
-							}
+							onChange={(value) => setAttributes({ underlineSpacing: value })}
 							min={0}
 							max={10}
 							step={0.1}
+						/>
+						<RangeControl
+							label="Minimum Underline Width (px)"
+							value={minWidth}
+							onChange={(value) => setAttributes({ minWidth: value })}
+							min={50}
+							max={1000}
+							step={1}
 						/>
 					</PanelBody>
 					<PanelColorSettings
@@ -73,25 +87,25 @@ registerBlockType(metadata.name, {
 						colorSettings={[
 							{
 								value: svgColor,
-								onChange: (value) =>
-									setAttributes({ svgColor: value }),
+								onChange: (value) => setAttributes({ svgColor: value }),
 								label: "Underline SVG Color",
 							},
 						]}
 					/>
 				</InspectorControls>
-				<div {...innerBlocksProps}>
-					{children}
-					<UnderlineSVG spacing={underlineSpacing} color={svgColor} />
+				<div {...blockProps}>
+					<div {...innerBlocksProps}>
+						{children}
+						<UnderlineSVG spacing={underlineSpacing} color={svgColor} />
+					</div>
 				</div>
 			</>
 		);
 	},
 	save: function Save({ attributes }) {
-		const { underlineSpacing, svgColor } = attributes;
+		const { underlineSpacing, svgColor, minWidth } = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: "relative",
 			style: {
 				marginBottom: `${underlineSpacing}rem`,
 			},
@@ -99,8 +113,13 @@ registerBlockType(metadata.name, {
 
 		return (
 			<div {...blockProps}>
-				<InnerBlocks.Content />
-				<UnderlineSVG spacing={underlineSpacing} color={svgColor} />
+				<div
+					className="relative inline-block w-auto"
+					style={{ minWidth: `${minWidth}px` }}
+				>
+					<InnerBlocks.Content />
+					<UnderlineSVG spacing={underlineSpacing} color={svgColor} />
+				</div>
 			</div>
 		);
 	},

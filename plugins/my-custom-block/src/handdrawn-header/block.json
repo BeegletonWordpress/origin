@@ -37,6 +37,10 @@
 		"underlineSpacing": {
 			"type": "number",
 			"default": 2.5
+		},
+		"minWidth": {
+			"type": "number",
+			"default": 150
 		}
 	},
 	"textdomain": "my-custom-block",
