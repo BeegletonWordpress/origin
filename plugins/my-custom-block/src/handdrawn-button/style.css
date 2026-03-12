@@ -44,3 +44,8 @@
 .wp-block-create-block-my-handdrawn-button:active {
 	transform: scale(0.95);
 }
+
+.case-grid .wp-block-create-block-my-handdrawn-button {
+  display: block;
+  width: fit-content;
+}

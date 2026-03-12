@@ -25,6 +25,12 @@
 		"html": false
 	},
 	"attributes": {
+		"backgroundColor": {
+			"type": "string"
+		},
+		"textColor": {
+			"type": "string"
+		},
 		"style": {
 			"type": "object",
 			"default": {

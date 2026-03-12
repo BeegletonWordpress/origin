@@ -1,5 +1,10 @@
 import { registerBlockType } from "@wordpress/blocks";
-import { useBlockProps, InspectorControls } from "@wordpress/block-editor";
+import {
+	useBlockProps,
+	InspectorControls,
+	useInnerBlocksProps,
+	InnerBlocks,
+} from "@wordpress/block-editor";
 import {
 	PanelBody,
 	QueryControls,
@@ -12,8 +17,21 @@ import metadata from "./block.json";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const blockProps = useBlockProps();
 		const { postsPerPage, selectedCategory } = attributes;
+
+		const blockProps = useBlockProps({
+			className: "case-grid flex flex-col items-center",
+		});
+
+		const { children, ...innerBlocksProps } = useInnerBlocksProps(
+			{ className: "w-full flex flex-col items-center" },
+			{
+				allowedBlocks: ["create-block/my-handdrawn-button"],
+				template: [
+					["create-block/my-handdrawn-button", { text: "Visa alla case" }],
+				],
+			}
+		);
 
 		// Fetch categories
 		const categories = useSelect((select) => {
@@ -37,11 +55,11 @@ registerBlockType(metadata.name, {
 					posts: select(coreStore).getEntityRecords("postType", "post", query),
 					hasResolved: select(coreStore).hasFinishedResolution(
 						"getEntityRecords",
-						["postType", "post", query],
+						["postType", "post", query]
 					),
 				};
 			},
-			[postsPerPage, selectedCategory],
+			[postsPerPage, selectedCategory]
 		);
 
 		// Format categories for QueryControls
@@ -83,39 +101,42 @@ registerBlockType(metadata.name, {
 						className="min-h-50"
 					/>
 				) : posts?.length > 0 ? (
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full pointer-events-none">
-						{posts.map((post) => {
-							// Extract featured image URL from the embedded data
-							const featuredImage =
-								post._embedded?.["wp:featuredmedia"]?.[0]?.media_details?.sizes
-									?.medium_large?.source_url ||
-								post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
+					<div {...innerBlocksProps}>
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-12 pointer-events-none">
+							{posts.map((post) => {
+								// Extract featured image URL from the embedded data
+								const featuredImage =
+									post._embedded?.["wp:featuredmedia"]?.[0]?.media_details
+										?.sizes?.medium_large?.source_url ||
+									post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
 
-							return (
-								<article key={post.id} className="flex flex-col h-full">
-									{featuredImage && (
-										<div className="mb-6 aspect-3/4 w-full overflow-hidden">
-											<img
-												src={featuredImage}
-												alt=""
-												className="w-full h-full object-cover"
-											/>
-										</div>
-									)}
+								return (
+									<article key={post.id} className="flex flex-col h-full">
+										{featuredImage && (
+											<div className="mb-6 aspect-3/4 w-full overflow-hidden">
+												<img
+													src={featuredImage}
+													alt=""
+													className="w-full h-full object-cover"
+												/>
+											</div>
+										)}
 
-									<h3 className="text-xl font-bold mb-3 uppercase tracking-tight">
-										{post.title?.rendered || "(No Title)"}
-									</h3>
+										<h3 className="text-xl font-bold mb-3 uppercase tracking-tight">
+											{post.title?.rendered || "(No Title)"}
+										</h3>
 
-									<div
-										className="mb-6 grow leading-relaxed line-clamp-3"
-										dangerouslySetInnerHTML={{
-											__html: post.excerpt?.rendered,
-										}}
-									/>
-								</article>
-							);
-						})}
+										<div
+											className="mb-6 grow leading-relaxed line-clamp-3"
+											dangerouslySetInnerHTML={{
+												__html: post.excerpt?.rendered,
+											}}
+										/>
+									</article>
+								);
+							})}
+						</div>
+						{children}
 					</div>
 				) : (
 					<Placeholder label="No cases found" icon="grid-view">
@@ -125,5 +146,5 @@ registerBlockType(metadata.name, {
 			</div>
 		);
 	},
-	save: () => null, // Dynamic blocks render in PHP on the frontend
+	save: () => <InnerBlocks.Content />,
 });

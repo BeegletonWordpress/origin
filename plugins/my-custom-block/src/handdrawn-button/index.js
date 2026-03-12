@@ -13,6 +13,7 @@ import {
 	Popover,
 	PanelBody,
 	ToggleControl,
+	TextControl,
 } from "@wordpress/components";
 import { link } from "@wordpress/icons";
 import { useState } from "@wordpress/element";
@@ -84,6 +85,26 @@ registerBlockType(metadata.name, {
 								setAttributes({ isSubmit: val, url: val ? undefined : url })
 							}
 						/>
+						{!isSubmit && (
+							<TextControl
+								label="Button URL"
+								value={url || ""}
+								onChange={(val) => setAttributes({ url: val })}
+								placeholder="https://..."
+							/>
+						)}
+						{!isSubmit && url && (
+							<ToggleControl
+								label="Open in new tab"
+								checked={linkTarget === "_blank"}
+								onChange={(val) =>
+									setAttributes({
+										linkTarget: val ? "_blank" : undefined,
+										rel: val ? "noopener" : undefined,
+									})
+								}
+							/>
+						)}
 					</PanelBody>
 					<PanelBody title="Hover Colors">
 						<p>Hover Background Color</p>
