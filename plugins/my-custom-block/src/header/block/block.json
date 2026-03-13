@@ -9,7 +9,7 @@
 	"description": "Custom header made for Beegleton with dynamic columns.",
 	"example": {},
 	"supports": {
-		"align": ["full", "wide"],
+		"align": [ "full", "wide" ],
 		"html": false
 	},
 	"attributes": {
@@ -20,6 +20,6 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": ["file:./index.css", "file:./style-index.css"],
+	"style": [ "file:./index.css", "file:./style-index.css" ],
 	"viewScript": "file:./view.js"
 }

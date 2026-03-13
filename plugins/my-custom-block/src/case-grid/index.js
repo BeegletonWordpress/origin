@@ -1,150 +1,177 @@
-import { registerBlockType } from "@wordpress/blocks";
+import { registerBlockType } from '@wordpress/blocks';
 import {
 	useBlockProps,
 	InspectorControls,
 	useInnerBlocksProps,
 	InnerBlocks,
-} from "@wordpress/block-editor";
+} from '@wordpress/block-editor';
 import {
 	PanelBody,
 	QueryControls,
 	Placeholder,
 	Spinner,
-} from "@wordpress/components";
-import { useSelect } from "@wordpress/data";
-import { store as coreStore } from "@wordpress/core-data";
-import metadata from "./block.json";
+} from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { store as coreStore } from '@wordpress/core-data';
+import metadata from './block.json';
 
-registerBlockType(metadata.name, {
-	edit: function Edit({ attributes, setAttributes }) {
+registerBlockType( metadata.name, {
+	edit: function Edit( { attributes, setAttributes } ) {
 		const { postsPerPage, selectedCategory } = attributes;
 
-		const blockProps = useBlockProps({
-			className: "case-grid flex flex-col items-center",
-		});
+		const blockProps = useBlockProps( {
+			className: 'case-grid flex flex-col items-center',
+		} );
 
 		const { children, ...innerBlocksProps } = useInnerBlocksProps(
-			{ className: "w-full flex flex-col items-center" },
+			{ className: 'w-full flex flex-col items-center' },
 			{
-				allowedBlocks: ["create-block/my-handdrawn-button"],
+				allowedBlocks: [ 'create-block/my-handdrawn-button' ],
 				template: [
-					["create-block/my-handdrawn-button", { text: "Visa alla case" }],
+					[
+						'create-block/my-handdrawn-button',
+						{ text: 'Visa alla case' },
+					],
 				],
 			}
 		);
 
 		// Fetch categories
-		const categories = useSelect((select) => {
-			return select(coreStore).getEntityRecords("taxonomy", "category", {
-				per_page: -1,
-			});
-		}, []);
+		const categories = useSelect( ( select ) => {
+			return select( coreStore ).getEntityRecords(
+				'taxonomy',
+				'category',
+				{
+					per_page: -1,
+				}
+			);
+		}, [] );
 
 		// Fetch posts using the REST API
 		const { posts, hasResolved } = useSelect(
-			(select) => {
+			( select ) => {
 				const query = {
 					per_page: postsPerPage,
 					_embed: true, // Critical for getting featured images
 				};
-				if (selectedCategory) {
-					query.categories = [selectedCategory];
+				if ( selectedCategory ) {
+					query.categories = [ selectedCategory ];
 				}
 
 				return {
-					posts: select(coreStore).getEntityRecords("postType", "post", query),
-					hasResolved: select(coreStore).hasFinishedResolution(
-						"getEntityRecords",
-						["postType", "post", query]
+					posts: select( coreStore ).getEntityRecords(
+						'postType',
+						'post',
+						query
+					),
+					hasResolved: select( coreStore ).hasFinishedResolution(
+						'getEntityRecords',
+						[ 'postType', 'post', query ]
 					),
 				};
 			},
-			[postsPerPage, selectedCategory]
+			[ postsPerPage, selectedCategory ]
 		);
 
 		// Format categories for QueryControls
-		const formattedCategories = categories?.map((cat) => ({
+		const formattedCategories = categories?.map( ( cat ) => ( {
 			id: cat.id,
 			name: cat.name,
-		}));
+		} ) );
 
 		return (
-			<div {...blockProps}>
+			<div { ...blockProps }>
 				<InspectorControls>
 					<PanelBody title="Grid Settings">
-						{categories ? (
+						{ categories ? (
 							<QueryControls
-								numberOfItems={postsPerPage}
-								onNumberOfItemsChange={(val) =>
-									setAttributes({ postsPerPage: val })
+								numberOfItems={ postsPerPage }
+								onNumberOfItemsChange={ ( val ) =>
+									setAttributes( { postsPerPage: val } )
 								}
-								selectedCategoryId={selectedCategory}
-								categoriesList={formattedCategories}
-								onCategoryChange={(val) =>
-									setAttributes({
-										selectedCategory: val ? parseInt(val, 10) : undefined,
-									})
+								selectedCategoryId={ selectedCategory }
+								categoriesList={ formattedCategories }
+								onCategoryChange={ ( val ) =>
+									setAttributes( {
+										selectedCategory: val
+											? parseInt( val, 10 )
+											: undefined,
+									} )
 								}
 							/>
 						) : (
-							<div style={{ padding: "20px", textAlign: "center" }}>
+							<div
+								style={ {
+									padding: '20px',
+									textAlign: 'center',
+								} }
+							>
 								<Spinner />
 							</div>
-						)}
+						) }
 					</PanelBody>
 				</InspectorControls>
 
-				{!hasResolved ? (
+				{ ! hasResolved ? (
 					<Placeholder
-						icon={<Spinner />}
+						icon={ <Spinner /> }
 						label="Fetching Cases..."
 						className="min-h-50"
 					/>
 				) : posts?.length > 0 ? (
-					<div {...innerBlocksProps}>
+					<div { ...innerBlocksProps }>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-12 pointer-events-none">
-							{posts.map((post) => {
+							{ posts.map( ( post ) => {
 								// Extract featured image URL from the embedded data
 								const featuredImage =
-									post._embedded?.["wp:featuredmedia"]?.[0]?.media_details
-										?.sizes?.medium_large?.source_url ||
-									post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
+									post._embedded?.[
+										'wp:featuredmedia'
+									]?.[ 0 ]?.media_details?.sizes?.medium_large
+										?.source_url ||
+									post._embedded?.[
+										'wp:featuredmedia'
+									]?.[ 0 ]?.source_url;
 
 								return (
-									<article key={post.id} className="flex flex-col h-full">
-										{featuredImage && (
+									<article
+										key={ post.id }
+										className="flex flex-col h-full"
+									>
+										{ featuredImage && (
 											<div className="mb-6 aspect-3/4 w-full overflow-hidden">
 												<img
-													src={featuredImage}
+													src={ featuredImage }
 													alt=""
 													className="w-full h-full object-cover"
 												/>
 											</div>
-										)}
+										) }
 
 										<h3 className="text-xl font-bold mb-3 uppercase tracking-tight">
-											{post.title?.rendered || "(No Title)"}
+											{ post.title?.rendered ||
+												'(No Title)' }
 										</h3>
 
 										<div
 											className="mb-6 grow leading-relaxed line-clamp-3"
-											dangerouslySetInnerHTML={{
+											dangerouslySetInnerHTML={ {
 												__html: post.excerpt?.rendered,
-											}}
+											} }
 										/>
 									</article>
 								);
-							})}
+							} ) }
 						</div>
-						{children}
+						{ children }
 					</div>
 				) : (
 					<Placeholder label="No cases found" icon="grid-view">
-						Try selecting a different category or creating some posts.
+						Try selecting a different category or creating some
+						posts.
 					</Placeholder>
-				)}
+				) }
 			</div>
 		);
 	},
 	save: () => <InnerBlocks.Content />,
-});
+} );

@@ -1,24 +1,24 @@
-import { registerBlockType } from "@wordpress/blocks";
+import { registerBlockType } from '@wordpress/blocks';
 import {
 	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
 	PanelColorSettings,
-} from "@wordpress/block-editor";
-import { PanelBody, RangeControl } from "@wordpress/components";
-import metadata from "./block.json";
+} from '@wordpress/block-editor';
+import { PanelBody, RangeControl } from '@wordpress/components';
+import metadata from './block.json';
 
-const UnderlineSVG = ({ spacing, color }) => (
+const UnderlineSVG = ( { spacing, color } ) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		version="1.1"
 		viewBox="0 0 472.7 31.5"
 		className="absolute left-0 w-full h-10 pointer-events-none"
-		style={{
-			bottom: `-${spacing}rem`,
-			color: color || "inherit",
-		}}
+		style={ {
+			bottom: `-${ spacing }rem`,
+			color: color || 'inherit',
+		} }
 		preserveAspectRatio="none"
 	>
 		<path
@@ -28,37 +28,37 @@ const UnderlineSVG = ({ spacing, color }) => (
 	</svg>
 );
 
-registerBlockType(metadata.name, {
-	edit: function Edit({ attributes, setAttributes }) {
+registerBlockType( metadata.name, {
+	edit: function Edit( { attributes, setAttributes } ) {
 		const { underlineSpacing, svgColor, minWidth } = attributes;
 
-		const blockProps = useBlockProps({
+		const blockProps = useBlockProps( {
 			style: {
-				marginBottom: `${underlineSpacing}rem`,
+				marginBottom: `${ underlineSpacing }rem`,
 			},
-		});
+		} );
 
 		const { children, ...innerBlocksProps } = useInnerBlocksProps(
 			{
-				className: "relative inline-block w-auto",
+				className: 'relative inline-block w-auto',
 				style: {
-					minWidth: `${minWidth}px`,
+					minWidth: `${ minWidth }px`,
 				},
 			},
 			{
-				allowedBlocks: ["core/heading"],
+				allowedBlocks: [ 'core/heading' ],
 				template: [
 					[
-						"core/heading",
+						'core/heading',
 						{
 							level: 2,
-							placeholder: "Add a header...",
-							className: "inline-block",
+							placeholder: 'Add a header...',
+							className: 'inline-block',
 						},
 					],
 				],
-				templateLock: "all",
-			},
+				templateLock: 'all',
+			}
 		);
 
 		return (
@@ -67,60 +67,71 @@ registerBlockType(metadata.name, {
 					<PanelBody title="Underline Settings">
 						<RangeControl
 							label="Underline Spacing (rem)"
-							value={underlineSpacing}
-							onChange={(value) => setAttributes({ underlineSpacing: value })}
-							min={0}
-							max={10}
-							step={0.1}
+							value={ underlineSpacing }
+							onChange={ ( value ) =>
+								setAttributes( { underlineSpacing: value } )
+							}
+							min={ 0 }
+							max={ 10 }
+							step={ 0.1 }
 						/>
 						<RangeControl
 							label="Minimum Underline Width (px)"
-							value={minWidth}
-							onChange={(value) => setAttributes({ minWidth: value })}
-							min={50}
-							max={1000}
-							step={1}
+							value={ minWidth }
+							onChange={ ( value ) =>
+								setAttributes( { minWidth: value } )
+							}
+							min={ 50 }
+							max={ 1000 }
+							step={ 1 }
 						/>
 					</PanelBody>
 					<PanelColorSettings
 						title="SVG Color"
-						colorSettings={[
+						colorSettings={ [
 							{
 								value: svgColor,
-								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Underline SVG Color",
+								onChange: ( value ) =>
+									setAttributes( { svgColor: value } ),
+								label: 'Underline SVG Color',
 							},
-						]}
+						] }
 					/>
 				</InspectorControls>
-				<div {...blockProps}>
-					<div {...innerBlocksProps}>
-						{children}
-						<UnderlineSVG spacing={underlineSpacing} color={svgColor} />
+				<div { ...blockProps }>
+					<div { ...innerBlocksProps }>
+						{ children }
+						<UnderlineSVG
+							spacing={ underlineSpacing }
+							color={ svgColor }
+						/>
 					</div>
 				</div>
 			</>
 		);
 	},
-	save: function Save({ attributes }) {
+	save: function Save( { attributes } ) {
 		const { underlineSpacing, svgColor, minWidth } = attributes;
 
-		const blockProps = useBlockProps.save({
+		const blockProps = useBlockProps.save( {
 			style: {
-				marginBottom: `${underlineSpacing}rem`,
+				marginBottom: `${ underlineSpacing }rem`,
 			},
-		});
+		} );
 
 		return (
-			<div {...blockProps}>
+			<div { ...blockProps }>
 				<div
 					className="relative inline-block w-auto"
-					style={{ minWidth: `${minWidth}px` }}
+					style={ { minWidth: `${ minWidth }px` } }
 				>
 					<InnerBlocks.Content />
-					<UnderlineSVG spacing={underlineSpacing} color={svgColor} />
+					<UnderlineSVG
+						spacing={ underlineSpacing }
+						color={ svgColor }
+					/>
 				</div>
 			</div>
 		);
 	},
-});
+} );

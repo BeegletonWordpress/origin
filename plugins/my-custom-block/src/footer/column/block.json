@@ -7,7 +7,7 @@
 	"category": "theme",
 	"icon": "columns",
 	"description": "A column inside the custom footer.",
-	"parent": ["create-block/my-footer-row"],
+	"parent": [ "create-block/my-footer-row" ],
 	"example": {},
 	"supports": {
 		"html": false,

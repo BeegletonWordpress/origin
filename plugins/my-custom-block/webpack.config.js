@@ -5,9 +5,6 @@ module.exports = {
 	...defaultConfig,
 	watchOptions: {
 		...defaultConfig.watchOptions,
-		ignored: [
-			'**/node_modules/**',
-			path.resolve( __dirname, 'build' ),
-		],
+		ignored: [ '**/node_modules/**', path.resolve( __dirname, 'build' ) ],
 	},
 };

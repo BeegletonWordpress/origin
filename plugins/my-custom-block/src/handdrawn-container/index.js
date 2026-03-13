@@ -1,10 +1,10 @@
-import { registerBlockType } from "@wordpress/blocks";
+import { registerBlockType } from '@wordpress/blocks';
 import {
 	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
-} from "@wordpress/block-editor";
-import metadata from "./block.json";
+} from '@wordpress/block-editor';
+import metadata from './block.json';
 
 const BACKGROUND_SVG = (
 	<svg
@@ -36,52 +36,52 @@ const BACKGROUND_SVG = (
 
 const TEMPLATE = [
 	[
-		"core/columns",
+		'core/columns',
 		{
-			verticalAlignment: "center",
-			className: "has-contrast-color has-text-color has-link-color",
+			verticalAlignment: 'center',
+			className: 'has-contrast-color has-text-color has-link-color',
 		},
 		[
 			[
-				"core/column",
-				{ verticalAlignment: "center" },
+				'core/column',
+				{ verticalAlignment: 'center' },
 				[
 					[
-						"core/heading",
+						'core/heading',
 						{
 							level: 2,
-							content: "OM BEEGLETON",
-							fontSize: "xx-large",
+							content: 'OM BEEGLETON',
+							fontSize: 'xx-large',
 						},
 					],
 					[
-						"core/paragraph",
+						'core/paragraph',
 						{
 							content:
-								"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-							fontSize: "medium",
+								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+							fontSize: 'medium',
 						},
 					],
 					[
-						"create-block/my-handdrawn-button",
+						'create-block/my-handdrawn-button',
 						{
-							text: "KONTAKTA OSS",
-							backgroundColor: "primary",
-							textColor: "white",
+							text: 'KONTAKTA OSS',
+							backgroundColor: 'primary',
+							textColor: 'white',
 						},
 					],
 				],
 			],
 			[
-				"core/column",
-				{ verticalAlignment: "center" },
+				'core/column',
+				{ verticalAlignment: 'center' },
 				[
 					[
-						"core/image",
+						'core/image',
 						{
-							sizeSlug: "full",
-							aspectRatio: "3/2",
-							scale: "cover",
+							sizeSlug: 'full',
+							aspectRatio: '3/2',
+							scale: 'cover',
 						},
 					],
 				],
@@ -90,41 +90,41 @@ const TEMPLATE = [
 	],
 ];
 
-registerBlockType(metadata.name, {
+registerBlockType( metadata.name, {
 	edit: function Edit() {
-		const blockProps = useBlockProps({
-			className: "relative overflow-hidden",
-		});
+		const blockProps = useBlockProps( {
+			className: 'relative overflow-hidden',
+		} );
 
 		const innerBlocksProps = useInnerBlocksProps(
 			{
 				className:
-					"relative z-10 has-global-padding is-layout-constrained wp-block-my-custom-block-handdrawn-container-is-layout-constrained",
+					'relative z-10 has-global-padding is-layout-constrained wp-block-my-custom-block-handdrawn-container-is-layout-constrained',
 			},
 			{
 				template: TEMPLATE,
-			},
+			}
 		);
 
 		return (
-			<div {...blockProps}>
-				{BACKGROUND_SVG}
-				<div {...innerBlocksProps} />
+			<div { ...blockProps }>
+				{ BACKGROUND_SVG }
+				<div { ...innerBlocksProps } />
 			</div>
 		);
 	},
 	save: function save() {
-		const blockProps = useBlockProps.save({
-			className: "relative overflow-hidden",
-		});
+		const blockProps = useBlockProps.save( {
+			className: 'relative overflow-hidden',
+		} );
 
 		return (
-			<div {...blockProps}>
-				{BACKGROUND_SVG}
+			<div { ...blockProps }>
+				{ BACKGROUND_SVG }
 				<div className="relative z-10 has-global-padding is-layout-constrained wp-block-my-custom-block-handdrawn-container-is-layout-constrained">
 					<InnerBlocks.Content />
 				</div>
 			</div>
 		);
 	},
-});
+} );

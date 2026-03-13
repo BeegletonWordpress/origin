@@ -7,7 +7,7 @@
 	"category": "theme",
 	"icon": "minus",
 	"description": "A row inside the custom header.",
-	"parent": ["create-block/my-header-block"],
+	"parent": [ "create-block/my-header-block" ],
 	"example": {},
 	"supports": {
 		"html": false
