@@ -1,0 +1,153 @@
+import { registerBlockType } from "@wordpress/blocks";
+import {
+	useBlockProps,
+	InspectorControls,
+	useInnerBlocksProps,
+	InnerBlocks,
+} from "@wordpress/block-editor";
+import {
+	PanelBody,
+	QueryControls,
+	Placeholder,
+	Spinner,
+} from "@wordpress/components";
+import { useSelect } from "@wordpress/data";
+import { store as coreStore } from "@wordpress/core-data";
+import metadata from "./block.json";
+
+registerBlockType(metadata.name, {
+	edit: function Edit({ attributes, setAttributes }) {
+		const { postsPerPage, selectedCategory } = attributes;
+
+		const blockProps = useBlockProps({
+			className: "team-gallery flex flex-col items-center",
+		});
+
+		const { children, ...innerBlocksProps } = useInnerBlocksProps(
+			{ className: "w-full flex flex-col items-center" },
+			{
+				allowedBlocks: ["create-block/my-handdrawn-button"],
+				template: [
+					["create-block/my-handdrawn-button", { text: "Visa alla case" }],
+				],
+			},
+		);
+
+		// Fetch categories
+		const categories = useSelect((select) => {
+			return select(coreStore).getEntityRecords("taxonomy", "category", {
+				per_page: -1,
+			});
+		}, []);
+
+		// Fetch posts using the REST API
+		const { posts, hasResolved } = useSelect(
+			(select) => {
+				const query = {
+					per_page: postsPerPage,
+					_embed: true, // Critical for getting featured images
+				};
+				if (selectedCategory) {
+					query.categories = [selectedCategory];
+				}
+
+				return {
+					posts: select(coreStore).getEntityRecords("postType", "post", query),
+					hasResolved: select(coreStore).hasFinishedResolution(
+						"getEntityRecords",
+						["postType", "post", query],
+					),
+				};
+			},
+			[postsPerPage, selectedCategory],
+		);
+
+		// Format categories for QueryControls
+		const formattedCategories = categories?.map((cat) => ({
+			id: cat.id,
+			name: cat.name,
+		}));
+
+		return (
+			<div {...blockProps}>
+				<InspectorControls>
+					<PanelBody title="Grid Settings">
+						{categories ? (
+							<QueryControls
+								numberOfItems={postsPerPage}
+								onNumberOfItemsChange={(val) =>
+									setAttributes({ postsPerPage: val })
+								}
+								selectedCategoryId={selectedCategory}
+								categoriesList={formattedCategories}
+								onCategoryChange={(val) =>
+									setAttributes({
+										selectedCategory: val ? parseInt(val, 10) : undefined,
+									})
+								}
+							/>
+						) : (
+							<div
+								style={{
+									padding: "20px",
+									textAlign: "center",
+								}}
+							>
+								<Spinner />
+							</div>
+						)}
+					</PanelBody>
+				</InspectorControls>
+
+				{!hasResolved ? (
+					<Placeholder
+						icon={<Spinner />}
+						label="Fetching Members..."
+						className="min-h-50"
+					/>
+				) : posts?.length > 0 ? (
+					<div {...innerBlocksProps}>
+						<div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full mb-12 pointer-events-none">
+							{posts.map((post) => {
+								// Extract featured image URL from the embedded data
+								const featuredImage =
+									post._embedded?.["wp:featuredmedia"]?.[0]?.media_details
+										?.sizes?.medium_large?.source_url ||
+									post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
+
+								return (
+									<article
+										key={post.id}
+										className="flex flex-col h-full text-center"
+									>
+										{featuredImage && (
+											<div className="mb-6 aspect-square w-full overflow-hidden">
+												<img
+													src={featuredImage}
+													alt=""
+													className="w-full h-full object-cover"
+												/>
+											</div>
+										)}
+
+										<h3 className="text-xl font-bold mb-0 uppercase tracking-tight">
+											{post.title?.rendered || "(No Title)"}
+										</h3>
+
+										<h4>{post.meta.team_member_role || "(No Role)"}</h4>
+									</article>
+								);
+							})}
+						</div>
+						{children}
+					</div>
+				) : (
+					<Placeholder label="No cases found" icon="grid-view">
+						Try selecting a different category or creating some posts.
+					</Placeholder>
+				)}
+			</div>
+		);
+	},
+	save: () => <InnerBlocks.Content />,
+});

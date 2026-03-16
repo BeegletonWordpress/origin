@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/team-gallery",
+	"version": "0.1.0",
+	"title": "Team Gallery",
+	"category": "theme",
+	"icon": "grid-view",
+	"description": "Displays team members in a responsive grid.",
+	"attributes": {
+		"postsPerPage": {
+			"type": "number",
+			"default": 4
+		},
+		"selectedCategory": {
+			"type": "number"
+		}
+	},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": "file:./style.css",
+	"render": "file:./render.php"
+}

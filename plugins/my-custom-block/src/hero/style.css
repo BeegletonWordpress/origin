@@ -65,6 +65,7 @@
 	gap: 1rem !important; /* Restored gap */
 	margin: 0 !important;
 	max-height: 616px;
+	padding: 2em 0;
 }
 
 .wp-block-create-block-hero .hero-img-1 {

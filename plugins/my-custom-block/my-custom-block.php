@@ -32,5 +32,12 @@ function create_block_my_custom_block_block_init() {
 
     register_block_type( __DIR__ . '/build/case-grid' );
     register_block_type( __DIR__ . '/build/hero' );
+    register_block_type( __DIR__ . '/build/team-gallery' );
+
+    register_post_meta('post', 'team_member_role', [
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'string',
+    ]);
 }
 add_action( 'init', 'create_block_my_custom_block_block_init' );
