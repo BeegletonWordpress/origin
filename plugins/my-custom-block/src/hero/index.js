@@ -29,7 +29,7 @@ const TEMPLATE = [
 			[
 				"core/column",
 				{
-					width: "50%",
+					width: "70%",
 					className: "hero-left-col",
 				},
 				[
@@ -61,14 +61,14 @@ const TEMPLATE = [
 			[
 				"core/column",
 				{
-					width: "50%",
+					width: "30%",
 					className: "hero-right-col",
 				},
 				[
 					[
 						"core/group",
 						{
-							className: "hero-image-grid grid grid-cols-2 gap-4",
+							className: "hero-image-grid",
 							layout: { type: "constrained" },
 						},
 						[
@@ -76,7 +76,7 @@ const TEMPLATE = [
 								"core/image",
 								{
 									sizeSlug: "large",
-									className: "hero-img-1 row-span-2",
+									className: "hero-img-1",
 								},
 							],
 							[

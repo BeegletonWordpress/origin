@@ -1,2 +1,7 @@
 @import "tailwindcss";
 @source "./**/*.js";
+
+.wp-block-group .is-layout-constrained > * {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
