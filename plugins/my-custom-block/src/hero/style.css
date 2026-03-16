@@ -63,11 +63,16 @@
 	grid-auto-rows: minmax(150px, auto);
 	gap: 1rem !important; /* Restored gap */
 	margin: 0 !important;
+	max-height: 616px;
 }
 
 .wp-block-create-block-hero .hero-img-1 {
 	grid-row: span 2 !important;
 	margin: 0 !important;
+}
+
+.wp-block-create-block-hero .hero-image-grid figure {
+	width: 100%;
 }
 
 .wp-block-create-block-hero .hero-image-grid img {
