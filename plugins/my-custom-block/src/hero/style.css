@@ -30,16 +30,17 @@
 	position: relative;
 	display: inline !important; /* Force inline for box-decoration-break */
 	width: auto;
+	margin-left: -0.75em;
 	
 	background-image: var(--hero-svg-bg);
-	background-size: 100% 1.2em;
+	background-size: 150% 2em;
 	background-repeat: no-repeat;
-	background-position: center bottom;
+	background-position: center center;
 	
 	box-decoration-break: clone;
 	-webkit-box-decoration-break: clone;
 	
-	padding: 0.1em 0.2em;
+	padding: 0.15em 0.25em 0.15em 0.75em;
 	z-index: 1;
 	line-height: 1.4;
 }
