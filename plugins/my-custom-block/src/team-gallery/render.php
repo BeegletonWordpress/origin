@@ -1,41 +1,80 @@
 <?php
 /**
- * Render function for the Case Grid block.
+ * Render function for the Team Gallery block.
  */
+
+$posts_per_page = $attributes['postsPerPage'] ?? 4;
+$current_page = isset($_GET['team_page']) ? max(1, intval($_GET['team_page'])) : 1;
+$offset = ($current_page - 1) * $posts_per_page;
 
 $args = array(
 	'post_type'      => 'post',
-	'posts_per_page' => $attributes['postsPerPage'] ?? 3,
+	'posts_per_page' => $posts_per_page,
+	'offset'         => $offset,
 	'cat'            => $attributes['selectedCategory'] ?? '',
 );
 
 $query = new WP_Query($args);
+$total_posts = $query->found_posts;
+$max_pages = ceil($total_posts / $posts_per_page);
 
 if ($query->have_posts()) : ?>
-	<div <?php echo get_block_wrapper_attributes(['class' => 'case-grid flex flex-col items-center w-full']); ?>>
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-12">
+	<div <?php echo get_block_wrapper_attributes([
+		'id' => 'team-gallery',
+		'class' => 'team-gallery flex flex-col items-center w-full'
+	]); ?>>
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full mb-12">
 			<?php while ($query->have_posts()) : $query->the_post(); ?>
-				<article class="flex flex-col h-full group">
+				<article class="flex flex-col h-full text-center group">
 					<?php if (has_post_thumbnail()) : ?>
-						<div class="mb-6 aspect-3/4 w-full overflow-hidden">
+						<div class="mb-6 aspect-square w-full overflow-hidden">
 							<?php the_post_thumbnail('medium_large', [
 								'class' => 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
 							]); ?>
 						</div>
 					<?php endif; ?>
 
-					<h3 class="text-xl font-bold mb-3 uppercase tracking-tight">
+					<h3 class="text-xl font-bold mb-0 uppercase tracking-tight">
 						<?php the_title(); ?>
 					</h3>
-					
-					<div class="mb-6 grow leading-relaxed">
-						<?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
-					</div>
+
+					<?php 
+					$role = get_post_meta(get_the_ID(), 'team_member_role', true);
+					if ($role) : ?>
+						<h4 class="text-lg font-medium">
+							<?php echo esc_html($role); ?>
+						</h4>
+					<?php endif; ?>
 				</article>
 			<?php endwhile; wp_reset_postdata(); ?>
 		</div>
-		<?php echo $content; ?>
+
+		<?php if ($max_pages > 1) : ?>
+			<div class="flex items-center gap-12 mt-4">
+				<?php if ($current_page > 1) : ?>
+					<a href="?team_page=<?php echo $current_page - 1; ?>#team-gallery" class="hover:opacity-70 transition-opacity">
+						<svg width="60" height="52" viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M77.3582 36.5734C52.4868 32.7348 27.0865 32.4002 2.16247 35.9705C0.639054 36.1919 -0.00927147 34.0489 1.54539 33.6017C3.67734 32.9943 5.72332 32.2981 7.94903 32.1331C9.13067 32.0398 9.64632 33.9129 8.55209 34.4176C6.49853 35.3608 4.3838 35.658 2.16247 35.9705C0.642715 36.1782 -0.0142725 34.0403 1.54539 33.6017C9.19744 31.4354 16.3402 26.307 22.2632 21.086C23.4419 20.0475 25.1935 21.7613 24.0061 22.8048C17.742 28.3151 10.2592 33.6745 2.16247 35.9705C1.958 35.1763 1.74986 34.3958 1.54539 33.6017C3.51387 33.3312 5.50504 33.14 7.32709 32.2959C7.52523 33.0591 7.73202 33.8172 7.93016 34.5804C5.94131 34.7356 4.06524 35.4262 2.16247 35.9705C1.958 35.1763 1.74986 34.3958 1.54539 33.6017C26.9181 29.9686 52.6719 30.2955 77.9915 34.2102C79.5467 34.4439 78.9048 36.8121 77.3582 36.5734Z" fill="#010101"/>
+							<path d="M26.0916 43.8172C18.0243 41.3042 9.95333 38.8049 1.88601 36.2918C0.379359 35.8223 1.01259 33.459 2.51923 33.9286C10.5866 36.4416 18.6575 38.941 26.7249 41.454C28.2315 41.9236 27.5983 44.2868 26.0916 43.8172Z" fill="#010101"/>
+						</svg>
+					</a>
+				<?php else : ?>
+					<div style="opacity: 0.3;"><svg width="60" height="52" viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M77.3582 36.5734C52.4868 32.7348 27.0865 32.4002 2.16247 35.9705C0.639054 36.1919 -0.00927147 34.0489 1.54539 33.6017C3.67734 32.9943 5.72332 32.2981 7.94903 32.1331C9.13067 32.0398 9.64632 33.9129 8.55209 34.4176C6.49853 35.3608 4.3838 35.658 2.16247 35.9705C0.642715 36.1782 -0.0142725 34.0403 1.54539 33.6017C9.19744 31.4354 16.3402 26.307 22.2632 21.086C23.4419 20.0475 25.1935 21.7613 24.0061 22.8048C17.742 28.3151 10.2592 33.6745 2.16247 35.9705C1.958 35.1763 1.74986 34.3958 1.54539 33.6017C3.51387 33.3312 5.50504 33.14 7.32709 32.2959C7.52523 33.0591 7.73202 33.8172 7.93016 34.5804C5.94131 34.7356 4.06524 35.4262 2.16247 35.9705C1.958 35.1763 1.74986 34.3958 1.54539 33.6017C26.9181 29.9686 52.6719 30.2955 77.9915 34.2102C79.5467 34.4439 78.9048 36.8121 77.3582 36.5734Z" fill="#010101"/><path d="M26.0916 43.8172C18.0243 41.3042 9.95333 38.8049 1.88601 36.2918C0.379359 35.8223 1.01259 33.459 2.51923 33.9286C10.5866 36.4416 18.6575 38.941 26.7249 41.454C28.2315 41.9236 27.5983 44.2868 26.0916 43.8172Z" fill="#010101"/></svg></div>
+				<?php endif; ?>
+
+				<?php if ($current_page < $max_pages) : ?>
+					<a href="?team_page=<?php echo $current_page + 1; ?>#team-gallery" class="hover:opacity-70 transition-opacity transform rotate-180">
+						<svg width="60" height="52" viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M77.3582 36.5734C52.4868 32.7348 27.0865 32.4002 2.16247 35.9705C0.639054 36.1919 -0.00927147 34.0489 1.54539 33.6017C3.67734 32.9943 5.72332 32.2981 7.94903 32.1331C9.13067 32.0398 9.64632 33.9129 8.55209 34.4176C6.49853 35.3608 4.3838 35.658 2.16247 35.9705C0.642715 36.1782 -0.0142725 34.0403 1.54539 33.6017C9.19744 31.4354 16.3402 26.307 22.2632 21.086C23.4419 20.0475 25.1935 21.7613 24.0061 22.8048C17.742 28.3151 10.2592 33.6745 2.16247 35.9705C1.958 35.1763 1.74986 34.3958 1.54539 33.6017C3.51387 33.3312 5.50504 33.14 7.32709 32.2959C7.52523 33.0591 7.73202 33.8172 7.93016 34.5804C5.94131 34.7356 4.06524 35.4262 2.16247 35.9705C1.958 35.1763 1.74986 34.3958 1.54539 33.6017C26.9181 29.9686 52.6719 30.2955 77.9915 34.2102C79.5467 34.4439 78.9048 36.8121 77.3582 36.5734Z" fill="#010101"/>
+							<path d="M26.0916 43.8172C18.0243 41.3042 9.95333 38.8049 1.88601 36.2918C0.379359 35.8223 1.01259 33.459 2.51923 33.9286C10.5866 36.4416 18.6575 38.941 26.7249 41.454C28.2315 41.9236 27.5983 44.2868 26.0916 43.8172Z" fill="#010101"/>
+						</svg>
+					</a>
+				<?php else : ?>
+					<div style="opacity: 0.3; transform: rotate(180deg);"><svg width="60" height="52" viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M77.3582 36.5734C52.4868 32.7348 27.0865 32.4002 2.16247 35.9705C0.639054 36.1919 -0.00927147 34.0489 1.54539 33.6017C3.67734 32.9943 5.72332 32.2981 7.94903 32.1331C9.13067 32.0398 9.64632 33.9129 8.55209 34.4176C6.49853 35.3608 4.3838 35.658 2.16247 35.9705C0.642715 36.1782 -0.0142725 34.0403 1.54539 33.6017C9.19744 31.4354 16.3402 26.307 22.2632 21.086C23.4419 20.0475 25.1935 21.7613 24.0061 22.8048C17.742 28.3151 10.2592 33.6745 2.16247 35.9705C1.958 35.1763 1.74986 34.3958 1.54539 33.6017C3.51387 33.3312 5.50504 33.14 7.32709 32.2959C7.52523 33.0591 7.73202 33.8172 7.93016 34.5804C5.94131 34.7356 4.06524 35.4262 2.16247 35.9705C1.958 35.1763 1.74986 34.3958 1.54539 33.6017C26.9181 29.9686 52.6719 30.2955 77.9915 34.2102C79.5467 34.4439 78.9048 36.8121 77.3582 36.5734Z" fill="#010101"/><path d="M26.0916 43.8172C18.0243 41.3042 9.95333 38.8049 1.88601 36.2918C0.379359 35.8223 1.01259 33.459 2.51923 33.9286C10.5866 36.4416 18.6575 38.941 26.7249 41.454C28.2315 41.9236 27.5983 44.2868 26.0916 43.8172Z" fill="#010101"/></svg></div>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 <?php else : ?>
-	<p>No cases found.</p>
+	<p>No team members found.</p>
 <?php endif; ?>
