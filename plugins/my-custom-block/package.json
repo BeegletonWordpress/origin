@@ -6,8 +6,8 @@
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
-		"compile": "wp-scripts start",
-		"build": "wp-scripts build",
+		"compile": "wp-scripts start --experimental-modules",
+		"build": "wp-scripts build --experimental-modules",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
@@ -18,7 +18,8 @@
 	"dependencies": {
 		"@wordpress/block-editor": "latest",
 		"@wordpress/blocks": "latest",
-		"@wordpress/i18n": "latest"
+		"@wordpress/i18n": "latest",
+		"@wordpress/interactivity": "^6.41.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4.2.1",
