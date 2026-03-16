@@ -18,6 +18,10 @@
 		"currentIndex": {
 			"type": "number",
 			"default": 0
+		},
+		"svgColor": {
+			"type": "string",
+			"default": "#edb239"
 		}
 	},
 	"supports": {

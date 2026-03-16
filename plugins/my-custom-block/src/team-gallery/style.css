@@ -1,0 +1,22 @@
+.team-gallery-wrapper {
+    position: relative;
+    overflow: visible !important; /* Ensure it can go beyond bounds */
+}
+
+.team-gallery-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%; /* Scale it up so it overflows */
+    height: auto;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.6; /* Adjust as needed */
+}
+
+/* Ensure the grid stays on top */
+.team-gallery-content {
+    position: relative;
+    z-index: 1;
+}
