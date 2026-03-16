@@ -2,4 +2,6 @@
 /themes/*
 !/themes/astra-child
 /plugins/**/build
+/plugins/*
+!/plugins/my-custom-block
 /upgrade
