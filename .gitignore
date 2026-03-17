@@ -5,3 +5,4 @@
 /plugins/*
 !/plugins/my-custom-block
 /upgrade
+/languages
