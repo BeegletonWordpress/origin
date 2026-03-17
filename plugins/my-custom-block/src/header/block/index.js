@@ -3,14 +3,17 @@ import {
 	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
+	InspectorControls,
+	MediaUpload,
+	MediaUploadCheck,
 } from "@wordpress/block-editor";
+import { PanelBody, Button } from "@wordpress/components";
 import { addFilter } from "@wordpress/hooks";
 import metadata from "./block.json";
 import "../../index.css";
 import "./style.css";
 import "./editor.css";
 
-// 1. Allow the handdrawn button to be a child of the Navigation block
 addFilter(
 	"blocks.registerBlockType",
 	"my-custom-block/allow-button-in-navigation",
@@ -77,38 +80,50 @@ const TEMPLATE = [
 ];
 
 registerBlockType(metadata.name, {
-	edit: function Edit() {
-		const blockProps = useBlockProps({
-			className: "sticky top-0 z-50 w-full",
-		});
-
+	edit: function Edit({ attributes, setAttributes }) {
+		const { scrolledLogoId, scrolledLogoUrl } = attributes;
+		const blockProps = useBlockProps({ className: "sticky top-0 z-50 w-full" });
 		const innerBlocksProps = useInnerBlocksProps(
-			{
-				className:
-					"header-inner-container mx-auto w-full max-w-(--wp--style--global--wide-size) px-8",
-			},
-			{
-				template: TEMPLATE,
-				templateLock: false,
-				orientation: "horizontal",
-			},
+			{ className: "header-inner-container mx-auto w-full max-w-(--wp--style--global--wide-size) px-8" },
+			{ template: TEMPLATE, templateLock: false, orientation: "horizontal" }
 		);
 
 		return (
-			<div {...blockProps}>
-				<div {...innerBlocksProps} />
-			</div>
+			<>
+				<InspectorControls>
+					<PanelBody title="Scrolled Settings">
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={(m) => setAttributes({ scrolledLogoId: m.id, scrolledLogoUrl: m.url })}
+								allowedTypes={["image"]}
+								value={scrolledLogoId}
+								render={({ open }) => (
+									<div>
+										{scrolledLogoUrl && <img src={scrolledLogoUrl} style={{ maxWidth: '100%', marginBottom: '10px' }} />}
+										<Button isPrimary onClick={open}>{scrolledLogoId ? "Replace Logo" : "Select Logo"}</Button>
+									</div>
+								)}
+							/>
+						</MediaUploadCheck>
+					</PanelBody>
+				</InspectorControls>
+				<div {...blockProps}>
+					<div {...innerBlocksProps} />
+				</div>
+			</>
 		);
 	},
-	save: function save() {
-		const blockProps = useBlockProps.save({
-			className: "sticky top-0 z-50 w-full",
-		});
+	save: function save({ attributes }) {
+		const { scrolledLogoUrl } = attributes;
+		const blockProps = useBlockProps.save({ className: "sticky top-0 z-50 w-full" });
 
 		return (
 			<div {...blockProps}>
 				<div className="header-inner-container mx-auto flex w-full max-w-(--wp--style--global--wide-size) items-center justify-between px-8">
 					<InnerBlocks.Content />
+					{scrolledLogoUrl && (
+						<img src={scrolledLogoUrl} className="scrolled-logo-overlay" alt="" aria-hidden="true" />
+					)}
 				</div>
 			</div>
 		);

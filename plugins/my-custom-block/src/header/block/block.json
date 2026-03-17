@@ -42,6 +42,12 @@
 					}
 				}
 			}
+		},
+		"scrolledLogoId": {
+			"type": "number"
+		},
+		"scrolledLogoUrl": {
+			"type": "string"
 		}
 	},
 	"textdomain": "my-custom-block",

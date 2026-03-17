@@ -1,19 +1,48 @@
 .wp-block-create-block-my-header-block {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .wp-block-create-block-my-header-block.is-scrolled {
-  height: 70px;
-  background: #FDF0DB !important;
-  padding: 10px !important;
+	height: 70px;
+	background: #fdf0db !important;
+	padding: 10px !important;
 }
 
-.is-scrolled .header-inner-container {
-  max-width: unset !important;
-  width: 100%;
-  padding-inline: 0;
+/* Ensure the container is relative so we can position the secondary logo over the first one */
+.header-inner-container {
+	position: relative;
 }
 
-.is-scrolled .wp-block-site-logo img {
-  transform: scale(0.5);
+/* Hide the second logo by default */
+.scrolled-logo-overlay {
+	display: none;
+	position: absolute;
+	left: 32px; /* Matches the px-8 padding approximately */
+	top: 50%;
+	transform: translateY(-50%);
+	height: 40px; /* Force a size for the scrolled logo */
+	width: auto;
+}
+
+/* Base Logo Transitions */
+.wp-block-site-logo img {
+	transition: opacity 0.3s ease;
+}
+
+/* SCROLLED STATE LOGIC */
+
+/* 1. Hide the original Site Logo block */
+.is-scrolled .wp-block-site-logo {
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* 2. Show the overlay logo */
+.is-scrolled .scrolled-logo-overlay {
+	display: block !important;
+}
+
+/* 3. Keep the Navigation pushed to the right */
+.is-scrolled .header-navigation {
+	margin-left: auto !important;
 }
