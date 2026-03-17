@@ -8,7 +8,7 @@
 	"icon": "layout",
 	"description": "Custom header recreated from Gutenberg design.",
 	"supports": {
-		"align": [ "full" ],
+		"align": ["full"],
 		"color": {
 			"background": true,
 			"text": false,
@@ -46,6 +46,7 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": [ "file:./index.css", "file:./style-index.css" ],
-	"editorStyle": "file:./editor.css"
+	"style": ["file:./index.css", "file:./style-index.css"],
+	"editorStyle": "file:./editor.css",
+	"viewScript": "file:./view.js"
 }

@@ -11,3 +11,7 @@ header.wp-block-template-part {
   top: 0;
   z-index: 9999;
 }
+
+body {
+  overflow-x: hidden;
+}

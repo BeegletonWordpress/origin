@@ -1,1 +1,19 @@
-/* Custom styles for Footer Block */
+.wp-block-create-block-my-header-block {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wp-block-create-block-my-header-block.is-scrolled {
+  height: 70px;
+  background: #FDF0DB !important;
+  padding: 10px !important;
+}
+
+.is-scrolled .header-inner-container {
+  max-width: unset !important;
+  width: 100%;
+  padding-inline: 0;
+}
+
+.is-scrolled .wp-block-site-logo img {
+  transform: scale(0.5);
+}

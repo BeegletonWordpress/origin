@@ -12,6 +12,7 @@
 .header-inner-container {
     width: 100% !important;
     display: flex !important;
+    justify-content: space-between !important;
 }
 
 .header-inner-container .wp-block-group.header-right-side {
