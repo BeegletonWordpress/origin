@@ -15,3 +15,12 @@ header.wp-block-template-part {
 body {
   overflow-x: hidden;
 }
+
+/* Global Link Styles */
+a, 
+.wp-block-navigation .wp-block-navigation-item__content {
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    text-decoration-skip-ink: all;
+    transition: text-decoration-thickness 0.2s ease, text-underline-offset 0.2s ease;
+}

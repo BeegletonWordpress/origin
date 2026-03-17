@@ -71,6 +71,10 @@
 		},
 		"hoverBackgroundColor": {
 			"type": "string"
+		},
+		"isSecondary": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "my-custom-block",

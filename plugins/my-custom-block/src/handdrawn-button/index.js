@@ -18,7 +18,7 @@ import {
 import { link } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
 import metadata from './block.json';
-import { HAND_DRAWN_BUTTON_SHAPE } from '../constants';
+import { HAND_DRAWN_BUTTON_SHAPE, HAND_DRAWN_RING_SHAPE } from '../constants';
 import '../index.css';
 import './style.css';
 import './editor.css';
@@ -34,6 +34,7 @@ registerBlockType( metadata.name, {
 			backgroundColor,
 			hoverBackgroundColor,
 			style,
+			isSecondary,
 		} = attributes;
 		const [ isEditingURL, setIsEditingURL ] = useState( false );
 
@@ -44,8 +45,9 @@ registerBlockType( metadata.name, {
 		}
 
 		const blockProps = useBlockProps( {
-			className:
-				'relative inline-flex items-center justify-center font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer uppercase',
+			className: `relative inline-flex items-center justify-center font-bold transition-transform hover:scale-105 active:scale-95 cursor-pointer uppercase ${
+				isSecondary ? 'is-secondary' : ''
+			}`,
 			style: {
 				'--handdrawn-bg-color': customBgColor || undefined,
 				'--handdrawn-hover-bg-color': hoverBackgroundColor || undefined,
@@ -79,6 +81,14 @@ registerBlockType( metadata.name, {
 
 				<InspectorControls>
 					<PanelBody title="Button Settings">
+						<ToggleControl
+							label="Secondary Style"
+							help="Make the button stand out less."
+							checked={ isSecondary }
+							onChange={ ( val ) =>
+								setAttributes( { isSecondary: val } )
+							}
+						/>
 						<ToggleControl
 							label="Is Submit Button?"
 							help="Use this for form submissions."
@@ -141,7 +151,7 @@ registerBlockType( metadata.name, {
 				) }
 
 				<div { ...blockProps }>
-					{ HAND_DRAWN_BUTTON_SHAPE }
+					{ isSecondary ? HAND_DRAWN_RING_SHAPE : HAND_DRAWN_BUTTON_SHAPE }
 					<div className="relative z-10">
 						<RichText
 							tagName="span"
@@ -167,6 +177,7 @@ registerBlockType( metadata.name, {
 			backgroundColor,
 			hoverBackgroundColor,
 			style,
+			isSecondary,
 		} = attributes;
 
 		let customBgColor = style?.color?.background;
@@ -175,8 +186,9 @@ registerBlockType( metadata.name, {
 		}
 
 		const blockProps = useBlockProps.save( {
-			className:
-				'relative inline-flex items-center justify-center font-bold transition-transform hover:scale-105 active:scale-95 uppercase',
+			className: `relative inline-flex items-center justify-center font-bold transition-transform hover:scale-105 active:scale-95 uppercase ${
+				isSecondary ? 'is-secondary' : ''
+			}`,
 			style: {
 				'--handdrawn-bg-color': customBgColor || undefined,
 				'--handdrawn-hover-bg-color': hoverBackgroundColor || undefined,
@@ -197,7 +209,7 @@ registerBlockType( metadata.name, {
 				rel={ isLink ? rel : undefined }
 				{ ...typeProps }
 			>
-				{ HAND_DRAWN_BUTTON_SHAPE }
+				{ isSecondary ? HAND_DRAWN_RING_SHAPE : HAND_DRAWN_BUTTON_SHAPE }
 				<div className="relative z-10">
 					<RichText.Content tagName="span" value={ text } />
 				</div>

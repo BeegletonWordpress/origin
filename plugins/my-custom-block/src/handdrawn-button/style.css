@@ -34,8 +34,38 @@
 	transition: fill 0.2s ease, stroke 0.2s ease;
 }
 
-/* Handle Hover Effects */
-.wp-block-create-block-my-handdrawn-button:hover svg path {
+/* SECONDARY STYLE */
+.wp-block-create-block-my-handdrawn-button.is-secondary {
+    font-weight: 600;
+    text-decoration: underline !important;
+    text-underline-offset: 4px; /* Slightly more than global for the "handdrawn" look */
+    text-decoration-thickness: 2px;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+}
+
+.wp-block-create-block-my-handdrawn-button.is-secondary:hover {
+		text-decoration: none !important;
+}
+
+/* Hide the ring by default */
+.wp-block-create-block-my-handdrawn-button.is-secondary svg.ring-shape {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Show the ring on hover */
+.wp-block-create-block-my-handdrawn-button.is-secondary:hover svg.ring-shape {
+    opacity: 1;
+}
+
+/* Hide the default shape if it's secondary */
+.wp-block-create-block-my-handdrawn-button.is-secondary svg.default-shape {
+    display: none;
+}
+
+/* Handle Hover Effects for Default Button */
+.wp-block-create-block-my-handdrawn-button:not(.is-secondary):hover svg path {
 	fill: var(--handdrawn-hover-bg-color, var(--handdrawn-bg-color, #3B3632));
 	stroke: var(--handdrawn-hover-bg-color, var(--handdrawn-bg-color, #3B3632));
 	filter: brightness(1.1);
