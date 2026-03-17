@@ -6,20 +6,46 @@
 	"title": "My Header Block",
 	"category": "theme",
 	"icon": "layout",
-	"description": "Custom header made for Beegleton with dynamic columns.",
-	"example": {},
+	"description": "Custom header recreated from Gutenberg design.",
 	"supports": {
-		"align": [ "full", "wide" ],
+		"align": [ "full" ],
+		"color": {
+			"background": true,
+			"text": false,
+			"gradients": false
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true
+		},
+		"position": {
+			"sticky": true
+		},
 		"html": false
 	},
 	"attributes": {
 		"align": {
 			"type": "string",
 			"default": "full"
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": "accent-1"
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"padding": {
+						"top": "var:preset|spacing|30",
+						"bottom": "var:preset|spacing|30"
+					}
+				}
+			}
 		}
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": [ "file:./index.css", "file:./style-index.css" ],
-	"viewScript": "file:./view.js"
+	"editorStyle": "file:./editor.css"
 }

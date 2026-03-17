@@ -20,8 +20,6 @@ function create_block_my_custom_block_block_init() {
     register_block_type( __DIR__ . '/build/footer/logo-item' );
 
     register_block_type( __DIR__ . '/build/header/block' );
-    register_block_type( __DIR__ . '/build/header/row' );
-    register_block_type( __DIR__ . '/build/header/column' );
     
     register_block_type( __DIR__ . '/build/mega-menu-item' );
     

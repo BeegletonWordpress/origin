@@ -10,14 +10,14 @@
 	"attributes": {
 		"postsPerPage": {
 			"type": "number",
-			"default": 3
+			"default": 6
 		},
 		"selectedCategory": {
 			"type": "number"
 		}
 	},
 	"supports": {
-		"align": [ "wide", "full" ],
+		"align": ["wide", "full"],
 		"html": false,
 		"spacing": {
 			"margin": true,

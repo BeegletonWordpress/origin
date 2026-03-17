@@ -1,1 +1,43 @@
-/* Custom editor styles for Footer Block */
+/* Editor styles for Header Block */
+
+/* The outer block wrapper */
+.wp-block-create-block-my-header-block {
+    width: 100% !important;
+}
+
+/* 
+ * The InnerBlocks container should not be flex.
+ * Instead, the layout child inside it should be flex.
+ */
+.header-inner-container {
+    width: 100% !important;
+    display: flex !important;
+}
+
+.header-inner-container .wp-block-group.header-right-side {
+    width: fit-content !important;
+    margin-left: auto;
+}
+
+.header-inner-container > .block-editor-block-list__layout {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+}
+
+/* Ensure blocks don't have forced top/bottom margins */
+.header-inner-container > .block-editor-block-list__layout > .wp-block {
+    margin: 0 !important;
+}
+
+/* Ensure blocks are allowed to grow/shrink correctly */
+.header-inner-container > .block-editor-block-list__layout > .wp-block:first-child {
+    flex-shrink: 0;
+}
+
+.header-inner-container > .block-editor-block-list__layout > .wp-block:last-child {
+    margin-left: auto !important; /* Extra push to the right */
+}
