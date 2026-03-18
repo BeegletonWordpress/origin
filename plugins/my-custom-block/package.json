@@ -16,6 +16,7 @@
 		"start": "wp-scripts start --blocks-manifest"
 	},
 	"dependencies": {
+		"@lottiefiles/dotlottie-react": "^0.18.7",
 		"@wordpress/block-editor": "latest",
 		"@wordpress/blocks": "latest",
 		"@wordpress/i18n": "latest",

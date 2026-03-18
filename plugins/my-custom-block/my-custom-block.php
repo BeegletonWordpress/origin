@@ -20,9 +20,11 @@ function create_block_my_custom_block_block_init() {
     register_block_type( __DIR__ . '/build/footer/logo-item' );
 
     register_block_type( __DIR__ . '/build/header/block' );
-    
+
+    register_block_type( __DIR__ . '/build/animation/arrow' );
+
     register_block_type( __DIR__ . '/build/mega-menu-item' );
-    
+
     register_block_type( __DIR__ . '/build/handdrawn-button' );
     register_block_type( __DIR__ . '/build/handdrawn-card' );
     register_block_type( __DIR__ . '/build/handdrawn-container' );
@@ -39,3 +41,21 @@ function create_block_my_custom_block_block_init() {
     ]);
 }
 add_action( 'init', 'create_block_my_custom_block_block_init' );
+
+/**
+ * Enqueue dotlottie-player script for the frontend.
+ */
+function animated_arrow_frontend_scripts() {
+    if ( ! has_block( 'my-custom-block/animation-arrow' ) ) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'animated-arrow-frontend',
+        plugin_dir_url( __FILE__ ) . 'build/animation/arrow/view.js',
+        [],
+        '1.0.0',
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'animated_arrow_frontend_scripts' );

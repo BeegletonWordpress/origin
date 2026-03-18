@@ -31,6 +31,10 @@
 
 /* SCROLLED STATE LOGIC */
 
+.is-scrolled .header-inner-container {
+	max-width: none !important;
+}
+
 /* 1. Hide the original Site Logo block */
 .is-scrolled .wp-block-site-logo {
 	opacity: 0 !important;
