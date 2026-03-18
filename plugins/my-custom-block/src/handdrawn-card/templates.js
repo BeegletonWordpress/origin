@@ -142,73 +142,88 @@ export const TEMPLATE_BUILD = [
 				},
 			],
 			[
-				"core/list",
-				{
-					className: "!list-disc is-style-default",
-					style: { typography: { lineHeight: "2" } },
-				},
-				[
-					[
-						"core/list-item",
-						{
-							content: "<em>Webbutveckling & design</em>",
-							style: {
-								typography: {
-									fontStyle: "normal",
-									fontWeight: "400",
-									textTransform: "uppercase",
-								},
-							},
-							className: "has-medium-font-size",
-						},
-					],
-					[
-						"core/list-item",
-						{
-							content: "<em>Designsystem & UX</em>",
-							style: { typography: { textTransform: "uppercase" } },
-						},
-					],
-					[
-						"core/list-item",
-						{
-							content: "<em>Content & filmproduktion</em>",
-							style: { typography: { textTransform: "uppercase" } },
-						},
-					],
-				],
-			],
-			[
-				"core/separator",
-				{
-					className: "is-style-default has-text-color has-accent-5-color has-alpha-channel-opacity has-accent-5-background-color has-background",
-					style: {
-						spacing: { margin: { top: "var(--wp--preset--spacing--20)", bottom: "var(--wp--preset--spacing--20)" } },
-					},
-				},
-			],
-			[
 				"core/group",
 				{
-					layout: { type: "constrained" },
-					className: "has-accent-6-color has-text-color has-link-color",
-					style: { spacing: { margin: { top: "var(--wp--preset--spacing--30)" } } },
+					layout: {
+						type: "flex",
+						orientation: "vertical",
+						justifyContent: "center",
+					},
 				},
 				[
 					[
-						"core/heading",
+						"core/list",
 						{
-							level: 6,
-							content: "vi erbjuder också",
-							className: "has-text-align-left",
+							style: {
+								typography: {
+									fontStyle: "italic",
+									fontWeight: "400",
+									lineHeight: "2",
+								},
+							},
 						},
+						[
+							[
+								"core/list-item",
+								{
+									content: "Webbutveckling & design",
+									style: { typography: { textTransform: "uppercase" } },
+									className: "has-medium-font-size",
+								},
+							],
+							[
+								"core/list-item",
+								{
+									content: "Designsystem & UX",
+									style: { typography: { textTransform: "uppercase" } },
+									className: "has-medium-font-size",
+								},
+							],
+							[
+								"core/list-item",
+								{
+									content: "Content & filmproduktion",
+									style: { typography: { textTransform: "uppercase" } },
+									className: "has-medium-font-size",
+								},
+							],
+						],
 					],
 					[
-						"core/paragraph",
+						"core/group",
 						{
-							content: "MALLAR, PRESENTATIONER, MÄSS- & EVENTMATERIAL, CONTENTPRODUKTION, MM.",
-							className: "has-small-font-size",
+							layout: { type: "constrained" },
+							className: "has-accent-6-color has-text-color has-link-color",
+							style: { spacing: { margin: { top: "var(--wp--preset--spacing--30)" } } },
 						},
+						[
+							[
+								"core/separator",
+								{
+									className: "is-style-default has-text-color has-accent-5-color has-alpha-channel-opacity has-accent-5-background-color has-background",
+									style: {
+										spacing: { margin: { top: "0", bottom: "var(--wp--preset--spacing--30)" } },
+									},
+								},
+							],
+							[
+								"core/heading",
+								{
+									level: 5,
+									content: "vi erbjuder också",
+									className: "has-text-align-left has-small-font-size",
+									style: { typography: { lineHeight: "2" } },
+								},
+							],
+							[
+								"core/paragraph",
+								{
+									content: "MALLAR, PRESENTATIONER, MÄSS- & EVENTMATERIAL, CONTENTPRODUKTION, MM.",
+									className: "has-small-font-size",
+									style: { typography: { textTransform: "none" } },
+								},
+							],
+						],
 					],
 				],
 			],
