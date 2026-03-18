@@ -16,6 +16,10 @@ body {
   overflow-x: hidden;
 }
 
+.wp-block-list {
+  list-style-type: disc;
+}
+
 /* Global Link Styles */
 a, 
 .wp-block-navigation .wp-block-navigation-item__content {

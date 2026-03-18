@@ -41,6 +41,10 @@
 	"attributes": {
 		"style": {
 			"type": "object"
+		},
+		"cardLayout": {
+			"type": "string",
+			"default": "buzz"
 		}
 	},
 	"textdomain": "my-custom-block",
