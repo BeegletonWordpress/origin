@@ -52,7 +52,9 @@ export const TEMPLATE_BUZZ = [
 						"core/group",
 						{
 							layout: { type: "constrained" },
-							style: { spacing: { margin: { top: "var(--wp--preset--spacing--40)" } } },
+							style: {
+								spacing: { margin: { top: "var(--wp--preset--spacing--40)" } },
+							},
 						},
 						[
 							[
@@ -66,7 +68,8 @@ export const TEMPLATE_BUZZ = [
 							[
 								"core/list",
 								{
-									className: "is-style-checkmark-list has-accent-5-color has-text-color has-link-color",
+									className:
+										"is-style-checkmark-list has-accent-5-color has-text-color has-link-color",
 								},
 								[
 									["core/list-item", { content: "Positionering" }],
@@ -80,7 +83,9 @@ export const TEMPLATE_BUZZ = [
 						"core/group",
 						{
 							layout: { type: "constrained" },
-							style: { spacing: { margin: { top: "var(--wp--preset--spacing--40)" } } },
+							style: {
+								spacing: { margin: { top: "var(--wp--preset--spacing--40)" } },
+							},
 						},
 						[
 							[
@@ -94,7 +99,8 @@ export const TEMPLATE_BUZZ = [
 							[
 								"core/list",
 								{
-									className: "is-style-checkmark-list has-accent-5-color has-text-color has-link-color",
+									className:
+										"is-style-checkmark-list has-accent-5-color has-text-color has-link-color",
 								},
 								[
 									["core/list-item", { content: "Positionering" }],
@@ -159,6 +165,7 @@ export const TEMPLATE_BUILD = [
 									fontStyle: "italic",
 									fontWeight: "400",
 									lineHeight: "2",
+									letterSpacing: "1px",
 								},
 							},
 						},
@@ -193,16 +200,33 @@ export const TEMPLATE_BUILD = [
 						"core/group",
 						{
 							layout: { type: "constrained" },
-							className: "has-accent-6-color has-text-color has-link-color",
-							style: { spacing: { margin: { top: "var(--wp--preset--spacing--30)" } } },
+							className: "w-full has-link-color",
+							style: {
+								color: {
+									text: "#8f8f8f",
+								},
+								spacing: { margin: { top: "var(--wp--preset--spacing--30)" } },
+							},
 						},
 						[
 							[
 								"core/separator",
 								{
-									className: "is-style-default has-text-color has-accent-5-color has-alpha-channel-opacity has-accent-5-background-color has-background",
+									className: "is-style-default",
 									style: {
-										spacing: { margin: { top: "0", bottom: "var(--wp--preset--spacing--30)" } },
+										border: {
+											width: "1px",
+											style: "solid",
+										},
+										color: {
+											text: "inherit",
+										},
+										spacing: {
+											margin: {
+												top: "0",
+												bottom: "var(--wp--preset--spacing--20)",
+											},
+										},
 									},
 								},
 							],
@@ -212,13 +236,19 @@ export const TEMPLATE_BUILD = [
 									level: 5,
 									content: "vi erbjuder också",
 									className: "has-text-align-left has-small-font-size",
-									style: { typography: { lineHeight: "2" } },
+									style: {
+										typography: { lineHeight: "2" },
+										spacing: {
+											margin: { bottom: "5px" },
+										},
+									},
 								},
 							],
 							[
 								"core/paragraph",
 								{
-									content: "MALLAR, PRESENTATIONER, MÄSS- & EVENTMATERIAL, CONTENTPRODUKTION, MM.",
+									content:
+										"Mallar, Presentationer, Mäss- & Eventmaterial, Contentproduktion, mm.",
 									className: "has-small-font-size",
 									style: { typography: { textTransform: "none" } },
 								},
@@ -266,14 +296,17 @@ export const TEMPLATE_BOOST = [
 				"core/group",
 				{
 					layout: { type: "constrained" },
-					style: { spacing: { margin: { bottom: "var(--wp--preset--spacing--30)" } } },
+					style: {
+						spacing: { margin: { bottom: "var(--wp--preset--spacing--30)" } },
+					},
 				},
 				[
 					["core/heading", { level: 6, content: "LOREM IPSUM" }],
 					[
 						"core/paragraph",
 						{
-							content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et molestie ante.",
+							content:
+								"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et molestie ante.",
 							className: "has-medium-font-size",
 							style: { typography: { textTransform: "none" } },
 						},
@@ -284,14 +317,17 @@ export const TEMPLATE_BOOST = [
 				"core/group",
 				{
 					layout: { type: "constrained" },
-					style: { spacing: { margin: { bottom: "var(--wp--preset--spacing--30)" } } },
+					style: {
+						spacing: { margin: { bottom: "var(--wp--preset--spacing--30)" } },
+					},
 				},
 				[
 					["core/heading", { level: 6, content: "LOREM IPSUM" }],
 					[
 						"core/paragraph",
 						{
-							content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et molestie ante.",
+							content:
+								"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et molestie ante.",
 							className: "has-medium-font-size",
 							style: { typography: { textTransform: "none" } },
 						},
@@ -308,7 +344,8 @@ export const TEMPLATE_BOOST = [
 					[
 						"core/paragraph",
 						{
-							content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et molestie ante.",
+							content:
+								"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et molestie ante.",
 							className: "has-medium-font-size",
 							style: { typography: { textTransform: "none" } },
 						},
