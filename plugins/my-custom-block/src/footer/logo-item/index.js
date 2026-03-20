@@ -11,7 +11,7 @@ import "./style.css";
 import "./editor.css";
 
 const LOGO_CLASSES =
-	"h-auto max-h-11.25 w-16 object-contain grayscale hover:grayscale-0 transition-all";
+	"h-auto max-h-11.25 w-auto max-w-20 object-contain grayscale brightness-125 hover:grayscale-0 hover:brightness-100 transition-all";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
