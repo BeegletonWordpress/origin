@@ -22,15 +22,25 @@ const THEMES = {
 		text: "#3B3632",
 		svg: "#FDF0DB",
 	},
-	summer: {
-		bg: "#FFD166",
-		text: "#073B4C",
-		svg: "#EF476F",
+	dark_1: {
+		bg: "#3B3632",
+		text: "#FDF0DB",
+		svg: "#BBC7E7",
 	},
-	midnight: {
-		bg: "#073B4C",
-		text: "#FFFFFF",
-		svg: "#118AB2",
+	dark_2: {
+		bg: "#3B3632",
+		text: "#FDF0DB",
+		svg: "#EEB137",
+	},
+	light_1: {
+		bg: "#FDF0DB",
+		text: "#3B3632",
+		svg: "#4A6397",
+	},
+	light_2: {
+		bg: "#FDF0DB",
+		text: "#3B3632",
+		svg: "#EEB137",
 	},
 };
 
@@ -74,8 +84,10 @@ registerBlockType(metadata.name, {
 							value={theme}
 							options={[
 								{ label: "Default (Accent 1)", value: "default" },
-								{ label: "Summer (Yellow/Red)", value: "summer" },
-								{ label: "Midnight (Dark Blue/Cyan)", value: "midnight" },
+								{ label: "Dark 1 (Dark Gray/Blue)", value: "dark_1" },
+								{ label: "Dark 2 (Dark Gray/Yellow)", value: "dark_2" },
+								{ label: "Light 1 (Light Yellow/Blue)", value: "light_1" },
+								{ label: "Light 2 (Light Yellow/Yellow)", value: "light_2" },
 							]}
 							onChange={(value) => setAttributes({ theme: value })}
 						/>
