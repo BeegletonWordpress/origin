@@ -49,6 +49,10 @@
 		},
 		"svgColor": {
 			"type": "string"
+		},
+		"theme": {
+			"type": "string",
+			"default": "default"
 		}
 	},
 	"textdomain": "my-custom-block",

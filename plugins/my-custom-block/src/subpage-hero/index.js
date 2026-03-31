@@ -8,16 +8,49 @@ import {
 	InspectorControls,
 	PanelColorSettings,
 } from "@wordpress/block-editor";
-import { Button } from "@wordpress/components";
+import { Button, PanelBody, SelectControl } from "@wordpress/components";
+import { useEffect } from "@wordpress/element";
 import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
 
 import { UnderlineSVG } from "../handdrawn-header";
 
+const THEMES = {
+	default: {
+		bg: "var(--wp--preset--color--accent-1)",
+		text: "#3B3632",
+		svg: "#FDF0DB",
+	},
+	summer: {
+		bg: "#FFD166",
+		text: "#073B4C",
+		svg: "#EF476F",
+	},
+	midnight: {
+		bg: "#073B4C",
+		text: "#FFFFFF",
+		svg: "#118AB2",
+	},
+};
+
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { title, content, imageUrl, imageAlt, svgColor } = attributes;
+		const { title, content, imageUrl, imageAlt, svgColor, theme } = attributes;
+
+		// Get active theme colors
+		const activeTheme = THEMES[theme] || THEMES.default;
+
+		useEffect(() => {
+			const canvas =
+				document.querySelector('iframe[name="editor-canvas"]')?.contentDocument
+					?.body || document.body;
+
+			// Broadcast Theme Variables to the Editor
+			canvas.style.setProperty("--page-theme-bg", activeTheme.bg);
+			canvas.style.setProperty("--page-theme-text", activeTheme.text);
+			canvas.style.setProperty("--page-theme-svg", svgColor || activeTheme.svg);
+		}, [theme, svgColor]);
 
 		const onSelectImage = (media) => {
 			setAttributes({
@@ -28,19 +61,32 @@ registerBlockType(metadata.name, {
 		};
 
 		const blockProps = useBlockProps({
-			className: "subpage-hero",
+			className: `subpage-hero theme-${theme}`,
+			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
 		});
 
 		return (
 			<>
 				<InspectorControls>
+					<PanelBody title="Theme Selection">
+						<SelectControl
+							label="Hero Theme"
+							value={theme}
+							options={[
+								{ label: "Default (Accent 1)", value: "default" },
+								{ label: "Summer (Yellow/Red)", value: "summer" },
+								{ label: "Midnight (Dark Blue/Cyan)", value: "midnight" },
+							]}
+							onChange={(value) => setAttributes({ theme: value })}
+						/>
+					</PanelBody>
 					<PanelColorSettings
 						title="SVG Color"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Underline SVG Color",
+								label: "Override Theme Underline Color",
 							},
 						]}
 					/>
@@ -57,7 +103,7 @@ registerBlockType(metadata.name, {
 									placeholder="Hero Title"
 								/>
 								<div className="scale-125 -rotate-2">
-									<UnderlineSVG color={svgColor} />
+									<UnderlineSVG color={svgColor || activeTheme.svg} />
 								</div>
 							</div>
 							<RichText
@@ -113,13 +159,31 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: ({ attributes }) => {
-		const { title, content, imageUrl, imageAlt, svgColor } = attributes;
+		const { title, content, imageUrl, imageAlt, svgColor, theme } = attributes;
+		const activeTheme = THEMES[theme] || THEMES.default;
+
 		const blockProps = useBlockProps.save({
-			className: "subpage-hero",
+			className: `subpage-hero theme-${theme}`,
+			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
 		});
 
 		return (
 			<div {...blockProps}>
+				<style
+					dangerouslySetInnerHTML={{
+						__html: `
+						:root {
+							--page-theme-bg: ${activeTheme.bg};
+							--page-theme-text: ${activeTheme.text};
+							--page-theme-svg: ${svgColor || activeTheme.svg};
+						}
+						body {
+							background-color: var(--page-theme-bg);
+							color: var(--page-theme-text);
+						}
+					`,
+					}}
+				/>
 				<div className="flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch">
 					<div className="w-full md:w-[50%] relative">
 						<div className="md:relative md:mr-auto">
@@ -129,7 +193,7 @@ registerBlockType(metadata.name, {
 								value={title}
 							/>
 							<div className="scale-125 -rotate-2">
-								<UnderlineSVG color={svgColor} />
+								<UnderlineSVG color={svgColor || activeTheme.svg} />
 							</div>
 						</div>
 						<RichText.Content
