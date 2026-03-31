@@ -47,6 +47,12 @@
 		},
 		"scrolledLogoUrl": {
 			"type": "string"
+		},
+		"lightLogoId": {
+			"type": "number"
+		},
+		"lightLogoUrl": {
+			"type": "string"
 		}
 	},
 	"textdomain": "my-custom-block",

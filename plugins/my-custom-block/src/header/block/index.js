@@ -81,30 +81,92 @@ const TEMPLATE = [
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { scrolledLogoId, scrolledLogoUrl } = attributes;
+		const {
+			scrolledLogoId,
+			scrolledLogoUrl,
+			lightLogoId,
+			lightLogoUrl,
+		} = attributes;
 		const blockProps = useBlockProps({ className: "sticky top-0 z-50 w-full" });
 		const innerBlocksProps = useInnerBlocksProps(
-			{ className: "header-inner-container mx-auto w-full max-w-(--wp--style--global--wide-size) px-8" },
-			{ template: TEMPLATE, templateLock: false, orientation: "horizontal" }
+			{
+				className:
+					"header-inner-container mx-auto w-full max-w-(--wp--style--global--wide-size) px-8",
+			},
+			{ template: TEMPLATE, templateLock: false, orientation: "horizontal" },
 		);
 
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Scrolled Settings">
-						<MediaUploadCheck>
-							<MediaUpload
-								onSelect={(m) => setAttributes({ scrolledLogoId: m.id, scrolledLogoUrl: m.url })}
-								allowedTypes={["image"]}
-								value={scrolledLogoId}
-								render={({ open }) => (
-									<div>
-										{scrolledLogoUrl && <img src={scrolledLogoUrl} style={{ maxWidth: '100%', marginBottom: '10px' }} />}
-										<Button isPrimary onClick={open}>{scrolledLogoId ? "Replace Logo" : "Select Logo"}</Button>
-									</div>
-								)}
-							/>
-						</MediaUploadCheck>
+					<PanelBody title="Logo Settings">
+						<div style={{ marginBottom: "20px" }}>
+							<label style={{ display: "block", marginBottom: "5px" }}>
+								Scrolled Logo (Dark)
+							</label>
+							<MediaUploadCheck>
+								<MediaUpload
+									onSelect={(m) =>
+										setAttributes({
+											scrolledLogoId: m.id,
+											scrolledLogoUrl: m.url,
+										})
+									}
+									allowedTypes={["image"]}
+									value={scrolledLogoId}
+									render={({ open }) => (
+										<div>
+											{scrolledLogoUrl && (
+												<img
+													src={scrolledLogoUrl}
+													style={{ maxWidth: "100%", marginBottom: "10px" }}
+												/>
+											)}
+											<Button isPrimary onClick={open}>
+												{scrolledLogoId
+													? "Replace Scrolled Logo"
+													: "Select Scrolled Logo"}
+											</Button>
+										</div>
+									)}
+								/>
+							</MediaUploadCheck>
+						</div>
+
+						<div>
+							<label style={{ display: "block", marginBottom: "5px" }}>
+								Light Theme Logo (White)
+							</label>
+							<MediaUploadCheck>
+								<MediaUpload
+									onSelect={(m) =>
+										setAttributes({ lightLogoId: m.id, lightLogoUrl: m.url })
+									}
+									allowedTypes={["image"]}
+									value={lightLogoId}
+									render={({ open }) => (
+										<div>
+											{lightLogoUrl && (
+												<img
+													src={lightLogoUrl}
+													style={{
+														maxWidth: "100%",
+														backgroundColor: "#333",
+														padding: "10px",
+														marginBottom: "10px",
+													}}
+												/>
+											)}
+											<Button isPrimary onClick={open}>
+												{lightLogoId
+													? "Replace Light Logo"
+													: "Select Light Logo"}
+											</Button>
+										</div>
+									)}
+								/>
+							</MediaUploadCheck>
+						</div>
 					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
@@ -114,15 +176,30 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: function save({ attributes }) {
-		const { scrolledLogoUrl } = attributes;
-		const blockProps = useBlockProps.save({ className: "sticky top-0 z-50 w-full" });
+		const { scrolledLogoUrl, lightLogoUrl } = attributes;
+		const blockProps = useBlockProps.save({
+			className: "sticky top-0 z-50 w-full",
+		});
 
 		return (
 			<div {...blockProps}>
 				<div className="header-inner-container mx-auto flex w-full max-w-(--wp--style--global--wide-size) items-center justify-between px-8">
 					<InnerBlocks.Content />
 					{scrolledLogoUrl && (
-						<img src={scrolledLogoUrl} className="scrolled-logo-overlay" alt="" aria-hidden="true" />
+						<img
+							src={scrolledLogoUrl}
+							className="scrolled-logo-overlay"
+							alt=""
+							aria-hidden="true"
+						/>
+					)}
+					{lightLogoUrl && (
+						<img
+							src={lightLogoUrl}
+							className="light-logo-overlay"
+							alt=""
+							aria-hidden="true"
+						/>
 					)}
 				</div>
 			</div>

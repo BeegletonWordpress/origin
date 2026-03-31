@@ -21,26 +21,31 @@ const THEMES = {
 		bg: "var(--wp--preset--color--accent-1)",
 		text: "#3B3632",
 		svg: "#FDF0DB",
+		isDark: false,
 	},
 	dark_1: {
 		bg: "#3B3632",
 		text: "#FDF0DB",
 		svg: "#BBC7E7",
+		isDark: true,
 	},
 	dark_2: {
 		bg: "#3B3632",
 		text: "#FDF0DB",
 		svg: "#EEB137",
+		isDark: true,
 	},
 	light_1: {
 		bg: "#FDF0DB",
 		text: "#3B3632",
 		svg: "#4A6397",
+		isDark: false,
 	},
 	light_2: {
 		bg: "#FDF0DB",
 		text: "#3B3632",
 		svg: "#EEB137",
+		isDark: false,
 	},
 };
 
@@ -60,6 +65,8 @@ registerBlockType(metadata.name, {
 			canvas.style.setProperty("--page-theme-bg", activeTheme.bg);
 			canvas.style.setProperty("--page-theme-text", activeTheme.text);
 			canvas.style.setProperty("--page-theme-svg", svgColor || activeTheme.svg);
+			canvas.style.setProperty("--page-theme-is-dark", activeTheme.isDark ? "1" : "0");
+			canvas.style.setProperty("--page-theme-is-light", activeTheme.isDark ? "0" : "1");
 		}, [theme, svgColor]);
 
 		const onSelectImage = (media) => {
@@ -188,6 +195,8 @@ registerBlockType(metadata.name, {
 							--page-theme-bg: ${activeTheme.bg};
 							--page-theme-text: ${activeTheme.text};
 							--page-theme-svg: ${svgColor || activeTheme.svg};
+							--page-theme-is-dark: ${activeTheme.isDark ? "1" : "0"};
+							--page-theme-is-light: ${activeTheme.isDark ? "0" : "1"};
 						}
 						body {
 							background-color: var(--page-theme-bg);

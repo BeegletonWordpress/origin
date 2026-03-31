@@ -34,6 +34,15 @@
 	transition: fill 0.2s ease, stroke 0.2s ease;
 }
 
+.wp-block-create-block-my-header-block.is-scrolled .wp-block-create-block-my-handdrawn-button svg path {
+	fill: #3B3632 !important;
+	stroke: #3B3632 !important;
+}
+
+.wp-block-create-block-my-header-block.is-scrolled .wp-block-create-block-my-handdrawn-button {
+	color: #3B3632 !important;
+}
+
 /* SECONDARY STYLE */
 .wp-block-create-block-my-handdrawn-button.is-secondary {
     font-weight: 600;
@@ -42,6 +51,8 @@
     text-decoration-thickness: 2px;
     padding-left: 15px !important;
     padding-right: 15px !important;
+    /* Flip color based on dark mode broadcasting */
+    color: var(--page-theme-text, inherit);
 }
 
 .wp-block-create-block-my-handdrawn-button.is-secondary:hover {
@@ -52,6 +63,7 @@
 .wp-block-create-block-my-handdrawn-button.is-secondary svg.ring-shape {
     opacity: 0;
     transition: opacity 0.2s ease;
+    color: var(--page-theme-text, inherit);
 }
 
 /* Show the ring on hover */

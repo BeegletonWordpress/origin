@@ -1,20 +1,41 @@
 .wp-block-create-block-my-header-block {
-	background-color: var(--page-theme-bg, #EEB137);
 	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	background-color: var(--page-theme-bg, var(--wp--preset--color--accent-1)) !important;
+	color: var(--page-theme-text, inherit) !important;
+}
+
+.wp-block-create-block-my-header-block:not(.is-scrolled) a,
+.wp-block-create-block-my-header-block:not(.is-scrolled) .header-navigation {
+	color: var(--page-theme-text, inherit) !important;
 }
 
 .wp-block-create-block-my-header-block.is-scrolled {
 	height: 70px;
 	background: #fdf0db !important;
+	color: #3B3632 !important;
 	padding: 10px !important;
 }
 
-/* Ensure the container is relative so we can position the secondary logo over the first one */
-.header-inner-container {
-	position: relative;
+.light-logo-overlay {
+	display: block !important;
+	position: absolute;
+	left: 32px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 235px;
+	height: auto;
+	opacity: var(--page-theme-is-dark, 0) !important; /* Visible only when theme is dark */
+	pointer-events: none;
+	transition: opacity 0.3s ease;
 }
 
-/* Hide the second logo by default */
+/* Original Logo visibility - Hide when theme is dark OR scrolled */
+.wp-block-create-block-my-header-block:not(.is-scrolled) .wp-block-site-logo {
+	opacity: var(--page-theme-is-light, 1) !important;
+	transition: opacity 0.3s ease;
+}
+
+/* Scrolled Logo overlay */
 .scrolled-logo-overlay {
 	display: none;
 	position: absolute;
@@ -47,7 +68,12 @@
 	display: block !important;
 }
 
-/* 3. Keep the Navigation pushed to the right */
+/* 3. Ensure light logo is hidden when scrolled */
+.is-scrolled .light-logo-overlay {
+	opacity: 0 !important;
+}
+
+/* 4. Keep the Navigation pushed to the right */
 .is-scrolled .header-navigation {
 	margin-left: auto !important;
 }
