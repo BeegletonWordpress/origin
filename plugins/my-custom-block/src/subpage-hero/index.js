@@ -1,62 +1,138 @@
 import { registerBlockType } from "@wordpress/blocks";
-import { useBlockProps, InnerBlocks } from "@wordpress/block-editor";
+import {
+	useBlockProps,
+	InnerBlocks,
+	RichText,
+	MediaUpload,
+	MediaUploadCheck,
+} from "@wordpress/block-editor";
+import { Button } from "@wordpress/components";
 import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
 
 import { UnderlineSVG } from "../handdrawn-header";
 
-const TEST_STRUCTURE = (
-	<div className="flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch">
-		<div className="w-full md:w-[50%] relative">
-			<div className="md:relative md:mr-auto">
-				<h1 className="wrap-anywhere">Subpage Hero</h1>
-				<div className="scale-125 -rotate-2">
-					<UnderlineSVG />
-				</div>
-			</div>
-			<div className="mt-12 pt-5 md:mr-7">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a erat non
-				sapien condimentum finibus sed sit amet orci. Phasellus vitae enim id
-				sem fringilla facilisis. Aenean orci metus, ultricies nec purus ac,
-				egestas semper augue. Nulla id turpis neque. Duis ut lorem efficitur,
-				porttitor nulla quis, lobortis nulla. Praesent id augue vitae ante
-				congue facilisis in quis nisl. Sed egestas est et egestas volutpat.
-				Vivamus at eros in lacus commodo sagittis. Nullam iaculis accumsan nibh
-				a molestie. Fusce nec urna commodo, hendrerit nunc vitae, pellentesque
-				turpis. In fringilla magna id nulla porta laoreet a quis dui.
-			</div>
-		</div>
-
-		<div className="w-full md:flex-1">
-			<img
-				src="https://beegleton-dev.local/wp-content/uploads/2026/03/Rectangle-4.png"
-				alt="Subpage Hero Image"
-				className="w-full h-full object-cover"
-			/>
-		</div>
-	</div>
-);
-
 registerBlockType(metadata.name, {
-	edit: () => {
+	edit: ({ attributes, setAttributes }) => {
+		const { title, content, imageUrl, imageAlt } = attributes;
+
+		const onSelectImage = (media) => {
+			setAttributes({
+				imageUrl: media.url,
+				imageId: media.id,
+				imageAlt: media.alt,
+			});
+		};
+
 		const blockProps = useBlockProps({
 			className: "subpage-hero",
 		});
+
 		return (
 			<div {...blockProps}>
-				{TEST_STRUCTURE}
+				<div className="flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch">
+					<div className="w-full md:w-[50%] relative">
+						<div className="md:relative md:mr-auto">
+							<RichText
+								tagName="h1"
+								className="wrap-anywhere"
+								value={title}
+								onChange={(value) => setAttributes({ title: value })}
+								placeholder="Hero Title"
+							/>
+							<div className="scale-125 -rotate-2">
+								<UnderlineSVG />
+							</div>
+						</div>
+						<RichText
+							tagName="div"
+							className="mt-12 pt-5 md:mr-7 subpage-hero__content"
+							value={content}
+							onChange={(value) => setAttributes({ content: value })}
+							placeholder="Hero content text goes here..."
+						/>
+					</div>
+
+					<div className="w-full md:flex-1">
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={onSelectImage}
+								allowedTypes={["image"]}
+								value={attributes.imageId}
+								render={({ open }) => (
+									<div className="h-full relative group">
+										{imageUrl ? (
+											<>
+												<img
+													src={imageUrl}
+													alt={imageAlt}
+													className="w-full h-full object-cover"
+												/>
+												<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50">
+													<Button
+														onClick={open}
+														variant="secondary"
+														className="is-primary"
+													>
+														Replace Image
+													</Button>
+												</div>
+											</>
+										) : (
+											<div className="flex items-center justify-center h-full bg-gray-100 border-2 border-dashed border-gray-300 min-h-75">
+												<Button onClick={open} variant="secondary">
+													Select Image
+												</Button>
+											</div>
+										)}
+									</div>
+								)}
+							/>
+						</MediaUploadCheck>
+					</div>
+				</div>
 				<InnerBlocks />
 			</div>
 		);
 	},
-	save: () => {
+	save: ({ attributes }) => {
+		const { title, content, imageUrl, imageAlt } = attributes;
 		const blockProps = useBlockProps.save({
 			className: "subpage-hero",
 		});
+
 		return (
 			<div {...blockProps}>
-				{TEST_STRUCTURE}
+				<div className="flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch">
+					<div className="w-full md:w-[50%] relative">
+						<div className="md:relative md:mr-auto">
+							<RichText.Content
+								tagName="h1"
+								className="wrap-anywhere"
+								value={title}
+							/>
+							<div className="scale-125 -rotate-2">
+								<UnderlineSVG />
+							</div>
+						</div>
+						<RichText.Content
+							tagName="div"
+							className="mt-12 pt-5 md:mr-7 subpage-hero__content"
+							value={content}
+						/>
+					</div>
+
+					<div className="w-full md:flex-1">
+						{imageUrl && (
+							<img
+								src={imageUrl}
+								alt={imageAlt}
+								className="w-full h-full object-cover"
+							/>
+						)}
+					</div>
+				</div>
 				<InnerBlocks.Content />
 			</div>
 		);

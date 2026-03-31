@@ -23,7 +23,31 @@
 			"lineHeight": true
 		}
 	},
-	"attributes": {},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": "h1",
+			"default": "Subpage Hero"
+		},
+		"content": {
+			"type": "string",
+			"source": "html",
+			"selector": ".subpage-hero__content",
+			"default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": "https://beegleton-dev.local/wp-content/uploads/2026/03/Rectangle-4.png"
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": "Subpage Hero Image"
+		},
+		"imageId": {
+			"type": "number"
+		}
+	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": "file:./style-index.css",
