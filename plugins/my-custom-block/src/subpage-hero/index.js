@@ -8,7 +8,12 @@ import {
 	InspectorControls,
 	PanelColorSettings,
 } from "@wordpress/block-editor";
-import { Button, PanelBody, SelectControl, ToggleControl } from "@wordpress/components";
+import {
+	Button,
+	PanelBody,
+	SelectControl,
+	ToggleControl,
+} from "@wordpress/components";
 import { useEffect } from "@wordpress/element";
 import metadata from "./block.json";
 import "./style.css";
@@ -51,7 +56,15 @@ const THEMES = {
 
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { title, content, imageUrl, imageAlt, svgColor, theme, reverseLayout } = attributes;
+		const {
+			title,
+			content,
+			imageUrl,
+			imageAlt,
+			svgColor,
+			theme,
+			reverseLayout,
+		} = attributes;
 
 		// Get active theme colors
 		const activeTheme = THEMES[theme] || THEMES.default;
@@ -65,8 +78,14 @@ registerBlockType(metadata.name, {
 			canvas.style.setProperty("--page-theme-bg", activeTheme.bg);
 			canvas.style.setProperty("--page-theme-text", activeTheme.text);
 			canvas.style.setProperty("--page-theme-svg", svgColor || activeTheme.svg);
-			canvas.style.setProperty("--page-theme-is-dark", activeTheme.isDark ? "1" : "0");
-			canvas.style.setProperty("--page-theme-is-light", activeTheme.isDark ? "0" : "1");
+			canvas.style.setProperty(
+				"--page-theme-is-dark",
+				activeTheme.isDark ? "1" : "0",
+			);
+			canvas.style.setProperty(
+				"--page-theme-is-light",
+				activeTheme.isDark ? "0" : "1",
+			);
 		}, [theme, svgColor]);
 
 		const onSelectImage = (media) => {
@@ -116,9 +135,17 @@ registerBlockType(metadata.name, {
 					/>
 				</InspectorControls>
 				<div {...blockProps}>
-					<div className={`flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch ${reverseLayout ? 'md:flex-row-reverse' : ''}`}>
-						<div className="w-full md:w-[50%] relative">
-							<div className={`md:relative ${reverseLayout ? 'md:ml-auto' : 'md:mr-auto'}`}>
+					<div
+						className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:max-h-[65vh] ${
+							reverseLayout ? "md:flex-row-reverse" : ""
+						}`}
+					>
+						<div className="w-full md:w-[40%] relative">
+							<div
+								className={`md:relative ${
+									reverseLayout ? "md:ml-auto" : "md:mr-auto"
+								}`}
+							>
 								<RichText
 									tagName="h1"
 									className="wrap-anywhere"
@@ -132,7 +159,9 @@ registerBlockType(metadata.name, {
 							</div>
 							<RichText
 								tagName="div"
-								className={`mt-12 pt-5 subpage-hero__content ${reverseLayout ? 'md:ml-7' : 'md:mr-7'}`}
+								className={`mt-12 pt-5 subpage-hero__content ${
+									reverseLayout ? "md:ml-7" : "md:mr-7"
+								}`}
 								value={content}
 								onChange={(value) => setAttributes({ content: value })}
 								placeholder="Hero content text goes here..."
@@ -152,7 +181,7 @@ registerBlockType(metadata.name, {
 													<img
 														src={imageUrl}
 														alt={imageAlt}
-														className="w-full h-full object-cover"
+														className="w-full h-full object-cover mt-18"
 													/>
 													<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50">
 														<Button
@@ -183,7 +212,15 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: ({ attributes }) => {
-		const { title, content, imageUrl, imageAlt, svgColor, theme, reverseLayout } = attributes;
+		const {
+			title,
+			content,
+			imageUrl,
+			imageAlt,
+			svgColor,
+			theme,
+			reverseLayout,
+		} = attributes;
 		const activeTheme = THEMES[theme] || THEMES.default;
 
 		const blockProps = useBlockProps.save({
@@ -210,9 +247,17 @@ registerBlockType(metadata.name, {
 					`,
 					}}
 				/>
-				<div className={`flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch ${reverseLayout ? 'md:flex-row-reverse' : ''}`}>
-					<div className="w-full md:w-[50%] relative">
-						<div className={`md:relative ${reverseLayout ? 'md:ml-auto' : 'md:mr-auto'}`}>
+				<div
+					className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:max-h-[65vh] ${
+						reverseLayout ? "md:flex-row-reverse" : ""
+					}`}
+				>
+					<div className="w-full md:w-[40%] relative">
+						<div
+							className={`md:relative ${
+								reverseLayout ? "md:ml-auto" : "md:mr-auto"
+							}`}
+						>
 							<RichText.Content
 								tagName="h1"
 								className="wrap-anywhere"
@@ -224,12 +269,14 @@ registerBlockType(metadata.name, {
 						</div>
 						<RichText.Content
 							tagName="div"
-							className={`mt-12 pt-5 subpage-hero__content ${reverseLayout ? 'md:ml-7' : 'md:mr-7'}`}
+							className={`mt-12 pt-5 subpage-hero__content ${
+								reverseLayout ? "md:ml-7" : "md:mr-7"
+							}`}
 							value={content}
 						/>
 					</div>
 
-					<div className="w-full md:flex-1">
+					<div className="w-full md:flex-1 mt-18">
 						{imageUrl && (
 							<img
 								src={imageUrl}
