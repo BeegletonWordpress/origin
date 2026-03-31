@@ -29,8 +29,8 @@
    We use the variable we defined in index.js.
 */
 .wp-block-create-block-my-handdrawn-button svg path {
-	fill: var(--handdrawn-bg-color, #3B3632);
-	stroke: var(--handdrawn-bg-color, #3B3632);
+	fill: var(--handdrawn-bg-color, var(--page-theme-svg, #3B3632));
+	stroke: var(--handdrawn-bg-color, var(--page-theme-svg, #3B3632));
 	transition: fill 0.2s ease, stroke 0.2s ease;
 }
 
