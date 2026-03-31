@@ -46,6 +46,9 @@
 		},
 		"imageId": {
 			"type": "number"
+		},
+		"svgColor": {
+			"type": "string"
 		}
 	},
 	"textdomain": "my-custom-block",
