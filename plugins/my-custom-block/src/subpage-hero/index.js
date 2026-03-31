@@ -7,11 +7,11 @@ import "./editor.css";
 import { UnderlineSVG } from "../handdrawn-header";
 
 const TEST_STRUCTURE = (
-	<div className="flex flex-col p-8 md:flex-row w-fit gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch">
+	<div className="flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch">
 		<div className="w-full md:w-[50%] relative">
 			<div className="md:relative md:mr-auto">
 				<h1 className="wrap-anywhere">Subpage Hero</h1>
-				<div className="scale-125">
+				<div className="scale-125 -rotate-2">
 					<UnderlineSVG />
 				</div>
 			</div>
@@ -28,7 +28,7 @@ const TEST_STRUCTURE = (
 			</div>
 		</div>
 
-		<div className="w-full md:w-[40%]">
+		<div className="w-full md:flex-1">
 			<img
 				src="https://beegleton-dev.local/wp-content/uploads/2026/03/Rectangle-4.png"
 				alt="Subpage Hero Image"
