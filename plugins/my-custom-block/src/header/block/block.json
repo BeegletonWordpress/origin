@@ -48,6 +48,12 @@
 		"scrolledLogoUrl": {
 			"type": "string"
 		},
+		"darkLogoId": {
+			"type": "number"
+		},
+		"darkLogoUrl": {
+			"type": "string"
+		},
 		"lightLogoId": {
 			"type": "number"
 		},

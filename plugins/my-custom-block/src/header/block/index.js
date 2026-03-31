@@ -84,6 +84,8 @@ registerBlockType(metadata.name, {
 		const {
 			scrolledLogoId,
 			scrolledLogoUrl,
+			darkLogoId,
+			darkLogoUrl,
 			lightLogoId,
 			lightLogoUrl,
 		} = attributes;
@@ -102,7 +104,7 @@ registerBlockType(metadata.name, {
 					<PanelBody title="Logo Settings">
 						<div style={{ marginBottom: "20px" }}>
 							<label style={{ display: "block", marginBottom: "5px" }}>
-								Scrolled Logo (Dark)
+								Scrolled Logo
 							</label>
 							<MediaUploadCheck>
 								<MediaUpload
@@ -135,7 +137,7 @@ registerBlockType(metadata.name, {
 
 						<div>
 							<label style={{ display: "block", marginBottom: "5px" }}>
-								Light Theme Logo (White)
+								Light Theme Logo
 							</label>
 							<MediaUploadCheck>
 								<MediaUpload
@@ -161,6 +163,39 @@ registerBlockType(metadata.name, {
 												{lightLogoId
 													? "Replace Light Logo"
 													: "Select Light Logo"}
+											</Button>
+										</div>
+									)}
+								/>
+							</MediaUploadCheck>
+						</div>
+
+						<div>
+							<label style={{ display: "block", marginBottom: "5px" }}>
+								Dark Theme Logo
+							</label>
+							<MediaUploadCheck>
+								<MediaUpload
+									onSelect={(m) =>
+										setAttributes({ darkLogoId: m.id, darkLogoUrl: m.url })
+									}
+									allowedTypes={["image"]}
+									value={darkLogoId}
+									render={({ open }) => (
+										<div>
+											{darkLogoUrl && (
+												<img
+													src={darkLogoUrl}
+													style={{
+														maxWidth: "100%",
+														backgroundColor: "#EEB137",
+														padding: "10px",
+														marginBottom: "10px",
+													}}
+												/>
+											)}
+											<Button isPrimary onClick={open}>
+												{darkLogoId ? "Replace Dark Logo" : "Select Dark Logo"}
 											</Button>
 										</div>
 									)}
