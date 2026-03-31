@@ -53,6 +53,10 @@
 		"theme": {
 			"type": "string",
 			"default": "default"
+		},
+		"reverseLayout": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "my-custom-block",

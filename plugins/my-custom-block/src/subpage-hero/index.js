@@ -8,7 +8,7 @@ import {
 	InspectorControls,
 	PanelColorSettings,
 } from "@wordpress/block-editor";
-import { Button, PanelBody, SelectControl } from "@wordpress/components";
+import { Button, PanelBody, SelectControl, ToggleControl } from "@wordpress/components";
 import { useEffect } from "@wordpress/element";
 import metadata from "./block.json";
 import "./style.css";
@@ -51,7 +51,7 @@ const THEMES = {
 
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { title, content, imageUrl, imageAlt, svgColor, theme } = attributes;
+		const { title, content, imageUrl, imageAlt, svgColor, theme, reverseLayout } = attributes;
 
 		// Get active theme colors
 		const activeTheme = THEMES[theme] || THEMES.default;
@@ -98,6 +98,11 @@ registerBlockType(metadata.name, {
 							]}
 							onChange={(value) => setAttributes({ theme: value })}
 						/>
+						<ToggleControl
+							label="Flip Layout (Image on Left)"
+							checked={reverseLayout}
+							onChange={(value) => setAttributes({ reverseLayout: value })}
+						/>
 					</PanelBody>
 					<PanelColorSettings
 						title="SVG Color"
@@ -111,9 +116,9 @@ registerBlockType(metadata.name, {
 					/>
 				</InspectorControls>
 				<div {...blockProps}>
-					<div className="flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch">
+					<div className={`flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch ${reverseLayout ? 'md:flex-row-reverse' : ''}`}>
 						<div className="w-full md:w-[50%] relative">
-							<div className="md:relative md:mr-auto">
+							<div className={`md:relative ${reverseLayout ? 'md:ml-auto' : 'md:mr-auto'}`}>
 								<RichText
 									tagName="h1"
 									className="wrap-anywhere"
@@ -127,7 +132,7 @@ registerBlockType(metadata.name, {
 							</div>
 							<RichText
 								tagName="div"
-								className="mt-12 pt-5 md:mr-7 subpage-hero__content"
+								className={`mt-12 pt-5 subpage-hero__content ${reverseLayout ? 'md:ml-7' : 'md:mr-7'}`}
 								value={content}
 								onChange={(value) => setAttributes({ content: value })}
 								placeholder="Hero content text goes here..."
@@ -178,7 +183,7 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: ({ attributes }) => {
-		const { title, content, imageUrl, imageAlt, svgColor, theme } = attributes;
+		const { title, content, imageUrl, imageAlt, svgColor, theme, reverseLayout } = attributes;
 		const activeTheme = THEMES[theme] || THEMES.default;
 
 		const blockProps = useBlockProps.save({
@@ -205,9 +210,9 @@ registerBlockType(metadata.name, {
 					`,
 					}}
 				/>
-				<div className="flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch">
+				<div className={`flex flex-col p-8 md:flex-row w-full gap-4 md:gap-2 max-w-225 m-auto mb-12 md:items-stretch ${reverseLayout ? 'md:flex-row-reverse' : ''}`}>
 					<div className="w-full md:w-[50%] relative">
-						<div className="md:relative md:mr-auto">
+						<div className={`md:relative ${reverseLayout ? 'md:ml-auto' : 'md:mr-auto'}`}>
 							<RichText.Content
 								tagName="h1"
 								className="wrap-anywhere"
@@ -219,7 +224,7 @@ registerBlockType(metadata.name, {
 						</div>
 						<RichText.Content
 							tagName="div"
-							className="mt-12 pt-5 md:mr-7 subpage-hero__content"
+							className={`mt-12 pt-5 subpage-hero__content ${reverseLayout ? 'md:ml-7' : 'md:mr-7'}`}
 							value={content}
 						/>
 					</div>
