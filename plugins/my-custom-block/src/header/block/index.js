@@ -33,13 +33,6 @@ addFilter(
 
 const TEMPLATE = [
 	[
-		"core/site-logo",
-		{
-			width: 235,
-			isLink: true,
-		},
-	],
-	[
 		"core/navigation",
 		{
 			layout: { type: "flex", justifyContent: "right", flexWrap: "nowrap" },
@@ -93,9 +86,9 @@ registerBlockType(metadata.name, {
 		const innerBlocksProps = useInnerBlocksProps(
 			{
 				className:
-					"header-inner-container mx-auto w-full max-w-(--wp--style--global--wide-size) px-8",
+					"header-inner-container mx-auto flex w-full max-w-(--wp--style--global--wide-size) items-center justify-between px-8",
 			},
-			{ template: TEMPLATE, templateLock: false, orientation: "horizontal" },
+			{ template: TEMPLATE, templateLock: false, orientation: "horizontal" }
 		);
 
 		return (
@@ -104,30 +97,30 @@ registerBlockType(metadata.name, {
 					<PanelBody title="Logo Settings">
 						<div style={{ marginBottom: "20px" }}>
 							<label style={{ display: "block", marginBottom: "5px" }}>
-								Scrolled Logo
+								Dark Theme Logo (Standard)
 							</label>
 							<MediaUploadCheck>
 								<MediaUpload
 									onSelect={(m) =>
 										setAttributes({
-											scrolledLogoId: m.id,
-											scrolledLogoUrl: m.url,
+											darkLogoId: m.id,
+											darkLogoUrl: m.url,
 										})
 									}
 									allowedTypes={["image"]}
-									value={scrolledLogoId}
+									value={darkLogoId}
 									render={({ open }) => (
 										<div>
-											{scrolledLogoUrl && (
+											{darkLogoUrl && (
 												<img
-													src={scrolledLogoUrl}
+													src={darkLogoUrl}
 													style={{ maxWidth: "100%", marginBottom: "10px" }}
 												/>
 											)}
 											<Button isPrimary onClick={open}>
-												{scrolledLogoId
-													? "Replace Scrolled Logo"
-													: "Select Scrolled Logo"}
+												{darkLogoId
+													? "Replace Dark Logo"
+													: "Select Dark Logo"}
 											</Button>
 										</div>
 									)}
@@ -135,9 +128,9 @@ registerBlockType(metadata.name, {
 							</MediaUploadCheck>
 						</div>
 
-						<div>
+						<div style={{ marginBottom: "20px" }}>
 							<label style={{ display: "block", marginBottom: "5px" }}>
-								Light Theme Logo
+								Light Theme Logo (White)
 							</label>
 							<MediaUploadCheck>
 								<MediaUpload
@@ -172,30 +165,30 @@ registerBlockType(metadata.name, {
 
 						<div>
 							<label style={{ display: "block", marginBottom: "5px" }}>
-								Dark Theme Logo
+								Scrolled Logo (Symbol)
 							</label>
 							<MediaUploadCheck>
 								<MediaUpload
 									onSelect={(m) =>
-										setAttributes({ darkLogoId: m.id, darkLogoUrl: m.url })
+										setAttributes({
+											scrolledLogoId: m.id,
+											scrolledLogoUrl: m.url,
+										})
 									}
 									allowedTypes={["image"]}
-									value={darkLogoId}
+									value={scrolledLogoId}
 									render={({ open }) => (
 										<div>
-											{darkLogoUrl && (
+											{scrolledLogoUrl && (
 												<img
-													src={darkLogoUrl}
-													style={{
-														maxWidth: "100%",
-														backgroundColor: "#EEB137",
-														padding: "10px",
-														marginBottom: "10px",
-													}}
+													src={scrolledLogoUrl}
+													style={{ maxWidth: "100%", marginBottom: "10px" }}
 												/>
 											)}
 											<Button isPrimary onClick={open}>
-												{darkLogoId ? "Replace Dark Logo" : "Select Dark Logo"}
+												{scrolledLogoId
+													? "Replace Scrolled Logo"
+													: "Select Scrolled Logo"}
 											</Button>
 										</div>
 									)}
@@ -205,13 +198,19 @@ registerBlockType(metadata.name, {
 					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
-					<div {...innerBlocksProps} />
+					<div {...innerBlocksProps}>
+						<div className="header-logo-container">
+							{darkLogoUrl && <img src={darkLogoUrl} className="logo-dark" alt="Logo Dark" />}
+							{lightLogoUrl && <img src={lightLogoUrl} className="logo-light" alt="Logo Light" />}
+						</div>
+						{innerBlocksProps.children}
+					</div>
 				</div>
 			</>
 		);
 	},
 	save: function save({ attributes }) {
-		const { scrolledLogoUrl, lightLogoUrl } = attributes;
+		const { darkLogoUrl, lightLogoUrl, scrolledLogoUrl } = attributes;
 		const blockProps = useBlockProps.save({
 			className: "sticky top-0 z-50 w-full",
 		});
@@ -219,23 +218,32 @@ registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				<div className="header-inner-container mx-auto flex w-full max-w-(--wp--style--global--wide-size) items-center justify-between px-8">
+					<a href="/" className="header-logo-link">
+						<div className="header-logo-container relative">
+							{darkLogoUrl && (
+								<img
+									src={darkLogoUrl}
+									className="logo-dark main-logo"
+									alt=""
+								/>
+							)}
+							{lightLogoUrl && (
+								<img
+									src={lightLogoUrl}
+									className="logo-light main-logo"
+									alt=""
+								/>
+							)}
+							{scrolledLogoUrl && (
+								<img
+									src={scrolledLogoUrl}
+									className="logo-scrolled"
+									alt=""
+								/>
+							)}
+						</div>
+					</a>
 					<InnerBlocks.Content />
-					{scrolledLogoUrl && (
-						<img
-							src={scrolledLogoUrl}
-							className="scrolled-logo-overlay"
-							alt=""
-							aria-hidden="true"
-						/>
-					)}
-					{lightLogoUrl && (
-						<img
-							src={lightLogoUrl}
-							className="light-logo-overlay"
-							alt=""
-							aria-hidden="true"
-						/>
-					)}
 				</div>
 			</div>
 		);

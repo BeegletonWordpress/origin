@@ -16,64 +16,63 @@
 	padding: 10px !important;
 }
 
-.light-logo-overlay {
-	display: block !important;
-	position: absolute;
-	left: 32px;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 235px;
-	height: auto;
-	opacity: var(--page-theme-is-dark, 0) !important; /* Visible only when theme is dark */
-	pointer-events: none;
-	transition: opacity 0.3s ease;
+/* Unified Logo Container */
+.header-logo-container {
+    position: relative;
+    width: 235px;
+    height: 55px; /* Standard header height for logo */
+    display: flex;
+    align-items: center;
 }
 
-/* Original Logo visibility - Hide when theme is dark OR scrolled */
-.wp-block-create-block-my-header-block:not(.is-scrolled) .wp-block-site-logo {
-	opacity: var(--page-theme-is-light, 1) !important;
-	transition: opacity 0.3s ease;
+.header-logo-container img {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+    opacity: 0;
 }
 
-/* Scrolled Logo overlay */
-.scrolled-logo-overlay {
-	display: none;
-	position: absolute;
-	left: 32px; /* Matches the px-8 padding approximately */
-	top: 50%;
-	transform: translateY(-50%);
-	height: 40px; /* Force a size for the scrolled logo */
-	width: auto;
+/* Visibility Logic */
+
+/* 1. Unscrolled Dark Theme */
+.wp-block-create-block-my-header-block:not(.is-scrolled) .logo-dark {
+    opacity: var(--page-theme-is-light, 1);
 }
 
-/* Base Logo Transitions */
+/* 2. Unscrolled Light Theme */
+.wp-block-create-block-my-header-block:not(.is-scrolled) .logo-light {
+    opacity: var(--page-theme-is-dark, 0);
+}
+
+/* 3. Scrolled State (Always Symbol) */
+.is-scrolled .logo-scrolled {
+    opacity: 1 !important;
+    width: 40px; /* Symbol is usually smaller/square */
+}
+
+/* Hide others when scrolled */
+.is-scrolled .logo-dark,
+.is-scrolled .logo-light {
+    opacity: 0 !important;
+}
+
+/* Base Logo Transitions fallback for editor */
 .wp-block-site-logo img {
 	transition: opacity 0.3s ease;
 }
 
 /* SCROLLED STATE LOGIC */
-
 .is-scrolled .header-inner-container {
 	max-width: none !important;
 }
 
-/* 1. Hide the original Site Logo block */
-.is-scrolled .wp-block-site-logo {
-	opacity: 0 !important;
-	pointer-events: none !important;
-}
-
-/* 2. Show the overlay logo */
-.is-scrolled .scrolled-logo-overlay {
-	display: block !important;
-}
-
-/* 3. Ensure light logo is hidden when scrolled */
-.is-scrolled .light-logo-overlay {
-	opacity: 0 !important;
-}
-
-/* 4. Keep the Navigation pushed to the right */
+/* Keep the Navigation pushed to the right */
 .is-scrolled .header-navigation {
 	margin-left: auto !important;
 }
