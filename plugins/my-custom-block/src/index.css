@@ -32,3 +32,15 @@ a,
     text-decoration-skip-ink: all;
     transition: text-decoration-thickness 0.2s ease, text-underline-offset 0.2s ease;
 }
+
+.fluentform .check-personal-data p {
+    margin-top: 10px;
+}
+
+.fluentform .check-personal-data label {
+  gap: 15px;
+}
+
+.fluentform .check-personal-data .ff-el-tc label.ff_tc_label>span {
+  padding-top: 0 !important;
+}
