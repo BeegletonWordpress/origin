@@ -1,4 +1,25 @@
-/* Contact Card Styles */
-.wp-block-create-block-contact-card {
-    /* Initial styles */
+.wp-block-create-block-contact-card .contact-card {
+	transition: transform 0.3s ease;
+}
+
+.wp-block-create-block-contact-card .contact-card:hover {
+	transform: translateY(-5px);
+}
+
+.wp-block-create-block-contact-card .hover-image {
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.wp-block-create-block-contact-card .contact-card:hover .hover-image {
+	opacity: 1;
+	filter: grayscale(100%);
+}
+
+.wp-block-create-block-contact-card h3 {
+	margin-bottom: 0.25rem;
+}
+
+.wp-block-create-block-contact-card p {
+	margin-top: 0;
 }

@@ -6,7 +6,32 @@
 	"title": "Contact Card",
 	"category": "theme",
 	"icon": "index-card",
-	"description": "A simple contact card block.",
+	"description": "A contact card block with hand-drawn shapes and hover effects.",
+	"attributes": {
+		"cardShape": {
+			"type": "string",
+			"default": "shape1"
+		},
+		"svgColor": {
+			"type": "string",
+			"default": "#3B3632"
+		},
+		"imageNormal": {
+			"type": "object"
+		},
+		"imageHover": {
+			"type": "object"
+		},
+		"staffMemberId": {
+			"type": "number"
+		},
+		"name": {
+			"type": "string"
+		},
+		"role": {
+			"type": "string"
+		}
+	},
 	"supports": {
 		"html": false,
 		"align": true,
