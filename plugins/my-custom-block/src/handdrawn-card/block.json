@@ -45,6 +45,10 @@
 		"cardLayout": {
 			"type": "string",
 			"default": "buzz"
+		},
+		"cardShape": {
+			"type": "string",
+			"default": "shape1"
 		}
 	},
 	"textdomain": "my-custom-block",
