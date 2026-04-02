@@ -1,6 +1,20 @@
 @import "tailwindcss";
 @source "./**/*.js";
 
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: #3b3632;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #fdf0db;
+  border-radius: 0px;
+}
+
 .wp-block-group .is-layout-constrained > * {
     margin-block-start: 0;
     margin-block-end: 0;

@@ -369,7 +369,9 @@ registerBlockType(metadata.name, {
 										<h3 className="text-xl font-bold mb-0 uppercase tracking-tight">
 											{post.title?.rendered || "(No Title)"}
 										</h3>
-										<h4>{post.meta.team_member_role || "(No Role)"}</h4>
+										<p class="text-lg leading-normal!">
+											{post.meta.team_member_role || "(No Role)"}
+										</p>
 									</article>
 								);
 							})}
