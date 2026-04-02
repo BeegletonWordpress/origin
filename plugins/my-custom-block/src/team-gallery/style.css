@@ -20,3 +20,24 @@
     position: relative;
     z-index: 1;
 }
+
+/* Forward: old slides left, new comes from right */
+[data-tg-dir="forward"]::view-transition-old(team-gallery-grid) {
+    animation: tg-slide-out-left 280ms ease both;
+}
+[data-tg-dir="forward"]::view-transition-new(team-gallery-grid) {
+    animation: tg-slide-in-right 280ms ease both;
+}
+
+/* Back: old slides right, new comes from left */
+[data-tg-dir="back"]::view-transition-old(team-gallery-grid) {
+    animation: tg-slide-out-right 280ms ease both;
+}
+[data-tg-dir="back"]::view-transition-new(team-gallery-grid) {
+    animation: tg-slide-in-left 280ms ease both;
+}
+
+@keyframes tg-slide-out-left  { to   { transform: translateX(-100%); opacity: 0; } }
+@keyframes tg-slide-out-right { to   { transform: translateX( 100%); opacity: 0; } }
+@keyframes tg-slide-in-right  { from { transform: translateX( 100%); opacity: 0; } }
+@keyframes tg-slide-in-left   { from { transform: translateX(-100%); opacity: 0; } }

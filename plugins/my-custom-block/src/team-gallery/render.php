@@ -95,10 +95,10 @@ $context = [
                 data-wp-bind--hidden="!state.isLoading"
                 hidden
             >
-                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 opacity-0"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full col-span-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full col-span-4 overflow-hidden" style="view-transition-name: team-gallery-transition;" data-team-gallery-grid>
                 <!-- This template is expanded on the server AND client -->
                 <template 
                     data-wp-each--member="state.posts"
@@ -113,7 +113,7 @@ $context = [
                             />
                         </div>
                         <h3 class="text-xl font-bold mb-0 uppercase tracking-tight" data-wp-text="context.member.title"></h3>
-                        <h4 class="text-lg font-medium" data-wp-text="context.member.role"></h4>
+                        <p class="text-lg leading-normal!" data-wp-text="context.member.role"></p>
                     </article>
                 </template>
             </div>
