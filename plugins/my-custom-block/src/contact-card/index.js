@@ -204,7 +204,7 @@ registerBlockType(metadata.name, {
 					</PanelBody>
 				</InspectorControls>
 
-				<div className="contact-card flex flex-col items-center gap-8 group cursor-pointer w-fit">
+				<div className="contact-card flex flex-col items-center gap-8 group cursor-pointer w-fit max-w-[320px]">
 					<div className="relative w-75 aspect-square shrink-0">
 						{/* Background Border (z-0) */}
 						<BorderSVG
@@ -260,11 +260,11 @@ registerBlockType(metadata.name, {
 
 		return (
 			<div {...useBlockProps.save()}>
-				<div className="contact-card flex flex-col items-center gap-8 group cursor-pointer w-fit">
+				<div className="contact-card flex flex-col items-center gap-8 group cursor-pointer w-fit max-w-[320px]">
 					<div className="relative w-75 aspect-square shrink-0">
 						{/* Background Border (z-0) */}
 						<div
-							className="absolute inset-0 w-full h-full z-0"
+							className="absolute inset-0 w-full h-full z-0 group-hover:rotate-5"
 							style={{ stroke: svgColor }}
 						>
 							{currentShape.back}
@@ -295,7 +295,7 @@ registerBlockType(metadata.name, {
 
 						{/* Foreground Border (z-2) */}
 						<div
-							className="absolute inset-0 w-full h-full z-2 pointer-events-none"
+							className="absolute inset-0 w-full h-full z-2 pointer-events-none group-hover:rotate-5"
 							style={{ stroke: svgColor }}
 						>
 							{currentShape.front}
