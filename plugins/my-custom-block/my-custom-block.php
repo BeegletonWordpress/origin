@@ -64,3 +64,21 @@ function animated_arrow_frontend_scripts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'animated_arrow_frontend_scripts' );
+
+/**
+ * Enqueue logo slider script for the frontend.
+ */
+function logo_slider_frontend_scripts() {
+    if ( ! has_block( 'create-block/my-logo-slider' ) ) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'logo-slider-frontend',
+        plugin_dir_url( __FILE__ ) . 'build/logo-slider/view.js',
+        [],
+        '1.0.0',
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'logo_slider_frontend_scripts' );

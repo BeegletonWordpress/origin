@@ -15,6 +15,20 @@
 		"html": false,
 		"align": ["full", "wide"]
 	},
+	"attributes": {
+		"autoplay": {
+			"type": "boolean",
+			"default": true
+		},
+		"scrollSpeed": {
+			"type": "number",
+			"default": 50
+		},
+		"pauseOnHover": {
+			"type": "boolean",
+			"default": true
+		}
+	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": ["file:./index.css", "file:./style-index.css"],

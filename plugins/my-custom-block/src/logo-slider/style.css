@@ -1,1 +1,27 @@
-/* Custom styles for Footer Logos */
+.logo-slider-container {
+	width: 100%;
+	position: relative;
+}
+
+.logo-slider-track {
+	width: max-content;
+	animation: logo-scroll linear infinite;
+}
+
+.logo-slider-track.paused {
+	animation-play-state: paused;
+}
+
+@keyframes logo-scroll {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+.logo-slider-track .block-editor-block-list__block,
+.logo-slider-track > * {
+	flex-shrink: 0;
+}
