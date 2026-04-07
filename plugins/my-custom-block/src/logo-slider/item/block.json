@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-logo-slider-item",
+	"version": "0.1.0",
+	"title": "My Logo Slider Item",
+	"category": "theme",
+	"icon": "layout",
+	"description": "Logo entry within the logo slider.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"mediaUrl": {
+			"type": "string",
+			"source": "attribute",
+			"selector": "img",
+			"attribute": "src"
+		},
+		"mediaId": { "type": "number" },
+		"linkUrl": { "type": "string", "default": "" }
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": [ "file:./index.css", "file:./style-index.css" ],
+	"viewScript": "file:./view.js"
+}
