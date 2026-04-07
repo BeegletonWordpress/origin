@@ -10,11 +10,11 @@ import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES =
-	"flex flex-row flex-wrap gap-8 items-center justify-center w-full py-8 mt-0!";
-const ALLOWED_BLOCKS = ["create-block/my-footer-logo-item"];
+	"flex flex-row flex-wrap gap-8 items-center justify-center w-auto py-12 mt-0!";
+const ALLOWED_BLOCKS = ["create-block/my-logo-slider-item"];
 const TEMPLATE = [
-	["create-block/my-footer-logo-item"],
-	["create-block/my-footer-logo-item"],
+	["create-block/my-logo-slider-item"],
+	["create-block/my-logo-slider-item"],
 ];
 
 registerBlockType(metadata.name, {

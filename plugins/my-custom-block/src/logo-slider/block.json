@@ -9,10 +9,14 @@
 	"description": "Logo slider block.",
 	"example": {},
 	"supports": {
-		"html": false
+		"color": {
+			"background": true
+		},
+		"html": false,
+		"align": ["full", "wide"]
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": [ "file:./index.css", "file:./style-index.css" ],
+	"style": ["file:./index.css", "file:./style-index.css"],
 	"viewScript": "file:./view.js"
 }
