@@ -11,7 +11,7 @@ import "../index.css";
 import "./style.css";
 import "./editor.css";
 
-const BLOCK_CLASSES = "logo-slider-track flex gap-8 items-center";
+const BLOCK_CLASSES = "logo-slider-track flex gap-12 py-15 items-center";
 const ALLOWED_BLOCKS = ["create-block/my-logo-slider-item"];
 const TEMPLATE = [
 	["create-block/my-logo-slider-item"],
