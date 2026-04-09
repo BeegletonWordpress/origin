@@ -1,3 +1,8 @@
 .count-up-number-item {
 	
 }
+
+.count-up-number {
+    font-family: var(--wp--preset--font-family--bowlby-one);
+    letter-spacing: 3px;
+}
