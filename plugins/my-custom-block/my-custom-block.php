@@ -86,3 +86,21 @@ function logo_slider_frontend_scripts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'logo_slider_frontend_scripts' );
+
+/**
+ * Enqueue number counter script for the frontend.
+ */
+function count_up_numbers_frontend_scripts() {
+    if ( ! has_block( 'create-block/my-count-up-numbers' ) ) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'count-up-numbers-frontend',
+        plugin_dir_url( __FILE__ ) . 'build/count-up-numbers/view.js',
+        [],
+        '1.0.0',
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'count_up_numbers_frontend_scripts' );
