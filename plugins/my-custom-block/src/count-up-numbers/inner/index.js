@@ -1,5 +1,9 @@
 import { registerBlockType } from "@wordpress/blocks";
-import { InnerBlocks, useBlockProps, useInnerBlocksProps } from "@wordpress/block-editor";
+import {
+	InnerBlocks,
+	useBlockProps,
+	useInnerBlocksProps,
+} from "@wordpress/block-editor";
 import metadata from "./block.json";
 import "../../index.css";
 import "./style.css";
@@ -20,12 +24,12 @@ registerBlockType(metadata.name, {
 		});
 		const innerBlocksProps = useInnerBlocksProps(
 			{
-				className: "flex justify-center gap-8 flex-wrap",
+				className: "flex justify-evenly w-full gap-8 flex-wrap",
 			},
 			{
 				allowedBlocks: ALLOWED_BLOCKS,
 				template: TEMPLATE,
-			}
+			},
 		);
 		return <div {...blockProps}>{innerBlocksProps.children}</div>;
 	},
@@ -36,7 +40,7 @@ registerBlockType(metadata.name, {
 		});
 		return (
 			<div {...blockProps}>
-				<div className="flex justify-center gap-8 flex-wrap">
+				<div className="flex justify-evenly w-full gap-8 flex-wrap">
 					<InnerBlocks.Content />
 				</div>
 			</div>

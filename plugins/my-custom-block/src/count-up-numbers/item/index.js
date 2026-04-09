@@ -14,7 +14,7 @@ registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
 		const { number, suffix, description } = attributes;
 		const blockProps = useBlockProps({
-			className: "count-up-number-item text-center p-4 max-w-54",
+			className: "count-up-number-item text-center p-4 max-w-54! mt-0! h-full",
 		});
 
 		return (
@@ -41,7 +41,7 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 
 				<div {...blockProps}>
-					<div className="count-up-number text-7xl font-bold">
+					<div className="count-up-number text-7xl">
 						{number}
 						{suffix && <span className="count-up-suffix">{suffix}</span>}
 					</div>
@@ -62,7 +62,7 @@ registerBlockType(metadata.name, {
 
 		return (
 			<div {...blockProps} data-number={number} data-suffix={suffix}>
-				<div className="count-up-number text-7xl font-bold">
+				<div className="count-up-number text-7xl">
 					<span className="count-up-value">{number}</span>
 					{suffix && <span className="count-up-suffix">{suffix}</span>}
 				</div>
