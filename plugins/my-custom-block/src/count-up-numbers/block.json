@@ -10,9 +10,18 @@
 	"example": {},
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"]
+		"align": ["full", "wide"],
+		"color": {
+			"background": true,
+			"text": true
+		}
 	},
-	"attributes": {},
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		}
+	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": ["file:./style-index.css"],

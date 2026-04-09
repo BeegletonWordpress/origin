@@ -1,5 +1,9 @@
 import { registerBlockType } from "@wordpress/blocks";
-import { InnerBlocks, useBlockProps, useInnerBlocksProps } from "@wordpress/block-editor";
+import {
+	InnerBlocks,
+	useBlockProps,
+	useInnerBlocksProps,
+} from "@wordpress/block-editor";
 import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
@@ -11,10 +15,13 @@ const TEMPLATE = [
 	["create-block/my-count-up-numbers-item"],
 ];
 
+const BLOCK_CLASSES =
+	"count-up-numbers flex justify-center gap-8 flex-wrap py-10";
+
 registerBlockType(metadata.name, {
 	edit: function Edit() {
 		const blockProps = useBlockProps({
-			className: "count-up-numbers flex justify-center gap-8 flex-wrap py-10",
+			className: BLOCK_CLASSES,
 		});
 		const innerBlocksProps = useInnerBlocksProps(blockProps, {
 			allowedBlocks: ALLOWED_BLOCKS,
@@ -25,7 +32,7 @@ registerBlockType(metadata.name, {
 	},
 	save: function Save() {
 		const blockProps = useBlockProps.save({
-			className: "count-up-numbers flex justify-center gap-8 flex-wrap py-10",
+			className: BLOCK_CLASSES,
 		});
 		return (
 			<div {...blockProps}>
