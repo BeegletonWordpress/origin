@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-count-up-numbers-item",
+	"version": "0.1.0",
+	"title": "Count Up Number Item",
+	"category": "theme",
+	"icon": "money",
+	"description": "Individual number item within count up numbers block.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"number": {
+			"type": "number",
+			"default": 0
+		},
+		"suffix": {
+			"type": "string",
+			"default": ""
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": ["file:./style-index.css"]
+}

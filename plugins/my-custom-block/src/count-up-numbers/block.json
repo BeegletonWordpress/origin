@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-count-up-numbers",
+	"version": "0.1.0",
+	"title": "Count Up Numbers",
+	"category": "theme",
+	"icon": "money",
+	"description": "Numbers that count up when scrolled into view.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": ["full", "wide"]
+	},
+	"attributes": {},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": ["file:./style-index.css"],
+	"viewScript": "file:./view.js"
+}
