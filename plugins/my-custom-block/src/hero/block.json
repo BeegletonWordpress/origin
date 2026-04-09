@@ -9,7 +9,7 @@
 	"description": "A hero section for the landing page with text on the left and a 3-image grid on the right.",
 	"supports": {
 		"html": false,
-		"align": [ "full", "wide" ],
+		"align": ["full", "wide"],
 		"spacing": {
 			"margin": true,
 			"padding": true
@@ -24,5 +24,6 @@
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": "file:./style-index.css",
-	"editorStyle": "file:./index.css"
+	"editorStyle": "file:./index.css",
+	"viewScript": "file:./view.js"
 }

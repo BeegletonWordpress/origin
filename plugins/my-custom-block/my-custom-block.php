@@ -52,6 +52,38 @@ function create_block_my_custom_block_block_init() {
 add_action( 'init', 'create_block_my_custom_block_block_init' );
 
 /**
+ * Enqueue Lenis smooth scroll.
+ */
+function lenis_enqueue() {
+    wp_enqueue_style(
+        'lenis',
+        'https://unpkg.com/lenis@1.3.21/dist/lenis.css',
+        [],
+        '1.3.21'
+    );
+
+    wp_enqueue_script(
+        'lenis',
+        'https://unpkg.com/lenis@1.3.21/dist/lenis.min.js',
+        [],
+        '1.3.21',
+        true
+    );
+
+    wp_add_inline_script( 'lenis', '
+        new Lenis({
+            autoRaf: true,
+            autoToggle: true,
+            anchors: true,
+            allowNestedScroll: true,
+            naiveDimensions: true,
+            stopInertiaOnNavigate: true
+        })
+    ' );
+}
+add_action( 'wp_enqueue_scripts', 'lenis_enqueue' );
+
+/**
  * Enqueue dotlottie-player script for the frontend.
  */
 function animated_arrow_frontend_scripts() {
@@ -104,3 +136,21 @@ function count_up_numbers_frontend_scripts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'count_up_numbers_frontend_scripts' );
+
+/**
+ * Enqueue hero block parallax script for the frontend.
+ */
+function hero_parallax_frontend_scripts() {
+    if ( ! has_block( 'create-block/hero' ) ) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'hero-parallax-frontend',
+        plugin_dir_url( __FILE__ ) . 'build/hero/view.js',
+        [],
+        '1.0.0',
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'hero_parallax_frontend_scripts' );
