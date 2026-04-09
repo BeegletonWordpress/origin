@@ -15,21 +15,30 @@ const TEMPLATE = [
 registerBlockType(metadata.name, {
 	edit: function Edit() {
 		const blockProps = useBlockProps({
-			className: "count-up-numbers-inner flex justify-center gap-8 flex-wrap",
+			className:
+				"count-up-numbers-inner is-layout-constrained wp-block-my-custom-block-count-up-numbers-inner-is-layout-constrained",
 		});
-		const innerBlocksProps = useInnerBlocksProps(blockProps, {
-			allowedBlocks: ALLOWED_BLOCKS,
-			template: TEMPLATE,
-		});
-		return <div {...innerBlocksProps} />;
+		const innerBlocksProps = useInnerBlocksProps(
+			{
+				className: "flex justify-center gap-8 flex-wrap",
+			},
+			{
+				allowedBlocks: ALLOWED_BLOCKS,
+				template: TEMPLATE,
+			}
+		);
+		return <div {...blockProps}>{innerBlocksProps.children}</div>;
 	},
 	save: function Save() {
 		const blockProps = useBlockProps.save({
-			className: "count-up-numbers-inner flex justify-center gap-8 flex-wrap",
+			className:
+				"count-up-numbers-inner is-layout-constrained wp-block-my-custom-block-count-up-numbers-inner-is-layout-constrained",
 		});
 		return (
 			<div {...blockProps}>
-				<InnerBlocks.Content />
+				<div className="flex justify-center gap-8 flex-wrap">
+					<InnerBlocks.Content />
+				</div>
 			</div>
 		);
 	},

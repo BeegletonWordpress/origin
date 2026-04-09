@@ -9,16 +9,10 @@
 	"description": "Inner wrapper for count up numbers with wide alignment.",
 	"example": {},
 	"supports": {
-		"html": false,
-		"align": ["wide"]
+		"html": false
 	},
 	"parent": ["create-block/my-count-up-numbers"],
-	"attributes": {
-		"align": {
-			"type": "string",
-			"default": "wide"
-		}
-	},
+	"attributes": {},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": ["file:./style-index.css"]
