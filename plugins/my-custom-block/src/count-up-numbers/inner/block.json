@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-count-up-numbers-inner",
+	"version": "0.1.0",
+	"title": "Count Up Numbers Inner",
+	"category": "theme",
+	"icon": "money",
+	"description": "Inner wrapper for count up numbers with wide alignment.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": ["wide"]
+	},
+	"parent": ["create-block/my-count-up-numbers"],
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "wide"
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": ["file:./style-index.css"]
+}

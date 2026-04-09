@@ -40,6 +40,7 @@ function create_block_my_custom_block_block_init() {
     register_block_type( __DIR__ . '/build/logo-slider/item' );
 
     register_block_type( __DIR__ . '/build/count-up-numbers' );
+    register_block_type( __DIR__ . '/build/count-up-numbers/inner' );
     register_block_type( __DIR__ . '/build/count-up-numbers/item' );
 
     register_post_meta('post', 'team_member_role', [

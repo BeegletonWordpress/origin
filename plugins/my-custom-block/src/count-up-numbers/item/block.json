@@ -11,6 +11,7 @@
 	"supports": {
 		"html": false
 	},
+	"parent": ["create-block/my-count-up-numbers-inner"],
 	"attributes": {
 		"number": {
 			"type": "number",
