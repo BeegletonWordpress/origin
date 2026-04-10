@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+	const VISIBLE_LENGTH = 385;
+
 	const arrows = document.querySelectorAll(
 		".animated-arrow-svg-container .curvy-arrow-svg",
 	);
@@ -9,10 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		const path = svg.querySelector(".curvy-arrow-path");
 		if (!path) return;
 
-		const pathLength = path.getTotalLength();
-		path.style.strokeDasharray = pathLength;
-		path.style.strokeDashoffset = pathLength;
-		path.dataset.pathLength = pathLength;
+		path.style.strokeDasharray = VISIBLE_LENGTH;
+		path.style.strokeDashoffset = VISIBLE_LENGTH;
 		path.dataset.initialTop =
 			svg.closest(".animated-arrow-svg-container").getBoundingClientRect().top +
 			window.scrollY;
@@ -28,16 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
 			const path = svg.querySelector(".curvy-arrow-path");
 			if (!path || path.dataset.drawn === "true") return;
 
-			const pathLength = parseFloat(path.dataset.pathLength);
 			const startTime = performance.now();
-			const duration = 5000;
+			const duration = 2500;
 
 			function draw(currentTime) {
 				const elapsed = currentTime - startTime;
 				const progress = Math.min(elapsed / duration, 1);
 				const eased = 1 - Math.pow(1 - progress, 3);
 
-				path.style.strokeDashoffset = pathLength * (1 - eased);
+				path.style.strokeDashoffset = VISIBLE_LENGTH * (1 - eased);
 
 				if (progress < 1) {
 					requestAnimationFrame(draw);
