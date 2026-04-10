@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	if (!arrowBlocks.length) return;
 
 	arrowBlocks.forEach((block) => {
-		block.style.transform = `translateY(${scroll * 0.5}px)`;
-
 		const svg = block.querySelector(".curvy-arrow-svg");
 		if (!svg) return;
 
@@ -81,15 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 
 			block.style.opacity = opacity;
-
-			console.log(
-				"Animating arrow fade, scrollY:",
-				scrollY,
-				"rect.top:",
-				rect.top,
-				"opacity:",
-				opacity,
-			);
 		});
 	});
 });
