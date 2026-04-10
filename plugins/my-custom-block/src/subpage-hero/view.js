@@ -60,4 +60,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	animateDraw();
+
+	if (!window.lenis) {
+		console.log("Lenis not initialized, skipping subpage-hero parallax");
+		return;
+	}
+
+	window.lenis.on("scroll", () => {
+		const scroll = window.lenis.animatedScroll;
+		document.querySelectorAll(".subpage-hero-image").forEach((el) => {
+			el.style.transform = `translateY(${scroll * 0.5}px)`;
+		});
+	});
 });
