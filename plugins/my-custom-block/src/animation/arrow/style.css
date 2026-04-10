@@ -1,0 +1,15 @@
+.animated-arrow-svg-container {
+	position: relative;
+	display: inline-block;
+}
+
+.curvy-arrow-svg {
+	color: currentColor;
+	transition: opacity 0.1s ease-out;
+}
+
+.curvy-arrow-path {
+	fill: none;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}

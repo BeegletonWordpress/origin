@@ -71,7 +71,7 @@ function lenis_enqueue() {
     );
 
     wp_add_inline_script( 'lenis', '
-        new Lenis({
+        window.lenis = new Lenis({
             autoRaf: true,
             autoToggle: true,
             anchors: true,
