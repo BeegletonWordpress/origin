@@ -154,3 +154,21 @@ function hero_parallax_frontend_scripts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'hero_parallax_frontend_scripts' );
+
+/**
+ * Enqueue subpage hero script for the frontend.
+ */
+function subpage_hero_frontend_scripts() {
+    if ( ! has_block( 'my-custom-block/subpage-hero' ) ) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'subpage-hero-frontend',
+        plugin_dir_url( __FILE__ ) . 'build/subpage-hero/view.js',
+        [],
+        '1.0.0',
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'subpage_hero_frontend_scripts' );
