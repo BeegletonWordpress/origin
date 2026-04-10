@@ -1,21 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const VISIBLE_LENGTH = 385;
 
-	const arrows = document.querySelectorAll(
-		".animated-arrow-svg-container .curvy-arrow-svg",
+	const arrowBlocks = document.querySelectorAll(
+		".wp-block-my-custom-block-animation-arrow",
 	);
 
-	if (!arrows.length) return;
+	if (!arrowBlocks.length) return;
 
-	arrows.forEach((svg) => {
+	arrowBlocks.forEach((block) => {
+		block.style.transform = `translateY(${scroll * 0.5}px)`;
+
+		const svg = block.querySelector(".curvy-arrow-svg");
+		if (!svg) return;
+
 		const path = svg.querySelector(".curvy-arrow-path");
 		if (!path) return;
 
 		path.style.strokeDasharray = VISIBLE_LENGTH;
 		path.style.strokeDashoffset = VISIBLE_LENGTH;
-		path.dataset.initialTop =
-			svg.closest(".animated-arrow-svg-container").getBoundingClientRect().top +
-			window.scrollY;
 	});
 
 	if (!window.lenis) {
@@ -24,8 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	function animateDraw() {
-		arrows.forEach((svg) => {
-			const path = svg.querySelector(".curvy-arrow-path");
+		arrowBlocks.forEach((block) => {
+			const path = block.querySelector(".curvy-arrow-path");
 			if (!path || path.dataset.drawn === "true") return;
 
 			const startTime = performance.now();
@@ -53,31 +55,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	window.lenis.on("scroll", () => {
 		const scrollY = window.lenis.animatedScroll;
+		const windowHeight = window.innerHeight;
 
-		arrows.forEach((svg) => {
-			const path = svg.querySelector(".curvy-arrow-path");
+		arrowBlocks.forEach((block) => {
+			const path = block.querySelector(".curvy-arrow-path");
 			if (!path || path.dataset.drawn !== "true") return;
 
-			const initialTop = parseFloat(path.dataset.initialTop);
-			const fadeStart = initialTop - window.innerHeight * 0.5;
-			const fadeEnd = initialTop - window.innerHeight * 1.5;
-
+			const rect = block.getBoundingClientRect();
 			let opacity = 1;
-			if (scrollY > fadeStart) {
-				const progress = Math.min(
-					(scrollY - fadeStart) / (fadeEnd - fadeStart),
-					1,
+
+			const fadeStartPoint = windowHeight * 0.5;
+			const fadeEndPoint = -rect.height * 0.5;
+
+			if (rect.top < fadeStartPoint) {
+				const totalDistance = fadeStartPoint - fadeEndPoint;
+				const fadeProgress = Math.max(
+					0,
+					Math.min(1, 1 - (rect.top - fadeEndPoint) / totalDistance),
 				);
-				opacity = 1 - progress;
+				opacity = 1 - fadeProgress;
 			}
 
-			svg.style.opacity = opacity;
+			if (rect.top < fadeEndPoint) {
+				opacity = 0;
+			}
+
+			block.style.opacity = opacity;
 
 			console.log(
 				"Animating arrow fade, scrollY:",
 				scrollY,
-				"initialTop:",
-				initialTop,
+				"rect.top:",
+				rect.top,
 				"opacity:",
 				opacity,
 			);
