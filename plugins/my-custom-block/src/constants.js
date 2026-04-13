@@ -22,14 +22,14 @@ export const HAND_DRAWN_RING_SHAPE = (
 		xmlns="http://www.w3.org/2000/svg"
 		preserveAspectRatio="none"
 		className="absolute inset-0 w-full h-full z-0 ring-shape"
-		style={{
-			top: "40%",
-			left: "50%",
-			transform: "translate(-50%, -50%) scale(1.2)",
-			width: "90%",
-			height: "75%",
-			pointerEvents: "none",
-		}}
+		style={ {
+			top: '40%',
+			left: '50%',
+			transform: 'translate(-50%, -50%) scale(1.2)',
+			width: '90%',
+			height: '75%',
+			pointerEvents: 'none',
+		} }
 	>
 		<path
 			className="cls-1"

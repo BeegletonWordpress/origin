@@ -151,7 +151,9 @@ registerBlockType( metadata.name, {
 				) }
 
 				<div { ...blockProps }>
-					{ isSecondary ? HAND_DRAWN_RING_SHAPE : HAND_DRAWN_BUTTON_SHAPE }
+					{ isSecondary
+						? HAND_DRAWN_RING_SHAPE
+						: HAND_DRAWN_BUTTON_SHAPE }
 					<div className="relative z-10">
 						<RichText
 							tagName="span"
@@ -209,7 +211,9 @@ registerBlockType( metadata.name, {
 				rel={ isLink ? rel : undefined }
 				{ ...typeProps }
 			>
-				{ isSecondary ? HAND_DRAWN_RING_SHAPE : HAND_DRAWN_BUTTON_SHAPE }
+				{ isSecondary
+					? HAND_DRAWN_RING_SHAPE
+					: HAND_DRAWN_BUTTON_SHAPE }
 				<div className="relative z-10">
 					<RichText.Content tagName="span" value={ text } />
 				</div>

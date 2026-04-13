@@ -1,20 +1,20 @@
-import { registerBlockType } from "@wordpress/blocks";
+import { registerBlockType } from '@wordpress/blocks';
 import {
 	MediaPlaceholder,
 	InspectorControls,
 	useBlockProps,
-} from "@wordpress/block-editor";
-import { PanelBody, TextControl } from "@wordpress/components";
-import metadata from "./block.json";
-import "../../index.css";
-import "./style.css";
-import "./editor.css";
+} from '@wordpress/block-editor';
+import { PanelBody, TextControl } from '@wordpress/components';
+import metadata from './block.json';
+import '../../index.css';
+import './style.css';
+import './editor.css';
 
 const LOGO_CLASSES =
-	"h-auto max-h-15 w-auto object-contain grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all";
+	'h-auto max-h-15 w-auto object-contain grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all';
 
-registerBlockType(metadata.name, {
-	edit: function Edit({ attributes, setAttributes }) {
+registerBlockType( metadata.name, {
+	edit: function Edit( { attributes, setAttributes } ) {
 		const { mediaUrl, mediaId, linkUrl } = attributes;
 		const blockProps = useBlockProps();
 
@@ -24,51 +24,65 @@ registerBlockType(metadata.name, {
 					<PanelBody title="Logo Settings">
 						<TextControl
 							label="Link URL"
-							value={linkUrl}
-							onChange={(val) => setAttributes({ linkUrl: val })}
+							value={ linkUrl }
+							onChange={ ( val ) =>
+								setAttributes( { linkUrl: val } )
+							}
 							help="Add a link to the logo (e.g., https://beegleton.com)"
 						/>
 					</PanelBody>
 				</InspectorControls>
 
-				<div {...blockProps}>
-					{!mediaUrl ? (
+				<div { ...blockProps }>
+					{ ! mediaUrl ? (
 						<MediaPlaceholder
-							onSelect={(media) =>
-								setAttributes({
+							onSelect={ ( media ) =>
+								setAttributes( {
 									mediaUrl: media.url,
 									mediaId: media.id,
-								})
+								} )
 							}
-							allowedTypes={["image"]}
-							multiple={false}
-							labels={{ title: "Select Logo" }}
+							allowedTypes={ [ 'image' ] }
+							multiple={ false }
+							labels={ { title: 'Select Logo' } }
 						/>
 					) : (
-						<img src={mediaUrl} className={LOGO_CLASSES} alt="" />
-					)}
+						<img
+							src={ mediaUrl }
+							className={ LOGO_CLASSES }
+							alt=""
+						/>
+					) }
 				</div>
 			</>
 		);
 	},
-	save: function save({ attributes }) {
+	save: function save( { attributes } ) {
 		const { mediaUrl, linkUrl } = attributes;
 		const blockProps = useBlockProps.save();
 
-		if (!mediaUrl) return null;
+		if ( ! mediaUrl ) {
+			return null;
+		}
 
-		const logoImage = <img src={mediaUrl} className={LOGO_CLASSES} alt="" />;
+		const logoImage = (
+			<img src={ mediaUrl } className={ LOGO_CLASSES } alt="" />
+		);
 
 		return (
-			<div {...blockProps}>
-				{linkUrl ? (
-					<a href={linkUrl} target="_blank" rel="noopener noreferrer">
-						{logoImage}
+			<div { ...blockProps }>
+				{ linkUrl ? (
+					<a
+						href={ linkUrl }
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{ logoImage }
 					</a>
 				) : (
 					logoImage
-				)}
+				) }
 			</div>
 		);
 	},
-});
+} );

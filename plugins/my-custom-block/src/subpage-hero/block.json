@@ -30,11 +30,10 @@
 			"selector": "h1",
 			"default": "Subpage Hero"
 		},
-		"content": {
+		"subheader": {
 			"type": "string",
 			"source": "html",
-			"selector": ".subpage-hero__content",
-			"default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
+			"selector": "h2"
 		},
 		"imageUrl": {
 			"type": "string",
