@@ -69,6 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
 	window.lenis.on("scroll", () => {
 		const scroll = window.lenis.animatedScroll;
 		document.querySelectorAll(".subpage-hero-image").forEach((el) => {
+			/* const wrapper = el.closest(".subpage-hero-image-wrapper");
+			if (wrapper) wrapper.style.transform = `translateY(${scroll * 0.5}px)`; */
+
 			el.style.transform = `translateY(${scroll * 0.5}px)`;
 		});
 	});

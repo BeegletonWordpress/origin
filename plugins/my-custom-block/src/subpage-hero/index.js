@@ -254,9 +254,10 @@ registerBlockType(metadata.name, {
 				>
 					<div className="w-full md:w-[40%] relative">
 						<div
-							className={`md:relative ${
+							className={`md:relative z-9 ${
 								reverseLayout ? "md:ml-auto" : "md:mr-auto"
 							}`}
+							style={{ isolation: "isolate" }}
 						>
 							<RichText.Content
 								tagName="h1"
@@ -276,13 +277,15 @@ registerBlockType(metadata.name, {
 						/>
 					</div>
 
-					<div className="w-full md:flex-1 mt-18">
+					<div className="w-full md:flex-1 mt-18 overflow-hidden">
 						{imageUrl && (
-							<img
-								src={imageUrl}
-								alt={imageAlt}
-								className="w-full h-full object-cover subpage-hero-image"
-							/>
+							<div className="subpage-hero-image-wrapper z-[-1]">
+								<img
+									src={imageUrl}
+									alt={imageAlt}
+									className="w-full h-full object-cover subpage-hero-image"
+								/>
+							</div>
 						)}
 					</div>
 				</div>
