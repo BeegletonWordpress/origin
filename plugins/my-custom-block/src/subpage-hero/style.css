@@ -1,1 +1,8 @@
 /* Subpage hero styles */
+
+/* Your block's style.css */
+.subpage-hero__content h2,
+.subpage-hero__content h3,
+.subpage-hero__content h4 {
+    margin-bottom: 1rem; /* fallback default */
+}
