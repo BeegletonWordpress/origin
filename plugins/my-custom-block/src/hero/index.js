@@ -48,6 +48,7 @@ const TEMPLATE = [
 							placeholder: "Hero description text...",
 							content:
 								"This is a description of the hero section. You can customize this text as you like.",
+							className: "hero-description",
 						},
 					],
 					[

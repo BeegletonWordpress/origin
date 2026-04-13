@@ -23,33 +23,35 @@ document.addEventListener("DOMContentLoaded", () => {
 		return;
 	}
 
-	function animateDraw() {
-		arrowBlocks.forEach((block) => {
-			const path = block.querySelector(".curvy-arrow-path");
-			if (!path || path.dataset.drawn === "true") return;
+	function animateDraw(delay = 0) {
+		setTimeout(() => {
+			arrowBlocks.forEach((block) => {
+				const path = block.querySelector(".curvy-arrow-path");
+				if (!path || path.dataset.drawn === "true") return;
 
-			const startTime = performance.now();
-			const duration = 2500;
+				const startTime = performance.now();
+				const duration = 2500;
 
-			function draw(currentTime) {
-				const elapsed = currentTime - startTime;
-				const progress = Math.min(elapsed / duration, 1);
-				const eased = 1 - Math.pow(1 - progress, 3);
+				function draw(currentTime) {
+					const elapsed = currentTime - startTime;
+					const progress = Math.min(elapsed / duration, 1);
+					const eased = 1 - Math.pow(1 - progress, 3);
 
-				path.style.strokeDashoffset = VISIBLE_LENGTH * (1 - eased);
+					path.style.strokeDashoffset = VISIBLE_LENGTH * (1 - eased);
 
-				if (progress < 1) {
-					requestAnimationFrame(draw);
-				} else {
-					path.dataset.drawn = "true";
+					if (progress < 1) {
+						requestAnimationFrame(draw);
+					} else {
+						path.dataset.drawn = "true";
+					}
 				}
-			}
 
-			requestAnimationFrame(draw);
-		});
+				requestAnimationFrame(draw);
+			});
+		}, delay);
 	}
 
-	animateDraw();
+	animateDraw(2100);
 
 	window.lenis.on("scroll", () => {
 		const scrollY = window.lenis.animatedScroll;
@@ -78,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				opacity = 0;
 			}
 
-			block.style.opacity = opacity;
+			block.style.setProperty("opacity", opacity, "important");
 		});
 	});
 });

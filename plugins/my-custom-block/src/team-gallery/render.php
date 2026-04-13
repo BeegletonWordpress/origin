@@ -87,7 +87,7 @@ $context = [
     <!-- Main Grid Content -->
     <div class="team-gallery-content w-full flex flex-col items-center">
         <!-- Post Grid Container -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full mb-12 relative" data-wp-class--opacity-50="state.isLoading">
+        <div class="grid grid-cols-1 md:grid-cols-4 min-h-107 gap-4 w-full mb-12 relative" data-wp-class--opacity-50="state.isLoading">
             
             <!-- Loading Spinner -->
             <div 
@@ -112,7 +112,7 @@ $context = [
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                         </div>
-                        <h3 class="text-xl font-bold mb-0 uppercase tracking-tight" data-wp-text="context.member.title"></h3>
+                        <h3 class="text-2xl! font-bold mb-0 uppercase tracking-tight" data-wp-text="context.member.title"></h3>
                         <p class="text-lg leading-normal!" data-wp-text="context.member.role"></p>
                     </article>
                 </template>

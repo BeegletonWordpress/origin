@@ -148,7 +148,6 @@ registerBlockType(metadata.name, {
 							>
 								<RichText
 									tagName="h1"
-									className="wrap-anywhere"
 									value={title}
 									onChange={(value) => setAttributes({ title: value })}
 									placeholder="Hero Title"
@@ -259,11 +258,7 @@ registerBlockType(metadata.name, {
 							}`}
 							style={{ isolation: "isolate" }}
 						>
-							<RichText.Content
-								tagName="h1"
-								className="wrap-anywhere"
-								value={title}
-							/>
+							<RichText.Content tagName="h1" value={title} />
 							<div className="scale-125 -rotate-2">
 								<UnderlineSVG color={svgColor || activeTheme.svg} />
 							</div>
@@ -277,9 +272,9 @@ registerBlockType(metadata.name, {
 						/>
 					</div>
 
-					<div className="w-full md:flex-1 mt-18 overflow-hidden">
+					<div className="w-full md:flex-1 mt-18">
 						{imageUrl && (
-							<div className="subpage-hero-image-wrapper z-[-1]">
+							<div className="subpage-hero-image-wrapper h-full">
 								<img
 									src={imageUrl}
 									alt={imageAlt}

@@ -366,7 +366,7 @@ registerBlockType(metadata.name, {
 												/>
 											</div>
 										)}
-										<h3 className="text-xl font-bold mb-0 uppercase tracking-tight">
+										<h3 className="text-2xl! font-bold mb-0 uppercase tracking-tight">
 											{post.title?.rendered || "(No Title)"}
 										</h3>
 										<p class="text-lg leading-normal!">

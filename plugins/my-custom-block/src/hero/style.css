@@ -45,6 +45,10 @@
 	padding: 0.15em 0.25em 0.15em 0.75em;
 	z-index: 1;
 	line-height: 1.4;
+
+	animation: fadeInUp 0.6s ease forwards;
+	animation-delay: 0.3s;
+	opacity: 0; /* Start hidden for animation */
 }
 
 /* Right column containing images (absolutely positioned for overlap) */
@@ -73,6 +77,28 @@
 .wp-block-create-block-hero .hero-img-1 {
 	grid-row: span 2 !important;
 	margin: 0 !important;
+
+	animation: fadeInUp 0.6s ease forwards;
+	animation-delay: 0.6s;
+	opacity: 0; /* Start hidden for animation */
+}
+
+.wp-block-create-block-hero .hero-img-2, .wp-block-create-block-hero .hero-img-3 {
+	animation: fadeInUp 0.6s ease forwards;
+	animation-delay: 0.9s;
+	opacity: 0; /* Start hidden for animation */
+}
+
+.wp-block-create-block-hero .hero-description, .wp-block-create-block-hero .wp-block-create-block-my-handdrawn-button {
+	animation: fadeInUp 0.6s ease forwards;
+	animation-delay: 1.2s;
+	opacity: 0; /* Start hidden for animation */
+}
+
+.wp-block-my-custom-block-animation-arrow {
+	animation: fadeInUp 0.6s ease forwards;
+	animation-delay: 1.5s;
+	opacity: 0; /* Start hidden for animation */
 }
 
 .wp-block-create-block-hero .hero-image-grid figure {
@@ -106,5 +132,17 @@
 		top: 0;
 		transform: none;
 		margin-bottom: 2rem !important;
+	}
+}
+
+/* Animation */
+@keyframes fadeInUp {
+	0% {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
