@@ -244,9 +244,9 @@ registerBlockType(metadata.name, {
 						/>
 					</div>
 
-					<div className="flex flex-col justify-center">
-						<h3>{name || "Staff Name"}</h3>
-						<p>{role || "Job Title"}</p>
+					<div className="flex flex-col justify-center w-full">
+						<h3 className="text-2xl!">{name || "Staff Name"}</h3>
+						<p className="text-wrap!">{role || "Job Title"}</p>
 					</div>
 				</div>
 			</div>
@@ -302,9 +302,9 @@ registerBlockType(metadata.name, {
 						</div>
 					</div>
 
-					<div className="flex flex-col justify-center">
-						<h3>{name}</h3>
-						<p>{role}</p>
+					<div className="flex flex-col justify-center w-full">
+						<h3 className="text-2xl!">{name}</h3>
+						<p className="text-wrap!">{role}</p>
 					</div>
 				</div>
 			</div>
