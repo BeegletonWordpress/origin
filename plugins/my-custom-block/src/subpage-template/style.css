@@ -12,9 +12,14 @@
 	align-items: center;
 }
 
+.wp-block-create-block-subpage-content {
+	z-index: 2;
+}
+
 .wp-block-create-block-subpage-content > .wp-block-group {
 	width: 100% !important;
 	max-width: var(--wp--style--global--content-size) !important;
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
+	margin: auto;
 }
