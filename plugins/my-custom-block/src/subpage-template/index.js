@@ -1,15 +1,10 @@
 import { registerBlockType } from "@wordpress/blocks";
-import {
-	useBlockProps,
-	useInnerBlocksProps,
-} from "@wordpress/block-editor";
+import { useBlockProps, useInnerBlocksProps } from "@wordpress/block-editor";
 import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
 
-const TEMPLATE = [
-	["create-block/subpage-hero"],
-];
+const TEMPLATE = [["create-block/subpage-hero"]];
 
 registerBlockType(metadata.name, {
 	edit: function Edit() {
