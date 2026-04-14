@@ -66,7 +66,6 @@ registerBlockType(metadata.name, {
 			reverseLayout,
 		} = attributes;
 
-		// Get active theme colors
 		const activeTheme = THEMES[theme] || THEMES.default;
 
 		useEffect(() => {
@@ -74,7 +73,6 @@ registerBlockType(metadata.name, {
 				document.querySelector('iframe[name="editor-canvas"]')?.contentDocument
 					?.body || document.body;
 
-			// Broadcast Theme Variables to the Editor
 			canvas.style.setProperty("--page-theme-bg", activeTheme.bg);
 			canvas.style.setProperty("--page-theme-text", activeTheme.text);
 			canvas.style.setProperty("--page-theme-svg", svgColor || activeTheme.svg);
@@ -109,26 +107,11 @@ registerBlockType(metadata.name, {
 							label="Hero Theme"
 							value={theme}
 							options={[
-								{
-									label: "Default (Accent 1)",
-									value: "default",
-								},
-								{
-									label: "Dark 1 (Dark Gray/Blue)",
-									value: "dark_1",
-								},
-								{
-									label: "Dark 2 (Dark Gray/Yellow)",
-									value: "dark_2",
-								},
-								{
-									label: "Light 1 (Light Yellow/Blue)",
-									value: "light_1",
-								},
-								{
-									label: "Light 2 (Light Yellow/Yellow)",
-									value: "light_2",
-								},
+								{ label: "Default (Accent 1)", value: "default" },
+								{ label: "Dark 1 (Dark Gray/Blue)", value: "dark_1" },
+								{ label: "Dark 2 (Dark Gray/Yellow)", value: "dark_2" },
+								{ label: "Light 1 (Light Yellow/Blue)", value: "light_1" },
+								{ label: "Light 2 (Light Yellow/Yellow)", value: "light_2" },
 							]}
 							onChange={(value) => setAttributes({ theme: value })}
 						/>

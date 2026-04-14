@@ -1,0 +1,8 @@
+.wp-block-create-block-subpage-template {
+	width: 100%;
+}
+
+.wp-block-create-block-subpage-template > .wp-block {
+	margin-top: 0;
+	margin-bottom: 0;
+}

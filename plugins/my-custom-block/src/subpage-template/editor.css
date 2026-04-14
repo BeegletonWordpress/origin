@@ -1,0 +1,15 @@
+.wp-block-create-block-subpage-template {
+	min-height: 200px;
+	padding: 20px;
+}
+
+.wp-block-create-block-subpage-template > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.wp-block-create-block-subpage-template > .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+	margin-top: 0;
+	margin-bottom: 0;
+}

@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/subpage-template",
+	"version": "0.1.0",
+	"title": "Subpage Template",
+	"category": "theme",
+	"icon": "layout",
+	"description": "A template block for subpages with a required subpage-hero and flexible page content area.",
+	"supports": {
+		"html": false,
+		"align": ["full", "wide"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css"
+}
