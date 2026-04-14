@@ -1,29 +1,25 @@
 import { registerBlockType } from "@wordpress/blocks";
-import { useBlockProps, useInnerBlocksProps } from "@wordpress/block-editor";
+import {
+	useBlockProps,
+	useInnerBlocksProps,
+} from "@wordpress/block-editor";
 import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
 
-const TEMPLATE = [
-	["create-block/subpage-hero"],
-	["create-block/subpage-content"],
-];
-
 registerBlockType(metadata.name, {
 	edit: function Edit() {
 		const blockProps = useBlockProps({
-			className: "subpage-template",
+			className: "subpage-content",
 		});
 
-		const innerBlocksProps = useInnerBlocksProps(blockProps, {
-			template: TEMPLATE,
-		});
+		const innerBlocksProps = useInnerBlocksProps(blockProps, {});
 
 		return <div {...innerBlocksProps} />;
 	},
 	save: function Save() {
 		const blockProps = useBlockProps.save({
-			className: "subpage-template",
+			className: "subpage-content",
 		});
 
 		const innerBlocksProps = useInnerBlocksProps.save(blockProps);
