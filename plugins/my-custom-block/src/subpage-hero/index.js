@@ -150,95 +150,95 @@ registerBlockType(metadata.name, {
 					/>
 				</InspectorControls>
 				<div {...blockProps}>
-				<div
-					className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:h-[65vh] md:min-h-137.5 md:max-h-187.5 ${
-						reverseLayout ? "md:flex-row-reverse" : ""
-					}`}
-				>
-					<div className="w-full md:w-[40%] relative">
-						<div
-							className={`md:relative ${
-								reverseLayout ? "md:ml-auto" : "md:mr-auto"
-							}`}
-						>
-							<RichText
-								tagName="h1"
-								value={title}
-								onChange={(value) => setAttributes({ title: value })}
-								placeholder="Hero Title"
-								className="text-pretty whitespace-nowrap"
-							/>
-							<RichText
-								tagName="h2"
-								value={subheader}
-								onChange={(value) => setAttributes({ subheader: value })}
-								placeholder="Optional subheader..."
-							/>
-							<div className="scale-125 -rotate-2">
-								<UnderlineSVG color={svgColor || activeTheme.svg} />
+					<div
+						className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:min-h-[65vh] md:max-h-187.5 ${
+							reverseLayout ? "md:flex-row-reverse" : ""
+						}`}
+					>
+						<div className="w-full md:w-[40%] relative">
+							<div
+								className={`md:relative ${
+									reverseLayout ? "md:ml-auto" : "md:mr-auto"
+								}`}
+							>
+								<RichText
+									tagName="h1"
+									value={title}
+									onChange={(value) => setAttributes({ title: value })}
+									placeholder="Hero Title"
+									className="text-pretty whitespace-nowrap"
+								/>
+								<RichText
+									tagName="h2"
+									value={subheader}
+									onChange={(value) => setAttributes({ subheader: value })}
+									placeholder="Optional subheader..."
+								/>
+								<div className="scale-125 -rotate-2">
+									<UnderlineSVG color={svgColor || activeTheme.svg} />
+								</div>
+							</div>
+							<div
+								className={`mt-12 pt-5 subpage-hero__content ${
+									reverseLayout ? "md:ml-7" : "md:mr-7"
+								}`}
+							>
+								<InnerBlocks
+									allowedBlocks={[
+										"core/heading",
+										"core/paragraph",
+										"core/list",
+									]}
+									template={[
+										[
+											"core/paragraph",
+											{
+												placeholder: "description goes here...",
+											},
+										],
+									]}
+								/>
 							</div>
 						</div>
-						<div
-							className={`mt-12 pt-5 subpage-hero__content ${
-								reverseLayout ? "md:ml-7" : "md:mr-7"
-							}`}
-						>
-							<InnerBlocks
-								allowedBlocks={[
-									"core/heading",
-									"core/paragraph",
-									"core/list",
-								]}
-								template={[
-									[
-										"core/paragraph",
-										{
-											placeholder: "description goes here...",
-										},
-									],
-								]}
-							/>
-						</div>
-					</div>
 
-					<div className="w-full md:flex-1 mt-24">
-						<MediaUploadCheck>
-							<MediaUpload
-								onSelect={onSelectImage}
-								allowedTypes={["image"]}
-								value={attributes.imageId}
-								render={({ open }) => (
-									<div className="h-full relative group">
-										{imageUrl ? (
-											<>
-												<img
-													src={imageUrl}
-													alt={imageAlt}
-													className="w-full h-full object-cover mt-18 subpage-hero-image"
-												/>
-												<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50">
-													<Button
-														onClick={open}
-														variant="secondary"
-														className="is-primary"
-													>
-														Replace Image
+						<div className="w-full md:flex-1 mt-24">
+							<MediaUploadCheck>
+								<MediaUpload
+									onSelect={onSelectImage}
+									allowedTypes={["image"]}
+									value={attributes.imageId}
+									render={({ open }) => (
+										<div className="h-full relative group">
+											{imageUrl ? (
+												<>
+													<img
+														src={imageUrl}
+														alt={imageAlt}
+														className="w-full h-full object-cover mt-18 subpage-hero-image max-h-200"
+													/>
+													<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50">
+														<Button
+															onClick={open}
+															variant="secondary"
+															className="is-primary"
+														>
+															Replace Image
+														</Button>
+													</div>
+												</>
+											) : (
+												<div className="flex items-center justify-center h-full bg-gray-100 border-2 border-dashed border-gray-300 min-h-75">
+													<Button onClick={open} variant="secondary">
+														Select Image
 													</Button>
 												</div>
-											</>
-										) : (
-											<div className="flex items-center justify-center h-full bg-gray-100 border-2 border-dashed border-gray-300 min-h-75">
-												<Button onClick={open} variant="secondary">
-													Select Image
-												</Button>
-											</div>
-										)}
-									</div>
-								)}
-							/>
-						</MediaUploadCheck>
+											)}
+										</div>
+									)}
+								/>
+							</MediaUploadCheck>
+						</div>
 					</div>
-				</div>
 				</div>
 			</>
 		);
@@ -280,7 +280,7 @@ registerBlockType(metadata.name, {
 					}}
 				/>
 				<div
-					className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:h-[65vh] md:min-h-137.5 md:max-h-187.5 ${
+					className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:min-h-[65vh] md:max-h-187.5 ${
 						reverseLayout ? "md:flex-row-reverse" : ""
 					}`}
 				>
@@ -312,7 +312,7 @@ registerBlockType(metadata.name, {
 								<img
 									src={imageUrl}
 									alt={imageAlt}
-									className="w-full h-full object-cover subpage-hero-image"
+									className="w-full h-full object-cover subpage-hero-image max-h-200"
 								/>
 							</div>
 						)}
