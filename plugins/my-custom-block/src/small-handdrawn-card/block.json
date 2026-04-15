@@ -1,0 +1,50 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-small-handdrawn-card",
+	"version": "0.1.0",
+	"title": "My Small Handdrawn Card",
+	"category": "theme",
+	"icon": "admin-page",
+	"description": "A small custom card with an irregular, hand-drawn look.",
+	"example": {
+		"attributes": {
+			"backgroundColor": "primary"
+		}
+	},
+	"supports": {
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true
+		},
+		"align": [ "left", "center", "right" ],
+		"html": false,
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalTextTransform": true,
+			"__experimentalTextDecoration": true,
+			"__experimentalLetterSpacing": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true
+			}
+		}
+	},
+	"attributes": {
+		"style": {
+			"type": "object"
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": [ "file:./index.css", "file:./style-index.css" ],
+	"editorStyle": "file:./editor.css"
+}
