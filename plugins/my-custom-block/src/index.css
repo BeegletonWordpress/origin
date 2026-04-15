@@ -15,7 +15,7 @@
   border-radius: 0px;
 }
 
-.wp-block-group .is-layout-constrained > * {
+div.wp-block-group.alignfull.has-background {
     margin-block-start: 0;
     margin-block-end: 0;
 }

@@ -134,7 +134,7 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
-						className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:min-h-[65vh] md:max-h-187.5 ${
+						className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:min-h-[65vh]${
 							reverseLayout ? "md:flex-row-reverse" : ""
 						}`}
 					>
@@ -171,12 +171,18 @@ registerBlockType(metadata.name, {
 										"core/heading",
 										"core/paragraph",
 										"core/list",
+										"create-block/my-handdrawn-button",
 									]}
 									template={[
 										[
 											"core/paragraph",
 											{
 												placeholder: "description goes here...",
+											},
+											"create-block/my-handdrawn-button",
+											{
+												placeholder: "CTA text",
+												className: "mt-4",
 											},
 										],
 									]}
