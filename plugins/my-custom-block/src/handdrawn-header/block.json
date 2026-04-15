@@ -41,6 +41,9 @@
 		"minWidth": {
 			"type": "number",
 			"default": 150
+		},
+		"underlineWidth": {
+			"type": "number"
 		}
 	},
 	"textdomain": "my-custom-block",

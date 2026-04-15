@@ -32,32 +32,39 @@ export const OldUnderlineSVG = ( { spacing, color } ) => (
 	</svg>
 );
 
-export const UnderlineSVG = ( { spacing, color } ) => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 615.28 75.56"
-		className="absolute left-0 w-full h-10 pointer-events-none handdrawn-underline-svg"
-		style={ {
-			bottom: `-${ spacing }rem`,
-			color: color || 'inherit',
-		} }
-		preserveAspectRatio="none"
-		fill="none"
-	>
-		<path
-			d="M17.74,7.87c191.61-12.96,190.17,23.38,586.59,3.15,4.18-.21,4.07,6.62-.08,7.14C421.37,41.09,236.71,47.47,52.46,42.72c-57.7-1.48-121.34-.23,194.05,20.91,191.66,12.85,183.06-2.33,363.78,6.93"
-			stroke="currentColor"
-			strokeLinecap="round"
-			strokeMiterlimit="10"
-			strokeWidth="10px"
-			className="handdrawn-underline-path"
-		/>
-	</svg>
-);
+export const UnderlineSVG = ( { spacing, color, width } ) => {
+	const svgClasses = width
+		? 'absolute left-1/2 -translate-x-1/2 h-10 pointer-events-none handdrawn-underline-svg'
+		: 'absolute left-0 w-full h-10 pointer-events-none handdrawn-underline-svg';
 
-registerBlockType( metadata.name, {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 615.28 75.56"
+			className={ svgClasses }
+			style={ {
+				bottom: `-${ spacing }rem`,
+				color: color || 'inherit',
+				...( width && { width: `${ width }px` } ),
+			} }
+			preserveAspectRatio="none"
+			fill="none"
+		>
+			<path
+				d="M17.74,7.87c191.61-12.96,190.17,23.38,586.59,3.15,4.18-.21,4.07,6.62-.08,7.14C421.37,41.09,236.71,47.47,52.46,42.72c-57.7-1.48-121.34-.23,194.05,20.91,191.66,12.85,183.06-2.33,363.78,6.93"
+				stroke="currentColor"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+				strokeWidth="10px"
+				className="handdrawn-underline-path"
+			/>
+		</svg>
+	);
+};
+
+	registerBlockType( metadata.name, {
 	edit: function Edit( { attributes, setAttributes } ) {
-		const { underlineSpacing, svgColor, minWidth } = attributes;
+		const { underlineSpacing, svgColor, minWidth, underlineWidth } = attributes;
 
 		const blockProps = useBlockProps( {
 			style: {
@@ -112,6 +119,16 @@ registerBlockType( metadata.name, {
 							max={ 1000 }
 							step={ 1 }
 						/>
+						<RangeControl
+							label="Underline Width (px)"
+							value={ underlineWidth }
+							onChange={ ( value ) =>
+								setAttributes( { underlineWidth: value } )
+							}
+							min={ 100 }
+							max={ 1000 }
+							step={ 10 }
+						/>
 					</PanelBody>
 					<PanelColorSettings
 						title="SVG Color"
@@ -131,6 +148,7 @@ registerBlockType( metadata.name, {
 						<UnderlineSVG
 							spacing={ underlineSpacing }
 							color={ svgColor }
+							width={ underlineWidth }
 						/>
 					</div>
 				</div>
@@ -138,7 +156,7 @@ registerBlockType( metadata.name, {
 		);
 	},
 	save: function Save( { attributes } ) {
-		const { underlineSpacing, svgColor, minWidth } = attributes;
+		const { underlineSpacing, svgColor, minWidth, underlineWidth } = attributes;
 
 		const blockProps = useBlockProps.save( {
 			className: 'handdrawn-header',
@@ -157,6 +175,7 @@ registerBlockType( metadata.name, {
 					<UnderlineSVG
 						spacing={ underlineSpacing }
 						color={ svgColor }
+						width={ underlineWidth }
 					/>
 				</div>
 			</div>
