@@ -3,6 +3,10 @@
 	stroke: var(--handdrawn-stroke-color, #bbc7e7);
 }
 
+.wp-block-create-block-my-handdrawn-card h4 {
+	text-transform: none !important;
+}
+
 .wp-block-create-block-my-handdrawn-card.has-background,
 .wp-block-create-block-my-handdrawn-card[class*="has-"][class*="-background-color"] {
 	background-color: transparent !important;

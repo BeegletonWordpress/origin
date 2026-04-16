@@ -67,7 +67,7 @@ export const RingShapeSVG = ({ spacing, color }) => (
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 2304.49 624.09"
 		preserveAspectRatio="none"
-		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg z-0"
+		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg z-0 scale-x-110"
 		style={{
 			bottom: `-${spacing}rem`,
 			color: color || "inherit",

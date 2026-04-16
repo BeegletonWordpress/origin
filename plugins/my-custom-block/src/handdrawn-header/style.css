@@ -1,3 +1,4 @@
-.handdrawn-header > *:not(svg) {
+.handdrawn-header *:not(svg) {
   z-index: 10;
+  position: relative;
 }
