@@ -57,6 +57,7 @@ const THEMES = {
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
 		const {
+			tagline,
 			title,
 			subheader,
 			imageUrl,
@@ -144,6 +145,13 @@ registerBlockType(metadata.name, {
 									reverseLayout ? "md:ml-auto" : "md:mr-auto"
 								}`}
 							>
+								<RichText
+									tagName="p"
+									value={tagline}
+									onChange={(value) => setAttributes({ tagline: value })}
+									placeholder="Tagline..."
+									className="has-cas-red-ink-font-family text-5xl"
+								/>
 								<RichText
 									tagName="h1"
 									value={title}
@@ -234,6 +242,7 @@ registerBlockType(metadata.name, {
 	},
 	save: ({ attributes }) => {
 		const {
+			tagline,
 			title,
 			subheader,
 			imageUrl,
@@ -280,6 +289,13 @@ registerBlockType(metadata.name, {
 							}`}
 							style={{ isolation: "isolate" }}
 						>
+							{tagline && (
+								<RichText.Content
+									tagName="p"
+									className="has-cas-red-ink-font-family text-5xl"
+									value={tagline}
+								/>
+							)}
 							<RichText.Content tagName="h1" value={title} />
 							{subheader && <RichText.Content tagName="h2" value={subheader} />}
 							<div className="scale-125 -rotate-2">

@@ -24,6 +24,11 @@
 		}
 	},
 	"attributes": {
+		"tagline": {
+			"type": "string",
+			"source": "html",
+			"selector": "p.tagline"
+		},
 		"title": {
 			"type": "string",
 			"source": "html",
