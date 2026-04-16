@@ -34,8 +34,8 @@ export const OldUnderlineSVG = ({ spacing, color }) => (
 
 export const UnderlineSVG = ({ spacing, color, width }) => {
 	const svgClasses = width
-		? "absolute left-1/2 -translate-x-1/2 h-10 pointer-events-none handdrawn-underline-svg"
-		: "absolute left-0 w-full h-10 pointer-events-none handdrawn-underline-svg";
+		? "absolute left-1/2 -translate-x-1/2 h-10 pointer-events-none handdrawn-underline-svg z-1"
+		: "absolute left-0 w-full h-10 pointer-events-none handdrawn-underline-svg z-1";
 
 	return (
 		<svg
@@ -65,9 +65,9 @@ export const UnderlineSVG = ({ spacing, color, width }) => {
 export const RingShapeSVG = ({ spacing, color }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 2154.49 583.43"
+		viewBox="0 0 2304.49 624.09"
 		preserveAspectRatio="none"
-		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg"
+		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg z-0"
 		style={{
 			bottom: `-${spacing}rem`,
 			color: color || "inherit",
@@ -81,13 +81,21 @@ export const RingShapeSVG = ({ spacing, color }) => (
 			strokeMiterlimit="10"
 			strokeLinecap="round"
 			vectorEffect="non-scaling-stroke"
+			transform="translate(50, 0)"
 		/>
 	</svg>
 );
 
-	registerBlockType(metadata.name, {
+registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { underlineSpacing, svgColor, minWidth, underlineWidth, underlineShape, ringSpacing } = attributes;
+		const {
+			underlineSpacing,
+			svgColor,
+			minWidth,
+			underlineWidth,
+			underlineShape,
+			ringSpacing,
+		} = attributes;
 
 		const blockProps = useBlockProps({
 			className: "handdrawn-header w-fit",
@@ -137,7 +145,9 @@ export const RingShapeSVG = ({ spacing, color }) => (
 								<RangeControl
 									label="Underline Spacing (rem)"
 									value={underlineSpacing}
-									onChange={(value) => setAttributes({ underlineSpacing: value })}
+									onChange={(value) =>
+										setAttributes({ underlineSpacing: value })
+									}
 									min={0}
 									max={10}
 									step={0.1}
@@ -192,10 +202,7 @@ export const RingShapeSVG = ({ spacing, color }) => (
 								width={underlineWidth}
 							/>
 						) : (
-							<RingShapeSVG
-								spacing={ringSpacing}
-								color={svgColor}
-							/>
+							<RingShapeSVG spacing={ringSpacing} color={svgColor} />
 						)}
 					</div>
 				</div>
@@ -203,7 +210,14 @@ export const RingShapeSVG = ({ spacing, color }) => (
 		);
 	},
 	save: function Save({ attributes }) {
-		const { underlineSpacing, svgColor, minWidth, underlineWidth, underlineShape, ringSpacing } = attributes;
+		const {
+			underlineSpacing,
+			svgColor,
+			minWidth,
+			underlineWidth,
+			underlineShape,
+			ringSpacing,
+		} = attributes;
 
 		const blockProps = useBlockProps.save({
 			className: "handdrawn-header w-fit",
@@ -226,10 +240,7 @@ export const RingShapeSVG = ({ spacing, color }) => (
 							width={underlineWidth}
 						/>
 					) : (
-						<RingShapeSVG
-							spacing={ringSpacing}
-							color={svgColor}
-						/>
+						<RingShapeSVG spacing={ringSpacing} color={svgColor} />
 					)}
 				</div>
 			</div>

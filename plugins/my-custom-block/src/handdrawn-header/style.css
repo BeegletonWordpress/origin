@@ -1,0 +1,3 @@
+.handdrawn-header > *:not(svg) {
+  z-index: 10;
+}
