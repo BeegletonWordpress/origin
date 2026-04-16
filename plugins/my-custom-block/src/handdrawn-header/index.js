@@ -6,7 +6,7 @@ import {
 	InspectorControls,
 	PanelColorSettings,
 } from "@wordpress/block-editor";
-import { PanelBody, RangeControl } from "@wordpress/components";
+import { PanelBody, RangeControl, SelectControl } from "@wordpress/components";
 import metadata from "./block.json";
 
 export const OldUnderlineSVG = ({ spacing, color }) => (
@@ -62,9 +62,32 @@ export const UnderlineSVG = ({ spacing, color, width }) => {
 	);
 };
 
-registerBlockType(metadata.name, {
+export const RingShapeSVG = ({ spacing, color }) => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 2154.49 583.43"
+		preserveAspectRatio="none"
+		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg"
+		style={{
+			bottom: `-${spacing}rem`,
+			color: color || "inherit",
+		}}
+		fill="none"
+	>
+		<path
+			d="M5,302.83S-.26-7.75,997.29,5.41c997.55,13.16,1173.9,210.57,1150.21,297.42-23.69,86.86-224.85,291.06-1055.46,274.67C291.9,561.71,12.35,480.06,133.97,247.56"
+			stroke="currentColor"
+			strokeWidth="10"
+			strokeMiterlimit="10"
+			strokeLinecap="round"
+			vectorEffect="non-scaling-stroke"
+		/>
+	</svg>
+);
+
+	registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { underlineSpacing, svgColor, minWidth, underlineWidth } = attributes;
+		const { underlineSpacing, svgColor, minWidth, underlineWidth, underlineShape, ringSpacing } = attributes;
 
 		const blockProps = useBlockProps({
 			className: "handdrawn-header w-fit",
@@ -100,30 +123,53 @@ registerBlockType(metadata.name, {
 			<>
 				<InspectorControls>
 					<PanelBody title="Underline Settings">
-						<RangeControl
-							label="Underline Spacing (rem)"
-							value={underlineSpacing}
-							onChange={(value) => setAttributes({ underlineSpacing: value })}
-							min={0}
-							max={10}
-							step={0.1}
+						<SelectControl
+							label="SVG Shape"
+							value={underlineShape}
+							options={[
+								{ label: "Default Underline", value: "underline" },
+								{ label: "Ring Shape", value: "ring" },
+							]}
+							onChange={(value) => setAttributes({ underlineShape: value })}
 						/>
-						<RangeControl
-							label="Minimum Underline Width (px)"
-							value={minWidth}
-							onChange={(value) => setAttributes({ minWidth: value })}
-							min={50}
-							max={1000}
-							step={1}
-						/>
-						<RangeControl
-							label="Underline Width (px)"
-							value={underlineWidth}
-							onChange={(value) => setAttributes({ underlineWidth: value })}
-							min={100}
-							max={1000}
-							step={10}
-						/>
+						{underlineShape === "underline" && (
+							<>
+								<RangeControl
+									label="Underline Spacing (rem)"
+									value={underlineSpacing}
+									onChange={(value) => setAttributes({ underlineSpacing: value })}
+									min={0}
+									max={10}
+									step={0.1}
+								/>
+								<RangeControl
+									label="Minimum Underline Width (px)"
+									value={minWidth}
+									onChange={(value) => setAttributes({ minWidth: value })}
+									min={50}
+									max={1000}
+									step={1}
+								/>
+								<RangeControl
+									label="Underline Width (px)"
+									value={underlineWidth}
+									onChange={(value) => setAttributes({ underlineWidth: value })}
+									min={100}
+									max={1000}
+									step={10}
+								/>
+							</>
+						)}
+						{underlineShape === "ring" && (
+							<RangeControl
+								label="Ring Spacing (rem)"
+								value={ringSpacing}
+								onChange={(value) => setAttributes({ ringSpacing: value })}
+								min={0}
+								max={10}
+								step={0.1}
+							/>
+						)}
 					</PanelBody>
 					<PanelColorSettings
 						title="SVG Color"
@@ -131,7 +177,7 @@ registerBlockType(metadata.name, {
 							{
 								value: svgColor,
 								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Underline SVG Color",
+								label: "SVG Color",
 							},
 						]}
 					/>
@@ -139,18 +185,25 @@ registerBlockType(metadata.name, {
 				<div {...blockProps}>
 					<div {...innerBlocksProps}>
 						{children}
-						<UnderlineSVG
-							spacing={underlineSpacing}
-							color={svgColor}
-							width={underlineWidth}
-						/>
+						{underlineShape === "underline" ? (
+							<UnderlineSVG
+								spacing={underlineSpacing}
+								color={svgColor}
+								width={underlineWidth}
+							/>
+						) : (
+							<RingShapeSVG
+								spacing={ringSpacing}
+								color={svgColor}
+							/>
+						)}
 					</div>
 				</div>
 			</>
 		);
 	},
 	save: function Save({ attributes }) {
-		const { underlineSpacing, svgColor, minWidth, underlineWidth } = attributes;
+		const { underlineSpacing, svgColor, minWidth, underlineWidth, underlineShape, ringSpacing } = attributes;
 
 		const blockProps = useBlockProps.save({
 			className: "handdrawn-header w-fit",
@@ -166,11 +219,18 @@ registerBlockType(metadata.name, {
 					style={{ minWidth: `${minWidth}px` }}
 				>
 					<InnerBlocks.Content />
-					<UnderlineSVG
-						spacing={underlineSpacing}
-						color={svgColor}
-						width={underlineWidth}
-					/>
+					{underlineShape === "underline" ? (
+						<UnderlineSVG
+							spacing={underlineSpacing}
+							color={svgColor}
+							width={underlineWidth}
+						/>
+					) : (
+						<RingShapeSVG
+							spacing={ringSpacing}
+							color={svgColor}
+						/>
+					)}
 				</div>
 			</div>
 		);

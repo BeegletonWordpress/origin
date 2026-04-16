@@ -44,6 +44,14 @@
 		},
 		"underlineWidth": {
 			"type": "number"
+		},
+		"underlineShape": {
+			"type": "string",
+			"default": "underline"
+		},
+		"ringSpacing": {
+			"type": "number",
+			"default": 2.5
 		}
 	},
 	"textdomain": "my-custom-block",

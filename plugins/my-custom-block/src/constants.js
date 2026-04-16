@@ -57,6 +57,24 @@ export const HAND_DRAWN_RING_SHAPE_2 = (
 	</svg>
 );
 
+export const HAND_DRAWN_RING_SHAPE_3 = (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 2154.49 583.43"
+		fill="none"
+		preserveAspectRatio="none"
+		className="absolute inset-0 w-full h-full z-0"
+	>
+		<path
+			d="M5,302.83S-.26-7.75,997.29,5.41c997.55,13.16,1173.9,210.57,1150.21,297.42-23.69,86.86-224.85,291.06-1055.46,274.67C291.9,561.71,12.35,480.06,133.97,247.56"
+			strokeWidth="10"
+			strokeMiterlimit="10"
+			strokeLinecap="round"
+			vectorEffect="non-scaling-stroke"
+		/>
+	</svg>
+);
+
 export const HAND_DRAWN_CARD_SHAPE = (
 	<svg
 		width="461"
