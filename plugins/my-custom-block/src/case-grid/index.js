@@ -15,12 +15,20 @@ import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import metadata from './block.json';
 
-registerBlockType( metadata.name, {
+	registerBlockType( metadata.name, {
 	edit: function Edit( { attributes, setAttributes } ) {
-		const { postsPerPage, selectedCategory } = attributes;
+		const { postsPerPage, selectedCategory, backgroundColor, style } = attributes;
+
+		const textColor = style?.color?.text;
 
 		const blockProps = useBlockProps( {
 			className: 'case-grid flex flex-col items-center',
+			style: {
+				backgroundColor: backgroundColor
+					? `var(--wp--preset--color--${ backgroundColor })`
+					: undefined,
+				color: textColor || undefined,
+			},
 		} );
 
 		const { children, ...innerBlocksProps } = useInnerBlocksProps(

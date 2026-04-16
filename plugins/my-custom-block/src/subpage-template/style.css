@@ -23,3 +23,8 @@
 	margin-bottom: 0 !important;
 	margin: auto;
 }
+
+.wp-block-create-block-subpage-content > .wp-block-group.alignfull {
+	width: 100% !important;
+	max-width: none !important;
+}
