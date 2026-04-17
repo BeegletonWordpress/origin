@@ -58,7 +58,7 @@ $context = [
     data-orderby="<?php echo esc_attr($attributes['orderBy'] ?? 'date'); ?>"
 >
     <!-- Background SVG -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[135%] h-auto -z-10 pointer-events-none">
+    <div class="absolute max-w-375 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[135%] h-auto -z-10 pointer-events-none">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1704.1 794.1" style="color: <?php echo esc_attr($svg_color ?? "inherit"); ?>;">
             <rect fill="none" x="1560.2" y="-1364.5" width="1644" height="363" transform="translate(275.1 440.2) rotate(-11.2)"/>
             <rect fill="none" x="2025" y="-2061.1" width="514.8" height="1400.9" transform="translate(3055 1181.7) rotate(-76.1)"/>
