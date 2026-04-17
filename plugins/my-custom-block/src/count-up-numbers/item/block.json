@@ -28,5 +28,6 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": ["file:./style-index.css"]
+	"style": ["file:./style-index.css"],
+	"render": "file:./render.php"
 }
