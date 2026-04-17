@@ -54,6 +54,8 @@ $context = [
     <?php echo get_block_wrapper_attributes(['id' => 'team-gallery', 'class' => 'team-gallery-wrapper team-gallery flex flex-col items-center w-full']); ?>
     data-wp-interactive="team-gallery"
     data-wp-context='<?php echo wp_json_encode($context); ?>'
+    data-order="<?php echo esc_attr(strtoupper($attributes['order'] ?? 'ASC')); ?>"
+    data-orderby="<?php echo esc_attr($attributes['orderBy'] ?? 'date'); ?>"
 >
     <!-- Background SVG -->
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[135%] h-auto -z-10 pointer-events-none">
