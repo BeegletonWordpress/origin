@@ -1,21 +1,22 @@
-import { registerBlockType } from '@wordpress/blocks';
+import { registerBlockType } from "@wordpress/blocks";
 import {
 	useBlockProps,
 	InspectorControls,
 	PanelColorSettings,
-} from '@wordpress/block-editor';
+} from "@wordpress/block-editor";
 import {
 	PanelBody,
 	QueryControls,
 	Placeholder,
 	Spinner,
 	TextControl,
-} from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
-import { store as coreStore, useEntityProp } from '@wordpress/core-data';
-import { registerPlugin } from '@wordpress/plugins';
-import { PluginDocumentSettingPanel } from '@wordpress/editor';
-import metadata from './block.json';
+	SelectControl,
+} from "@wordpress/components";
+import { useSelect } from "@wordpress/data";
+import { store as coreStore, useEntityProp } from "@wordpress/core-data";
+import { registerPlugin } from "@wordpress/plugins";
+import { PluginDocumentSettingPanel } from "@wordpress/editor";
+import metadata from "./block.json";
 
 /**
  * Arrow SVG Components
@@ -84,13 +85,13 @@ const ArrowRight = () => (
 	</svg>
 );
 
-const BackgroundSVG = ( { color } ) => (
+const BackgroundSVG = ({ color }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		version="1.1"
 		viewBox="0 0 1704.1 794.1"
 		className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[135%] h-auto -z-10 pointer-events-none"
-		style={ { color: color || 'inherit' } }
+		style={{ color: color || "inherit" }}
 	>
 		<rect
 			fill="none"
@@ -210,10 +211,10 @@ const BackgroundSVG = ( { color } ) => (
  * Sidebar Panel for Team Member Role
  */
 const TeamMemberRolePanel = () => {
-	const [ meta, setMeta ] = useEntityProp( 'postType', 'post', 'meta' );
+	const [meta, setMeta] = useEntityProp("postType", "post", "meta");
 
 	// We only want to show this if we are editing a post
-	if ( ! meta ) {
+	if (!meta) {
 		return null;
 	}
 
@@ -225,207 +226,211 @@ const TeamMemberRolePanel = () => {
 		>
 			<TextControl
 				label="Role / Job Title"
-				value={ meta.team_member_role || '' }
-				onChange={ ( value ) =>
-					setMeta( { ...meta, team_member_role: value } )
-				}
+				value={meta.team_member_role || ""}
+				onChange={(value) => setMeta({ ...meta, team_member_role: value })}
 				help="Enter the role for this team member (e.g., Senior Developer)"
 			/>
 		</PluginDocumentSettingPanel>
 	);
 };
 
-registerPlugin( 'team-member-settings-panel', {
+registerPlugin("team-member-settings-panel", {
 	render: TeamMemberRolePanel,
-	icon: 'admin-users',
-} );
+	icon: "admin-users",
+});
 
-registerBlockType( metadata.name, {
-	edit: function Edit( { attributes, setAttributes } ) {
-		const { postsPerPage, selectedCategory, currentIndex, svgColor } =
-			attributes;
+registerBlockType(metadata.name, {
+	edit: function Edit({ attributes, setAttributes }) {
+		const {
+			postsPerPage,
+			selectedCategory,
+			currentIndex,
+			svgColor,
+			order,
+			orderBy,
+		} = attributes;
 
-		const blockProps = useBlockProps( {
-			className: 'team-gallery flex flex-col items-center',
-		} );
+		const blockProps = useBlockProps({
+			className: "team-gallery flex flex-col items-center",
+		});
 
 		// Fetch total count of posts to handle pagination
 		const { posts, hasResolved, totalPosts } = useSelect(
-			( select ) => {
+			(select) => {
 				const query = {
 					per_page: postsPerPage,
 					offset: currentIndex * postsPerPage,
 					_embed: true,
+					orderby: orderBy,
+					order: order,
 				};
-				if ( selectedCategory ) {
-					query.categories = [ selectedCategory ];
+
+				if (selectedCategory) {
+					query.categories = [selectedCategory];
 				}
 
+				console.log("Querying posts with:", query);
+
 				const countQuery = {
-					categories: selectedCategory
-						? [ selectedCategory ]
-						: undefined,
+					categories: selectedCategory ? [selectedCategory] : undefined,
 				};
 
 				return {
-					posts: select( coreStore ).getEntityRecords(
-						'postType',
-						'post',
-						query
+					posts: select(coreStore).getEntityRecords("postType", "post", query),
+					totalPosts: select(coreStore).getEntityRecordsTotalItems(
+						"postType",
+						"post",
+						countQuery,
 					),
-					totalPosts: select( coreStore ).getEntityRecordsTotalItems(
-						'postType',
-						'post',
-						countQuery
-					),
-					hasResolved: select( coreStore ).hasFinishedResolution(
-						'getEntityRecords',
-						[ 'postType', 'post', query ]
+					hasResolved: select(coreStore).hasFinishedResolution(
+						"getEntityRecords",
+						["postType", "post", query],
 					),
 				};
 			},
-			[ postsPerPage, selectedCategory, currentIndex ]
+			[postsPerPage, selectedCategory, currentIndex, order, orderBy],
 		);
 
 		// Fetch categories for Inspector
-		const categories = useSelect( ( select ) => {
-			return select( coreStore ).getEntityRecords(
-				'taxonomy',
-				'category',
-				{
-					per_page: -1,
-				}
-			);
-		}, [] );
+		const categories = useSelect((select) => {
+			return select(coreStore).getEntityRecords("taxonomy", "category", {
+				per_page: -1,
+			});
+		}, []);
 
-		const formattedCategories = categories?.map( ( cat ) => ( {
+		const formattedCategories = categories?.map((cat) => ({
 			id: cat.id,
 			name: cat.name,
-		} ) );
+		}));
 
-		const maxPages = Math.ceil( ( totalPosts || 0 ) / postsPerPage );
+		const maxPages = Math.ceil((totalPosts || 0) / postsPerPage);
 
 		const handlePrev = () => {
-			if ( currentIndex > 0 ) {
-				setAttributes( { currentIndex: currentIndex - 1 } );
+			if (currentIndex > 0) {
+				setAttributes({ currentIndex: currentIndex - 1 });
 			}
 		};
 
 		const handleNext = () => {
-			if ( currentIndex < maxPages - 1 ) {
-				setAttributes( { currentIndex: currentIndex + 1 } );
+			if (currentIndex < maxPages - 1) {
+				setAttributes({ currentIndex: currentIndex + 1 });
 			}
 		};
 
 		return (
-			<div { ...blockProps }>
+			<div {...blockProps}>
 				<InspectorControls>
 					<PanelBody title="Grid Settings">
-						{ categories ? (
+						{categories ? (
 							<QueryControls
-								numberOfItems={ postsPerPage }
-								onNumberOfItemsChange={ ( val ) =>
-									setAttributes( {
+								numberOfItems={postsPerPage}
+								onNumberOfItemsChange={(val) =>
+									setAttributes({
 										postsPerPage: val,
 										currentIndex: 0,
-									} )
+									})
 								}
-								selectedCategoryId={ selectedCategory }
-								categoriesList={ formattedCategories }
-								onCategoryChange={ ( val ) =>
-									setAttributes( {
-										selectedCategory: val
-											? parseInt( val, 10 )
-											: undefined,
+								selectedCategoryId={selectedCategory}
+								categoriesList={formattedCategories}
+								onCategoryChange={(val) =>
+									setAttributes({
+										selectedCategory: val ? parseInt(val, 10) : undefined,
 										currentIndex: 0,
-									} )
+									})
 								}
 							/>
 						) : (
 							<Spinner />
-						) }
+						)}
+						<SelectControl
+							label="Order By"
+							value={orderBy}
+							options={[
+								{ label: "Date", value: "date" },
+								{ label: "Title", value: "title" },
+							]}
+							onChange={(val) => setAttributes({ orderBy: val })}
+						/>
+						<SelectControl
+							label="Order"
+							value={order}
+							options={[
+								{ label: "Ascending", value: "asc" },
+								{ label: "Descending", value: "desc" },
+							]}
+							onChange={(val) => setAttributes({ order: val })}
+						/>
 					</PanelBody>
 					<PanelColorSettings
 						title="SVG Color"
-						colorSettings={ [
+						colorSettings={[
 							{
 								value: svgColor,
-								onChange: ( value ) =>
-									setAttributes( { svgColor: value } ),
-								label: 'Background SVG Color',
+								onChange: (value) => setAttributes({ svgColor: value }),
+								label: "Background SVG Color",
 							},
-						] }
+						]}
 					/>
 				</InspectorControls>
 
-				{ ! hasResolved ? (
-					<Placeholder
-						icon={ <Spinner /> }
-						label="Fetching Members..."
-					/>
+				{!hasResolved ? (
+					<Placeholder icon={<Spinner />} label="Fetching Members..." />
 				) : posts?.length > 0 ? (
 					<div className="w-full flex flex-col items-center relative overflow-visible">
-						<BackgroundSVG color={ svgColor } />
+						<BackgroundSVG color={svgColor} />
 						<div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full mb-12 pointer-events-none z-1 relative">
-							{ posts.map( ( post ) => {
+							{posts.map((post) => {
 								const featuredImage =
-									post._embedded?.[
-										'wp:featuredmedia'
-									]?.[ 0 ]?.media_details?.sizes?.medium_large
-										?.source_url ||
-									post._embedded?.[
-										'wp:featuredmedia'
-									]?.[ 0 ]?.source_url;
+									post._embedded?.["wp:featuredmedia"]?.[0]?.media_details
+										?.sizes?.medium_large?.source_url ||
+									post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
 
 								return (
 									<article
-										key={ post.id }
+										key={post.id}
 										className="flex flex-col h-full text-center"
 									>
-										{ featuredImage && (
+										{featuredImage && (
 											<div className="mb-6 aspect-square w-full overflow-hidden">
 												<img
-													src={ featuredImage }
+													src={featuredImage}
 													alt=""
 													className="w-full h-full object-cover"
 												/>
 											</div>
-										) }
+										)}
 										<h3 className="text-2xl! font-bold mb-0 uppercase tracking-tight">
-											{ post.title?.rendered ||
-												'(No Title)' }
+											{post.title?.rendered || "(No Title)"}
 										</h3>
 										<p className="text-lg leading-normal!">
-											{ post.meta.team_member_role ||
-												'(No Role)' }
+											{post.meta.team_member_role || "(No Role)"}
 										</p>
 									</article>
 								);
-							} ) }
+							})}
 						</div>
 
-						{ /* Gallery Controls */ }
+						{/* Gallery Controls */}
 						<div className="flex items-center gap-12 mt-4">
 							<button
-								onClick={ handlePrev }
-								disabled={ currentIndex === 0 }
-								style={ {
+								onClick={handlePrev}
+								disabled={currentIndex === 0}
+								style={{
 									opacity: currentIndex === 0 ? 0.3 : 1,
-									background: 'none',
-									border: 'none',
-								} }
+									background: "none",
+									border: "none",
+								}}
 							>
 								<ArrowLeft />
 							</button>
 							<button
-								onClick={ handleNext }
-								disabled={ currentIndex >= maxPages - 1 }
-								style={ {
-									opacity:
-										currentIndex >= maxPages - 1 ? 0.3 : 1,
-									background: 'none',
-									border: 'none',
-								} }
+								onClick={handleNext}
+								disabled={currentIndex >= maxPages - 1}
+								style={{
+									opacity: currentIndex >= maxPages - 1 ? 0.3 : 1,
+									background: "none",
+									border: "none",
+								}}
 							>
 								<ArrowRight />
 							</button>
@@ -433,9 +438,9 @@ registerBlockType( metadata.name, {
 					</div>
 				) : (
 					<Placeholder label="No members found" icon="grid-view" />
-				) }
+				)}
 			</div>
 		);
 	},
 	save: () => null, // Dynamic block
-} );
+});

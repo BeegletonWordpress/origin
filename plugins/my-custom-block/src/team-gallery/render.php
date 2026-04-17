@@ -12,6 +12,8 @@ $args = array(
 	'post_type'      => 'post',
 	'posts_per_page' => $posts_per_page,
 	'cat'            => $selected_category,
+    'orderby'        => $attributes['orderBy'] ?? 'date',
+	'order'          => strtoupper($attributes['order'] ?? 'ASC'),
 );
 
 $query = new WP_Query($args);

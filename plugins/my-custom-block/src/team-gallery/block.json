@@ -22,6 +22,14 @@
 		"svgColor": {
 			"type": "string",
 			"default": "#edb239"
+		},
+		"orderBy": {
+			"type": "string",
+			"default": "date"
+		},
+		"order": {
+			"type": "string",
+			"default": "asc"
 		}
 	},
 	"supports": {
