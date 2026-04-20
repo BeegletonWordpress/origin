@@ -1,9 +1,9 @@
 import { registerBlockType } from "@wordpress/blocks";
 import {
-    useBlockProps,
-    useInnerBlocksProps,
-    InnerBlocks,
-    InspectorControls,
+	useBlockProps,
+	useInnerBlocksProps,
+	InnerBlocks,
+	InspectorControls,
 } from "@wordpress/block-editor";
 import { PanelBody, RangeControl } from "@wordpress/components";
 import { cloneElement } from "@wordpress/element";
@@ -17,93 +17,97 @@ const BLOCK_CLASSES = "relative z-10";
 const WRAPPER_CLASSES = "relative z-10 flex flex-col gap-4 p-8";
 
 registerBlockType(metadata.name, {
-    edit: function Edit({ attributes, setAttributes }) {
-        const { backgroundColor, style, cardWidth, cardHeight, offsetX, offsetY } = attributes;
+	edit: function Edit({ attributes, setAttributes }) {
+		const { backgroundColor, style, cardWidth, cardHeight, offsetX, offsetY } =
+			attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
 			customBgColor = `var(--wp--preset--color--${backgroundColor})`;
 		}
 
-        const blockProps = useBlockProps({
-            className: BLOCK_CLASSES,
-            style: {
-                "--handdrawn-stroke-color":
-                    customBgColor || "var(--wp--preset--color--primary, #000)",
-            },
-        });
+		const blockProps = useBlockProps({
+			className: BLOCK_CLASSES,
+			style: {
+				"--handdrawn-stroke-color":
+					customBgColor || "var(--wp--preset--color--primary, #000)",
+			},
+		});
 
 		const innerBlocksProps = useInnerBlocksProps(
 			{ className: WRAPPER_CLASSES },
 			{},
 		);
 
-        // Calculate transform: scale based on percentage and translate based on rem offsets
-        const svgStyle = {
-            transform: `scale(${(cardWidth ?? 100) / 100}, ${(cardHeight ?? 100) / 100}) translate(${(offsetX ?? 0)}rem, ${(offsetY ?? 0)}rem)`,
-            transformOrigin: "center",
-        };
+		// Calculate transform: scale based on percentage and translate based on rem offsets
+		const svgStyle = {
+			transform: `scale(${(cardWidth ?? 100) / 100}, ${
+				(cardHeight ?? 100) / 100
+			}) translate(${offsetX - 2 ?? -2}rem, ${offsetY - 1 ?? -1}rem)`,
+			transformOrigin: "center",
+		};
 
-        // Clone the SVG element constant and merge inline styles so we apply transforms directly to the SVG
-        const styledSvg = cloneElement(HAND_DRAWN_RING_SHAPE_2, {
-            style: {
-                ...(HAND_DRAWN_RING_SHAPE_2.props?.style || {}),
-                ...svgStyle,
-            },
-        });
+		// Clone the SVG element constant and merge inline styles so we apply transforms directly to the SVG
+		const styledSvg = cloneElement(HAND_DRAWN_RING_SHAPE_2, {
+			style: {
+				...(HAND_DRAWN_RING_SHAPE_2.props?.style || {}),
+				...svgStyle,
+			},
+		});
 
-        return (
-            <>
-                <InspectorControls>
-                    <PanelBody title="Size & Position" initialOpen={false}>
-                        <RangeControl
-                            label="Width (%)"
-                            value={cardWidth}
-                            onChange={(value) => setAttributes({ cardWidth: value })}
-                            min={50}
-                            max={200}
-                            step={5}
-                            help="Scale the card width relative to content (100% = default)"
-                        />
-                        <RangeControl
-                            label="Height (%)"
-                            value={cardHeight}
-                            onChange={(value) => setAttributes({ cardHeight: value })}
-                            min={50}
-                            max={200}
-                            step={5}
-                            help="Scale the card height relative to content (100% = default)"
-                        />
-                        <RangeControl
-                            label="Offset X (rem)"
-                            value={offsetX}
-                            onChange={(value) => setAttributes({ offsetX: value })}
-                            min={-5}
-                            max={5}
-                            step={0.1}
-                            help="Move the card left (negative) or right (positive)"
-                        />
-                        <RangeControl
-                            label="Offset Y (rem)"
-                            value={offsetY}
-                            onChange={(value) => setAttributes({ offsetY: value })}
-                            min={-5}
-                            max={5}
-                            step={0.1}
-                            help="Move the card up (negative) or down (positive)"
-                        />
-                    </PanelBody>
-                </InspectorControls>
+		return (
+			<>
+				<InspectorControls>
+					<PanelBody title="Size & Position" initialOpen={false}>
+						<RangeControl
+							label="Width (%)"
+							value={cardWidth}
+							onChange={(value) => setAttributes({ cardWidth: value })}
+							min={50}
+							max={200}
+							step={5}
+							help="Scale the card width relative to content (100% = default)"
+						/>
+						<RangeControl
+							label="Height (%)"
+							value={cardHeight}
+							onChange={(value) => setAttributes({ cardHeight: value })}
+							min={50}
+							max={200}
+							step={5}
+							help="Scale the card height relative to content (100% = default)"
+						/>
+						<RangeControl
+							label="Offset X (rem)"
+							value={offsetX}
+							onChange={(value) => setAttributes({ offsetX: value })}
+							min={-5}
+							max={5}
+							step={0.1}
+							help="Move the card left (negative) or right (positive)"
+						/>
+						<RangeControl
+							label="Offset Y (rem)"
+							value={offsetY}
+							onChange={(value) => setAttributes({ offsetY: value })}
+							min={-5}
+							max={5}
+							step={0.1}
+							help="Move the card up (negative) or down (positive)"
+						/>
+					</PanelBody>
+				</InspectorControls>
 
-                <div {...blockProps}>
-                    {styledSvg}
-                    <div {...innerBlocksProps} />
-                </div>
-            </>
-        );
-    },
-    save: function save({ attributes }) {
-        const { backgroundColor, style, cardWidth, cardHeight, offsetX, offsetY } = attributes;
+				<div {...blockProps}>
+					{styledSvg}
+					<div {...innerBlocksProps} />
+				</div>
+			</>
+		);
+	},
+	save: function save({ attributes }) {
+		const { backgroundColor, style, cardWidth, cardHeight, offsetX, offsetY } =
+			attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -118,25 +122,27 @@ registerBlockType(metadata.name, {
 			},
 		});
 
-        const svgStyle = {
-            transform: `scale(${(cardWidth ?? 100) / 100}, ${(cardHeight ?? 100) / 100}) translate(${(offsetX ?? 0)}rem, ${(offsetY ?? 0)}rem)`,
-            transformOrigin: "center",
-        };
+		const svgStyle = {
+			transform: `scale(${(cardWidth ?? 100) / 100}, ${
+				(cardHeight ?? 100) / 100
+			}) translate(${offsetX - 2 ?? -2}rem, ${offsetY - 1 ?? -1}rem)`,
+			transformOrigin: "center",
+		};
 
-        const styledSvgSave = cloneElement(HAND_DRAWN_RING_SHAPE_2, {
-            style: {
-                ...(HAND_DRAWN_RING_SHAPE_2.props?.style || {}),
-                ...svgStyle,
-            },
-        });
+		const styledSvgSave = cloneElement(HAND_DRAWN_RING_SHAPE_2, {
+			style: {
+				...(HAND_DRAWN_RING_SHAPE_2.props?.style || {}),
+				...svgStyle,
+			},
+		});
 
-        return (
-            <div {...blockProps}>
-                {styledSvgSave}
-                <div className={WRAPPER_CLASSES}>
-                    <InnerBlocks.Content />
-                </div>
-            </div>
-        );
-    },
+		return (
+			<div {...blockProps}>
+				{styledSvgSave}
+				<div className={WRAPPER_CLASSES}>
+					<InnerBlocks.Content />
+				</div>
+			</div>
+		);
+	},
 });

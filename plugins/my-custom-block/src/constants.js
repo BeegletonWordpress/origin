@@ -42,17 +42,17 @@ export const HAND_DRAWN_RING_SHAPE = (
 export const HAND_DRAWN_RING_SHAPE_2 = (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 769.11 390.29"
+		viewBox="-10 -10 789.11 410.29"
 		fill="none"
 		preserveAspectRatio="none"
-		className="absolute inset-0 w-full h-full z-0 -rotate-90 scale-y-125 scale-x-75"
+		className="absolute inset-0 w-full h-full z-0 scale-y-75 scale-x-110"
+		style={{ transform: "translate(-2rem, -1rem)" }}
 	>
 		<path
 			d="M5,177.09c17.77-30.05,44.88-53.46,73.44-73.54C239.75-11.82,463.89-27.36,639.58,64.68c66.22,31.87,134.09,94.44,123.42,174.06-12.78,81.38-98.32,121.5-172.15,134.44-136.2,27.56-314.95,11.97-419.37-86.97-48.74-49.38-58.37-135.94,7.98-173.62"
-			strokeWidth="8"
+			strokeWidth="15"
 			strokeMiterlimit="10"
 			strokeLinecap="round"
-			vectorEffect="non-scaling-stroke"
 		/>
 	</svg>
 );

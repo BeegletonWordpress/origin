@@ -77,7 +77,7 @@ export const RingShapeSVG = ({ spacing, color }) => (
 		<path
 			d="M5,302.83S-.26-7.75,997.29,5.41c997.55,13.16,1173.9,210.57,1150.21,297.42-23.69,86.86-224.85,291.06-1055.46,274.67C291.9,561.71,12.35,480.06,133.97,247.56"
 			stroke="currentColor"
-			strokeWidth="10"
+			strokeWidth="8"
 			strokeMiterlimit="10"
 			strokeLinecap="round"
 			vectorEffect="non-scaling-stroke"
