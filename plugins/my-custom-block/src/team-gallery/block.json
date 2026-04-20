@@ -12,6 +12,10 @@
 			"type": "number",
 			"default": 4
 		},
+		"mobilePostsPerPage": {
+			"type": "number",
+			"default": 1
+		},
 		"selectedCategory": {
 			"type": "number"
 		},

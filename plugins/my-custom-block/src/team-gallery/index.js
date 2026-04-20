@@ -243,6 +243,7 @@ registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
 		const {
 			postsPerPage,
+			mobilePostsPerPage,
 			selectedCategory,
 			currentIndex,
 			svgColor,
@@ -323,6 +324,7 @@ registerBlockType(metadata.name, {
 					<PanelBody title="Grid Settings">
 						{categories ? (
 							<QueryControls
+								label="Antal objekt (för desktop)"
 								numberOfItems={postsPerPage}
 								onNumberOfItemsChange={(val) =>
 									setAttributes({
@@ -342,6 +344,16 @@ registerBlockType(metadata.name, {
 						) : (
 							<Spinner />
 						)}
+						<QueryControls
+							label="Antal objekt (för mobil)"
+							numberOfItems={mobilePostsPerPage}
+							onNumberOfItemsChange={(val) =>
+								setAttributes({
+									mobilePostsPerPage: val,
+									currentIndex: 0,
+								})
+							}
+						/>
 						<SelectControl
 							label="Order By"
 							value={orderBy}

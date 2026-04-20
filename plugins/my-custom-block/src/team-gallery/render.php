@@ -4,10 +4,12 @@
  */
 
 $posts_per_page = $attributes['postsPerPage'] ?? 4;
+$mobile_posts_per_page = $attributes['mobilePostsPerPage'] ?? 1;
 $selected_category = $attributes['selectedCategory'] ?? '';
 $svg_color = $attributes['svgColor'] ?? '';
 
-// Initial query
+// Initial query - use desktop posts per page for initial server render
+// This ensures a good initial load with more content visible
 $args = array(
 	'post_type'      => 'post',
 	'posts_per_page' => $posts_per_page,
@@ -42,11 +44,17 @@ wp_interactivity_state( 'team-gallery', [
 ] );
 
 // Setup the context for local tracking
+// Include both desktop and mobile posts per page for client-side switching
 $context = [
-    'postsPerPage'     => (int) $posts_per_page,
-    'selectedCategory' => $selected_category ? (int) $selected_category : null,
-    'currentPage'      => 1,
-    'maxPages'         => (int) $max_pages,
+    'desktopPostsPerPage'  => (int) $posts_per_page,
+    'mobilePostsPerPage'   => (int) $mobile_posts_per_page,
+    'postsPerPage'         => (int) $posts_per_page, // Current value (changes with breakpoint)
+    'desktopMaxPages'      => (int) $max_pages, // Original max pages at desktop size
+    'maxPages'             => (int) $max_pages, // Current value (changes with breakpoint)
+    'selectedCategory'     => $selected_category ? (int) $selected_category : null,
+    'currentPage'          => 1,
+    'isMobile'             => false, // Will be set by client-side matchMedia listener
+    'isInitialized'        => false, // Flag to prevent showing wrong posts on mobile load
 ];
 ?>
 
@@ -56,6 +64,8 @@ $context = [
     data-wp-context='<?php echo wp_json_encode($context); ?>'
     data-order="<?php echo esc_attr(strtoupper($attributes['order'] ?? 'ASC')); ?>"
     data-orderby="<?php echo esc_attr($attributes['orderBy'] ?? 'date'); ?>"
+    data-wp-init="callbacks.initResponsivePagination"
+    data-wp-on-window--resize="callbacks.updateBreakpoint"
 >
     <!-- Background SVG -->
     <div class="absolute max-w-375 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[135%] h-auto -z-10 pointer-events-none">
@@ -91,7 +101,7 @@ $context = [
     <!-- Main Grid Content -->
     <div class="team-gallery-content w-full flex flex-col items-center">
         <!-- Post Grid Container -->
-        <div class="grid grid-cols-1 md:grid-cols-4 min-h-107 gap-4 w-full mb-12 relative" data-wp-class--opacity-50="state.isLoading">
+        <div class="grid grid-cols-1 md:grid-cols-4 min-h-107 gap-4 w-full mb-12 relative" data-wp-class--opacity-50="state.isLoading" data-wp-class--invisible="!context.isInitialized">
             
             <!-- Loading Spinner -->
             <div 
