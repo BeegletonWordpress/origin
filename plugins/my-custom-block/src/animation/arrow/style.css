@@ -13,3 +13,7 @@
 	stroke-linecap: round;
 	stroke-linejoin: round;
 }
+
+.wp-block-my-custom-block-animation-arrow {
+	margin-block-start: 0 !important;
+}

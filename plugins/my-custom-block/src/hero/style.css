@@ -1,12 +1,11 @@
 .wp-block-create-block-hero {
 	padding-left: 2rem;
 	position: relative;
-	min-height: 600px;
+	min-height: 550px;
 	height: fit-content;
 	display: flex;
 	align-items: center;
 	overflow: hidden;
-	margin-top: 5vh !important;
 }
 
 /* Base columns container */

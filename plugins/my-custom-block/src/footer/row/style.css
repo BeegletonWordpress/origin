@@ -1,1 +1,10 @@
 /* Custom styles for Footer Row */
+
+.wp-block-create-block-my-footer-row {
+  justify-content: space-evenly;
+}
+
+.wp-block-create-block-my-footer-row.heading {
+    width: 100%;
+    flex: auto;
+}
