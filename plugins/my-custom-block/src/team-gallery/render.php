@@ -49,9 +49,10 @@ $context = [
     'desktopPostsPerPage'  => (int) $posts_per_page,
     'mobilePostsPerPage'   => (int) $mobile_posts_per_page,
     'postsPerPage'         => (int) $posts_per_page, // Current value (changes with breakpoint)
+    'totalPosts'           => (int) $total_posts, // Total posts from query (used to calculate maxPages)
+    'maxPages'             => (int) $max_pages, // Current value (changes with breakpoint)
     'selectedCategory'     => $selected_category ? (int) $selected_category : null,
     'currentPage'          => 1,
-    'maxPages'             => (int) $max_pages,
     'isMobile'             => false, // Will be set by client-side matchMedia listener
     'isInitialized'        => false, // Flag to prevent showing wrong posts on mobile load
 ];

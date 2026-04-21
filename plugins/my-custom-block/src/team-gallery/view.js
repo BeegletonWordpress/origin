@@ -164,10 +164,8 @@ const { state, actions } = store("team-gallery", {
 				? context.mobilePostsPerPage
 				: context.desktopPostsPerPage;
 
-			// Calculate total pages with new posts per page
-			// Use desktopMaxPages to estimate total posts (rendered at desktop size)
-			const estimatedTotalPosts = context.desktopMaxPages * context.desktopPostsPerPage;
-			const newMaxPages = Math.ceil(estimatedTotalPosts / newPostsPerPage);
+			// Calculate new max pages based on total posts and new posts per page
+			const newMaxPages = Math.ceil(context.totalPosts / newPostsPerPage);
 
 			// Reset to page 1 on breakpoint change
 			const newCurrentPage = 1;
@@ -325,11 +323,8 @@ const { state, actions } = store("team-gallery", {
 					? storedContext.mobilePostsPerPage
 					: storedContext.desktopPostsPerPage;
 
-				// Calculate total pages with new posts per page
-				// Use desktopMaxPages to estimate total posts (rendered at desktop size)
-				const estimatedTotalPosts =
-					storedContext.desktopMaxPages * storedContext.desktopPostsPerPage;
-				const newMaxPages = Math.ceil(estimatedTotalPosts / newPostsPerPage);
+				// Calculate new max pages based on total posts and new posts per page
+				const newMaxPages = Math.ceil(storedContext.totalPosts / newPostsPerPage);
 
 				// Reset to page 1 on breakpoint change
 				const newCurrentPage = 1;
