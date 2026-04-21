@@ -321,39 +321,7 @@ registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				<InspectorControls>
-					<PanelBody title="Grid Settings">
-						{categories ? (
-							<QueryControls
-								label="Antal objekt (för desktop)"
-								numberOfItems={postsPerPage}
-								onNumberOfItemsChange={(val) =>
-									setAttributes({
-										postsPerPage: val,
-										currentIndex: 0,
-									})
-								}
-								selectedCategoryId={selectedCategory}
-								categoriesList={formattedCategories}
-								onCategoryChange={(val) =>
-									setAttributes({
-										selectedCategory: val ? parseInt(val, 10) : undefined,
-										currentIndex: 0,
-									})
-								}
-							/>
-						) : (
-							<Spinner />
-						)}
-						<QueryControls
-							label="Antal objekt (för mobil)"
-							numberOfItems={mobilePostsPerPage}
-							onNumberOfItemsChange={(val) =>
-								setAttributes({
-									mobilePostsPerPage: val,
-									currentIndex: 0,
-								})
-							}
-						/>
+					<PanelBody title="Query">
 						<SelectControl
 							label="Order By"
 							value={orderBy}
@@ -373,6 +341,37 @@ registerBlockType(metadata.name, {
 							onChange={(val) => setAttributes({ order: val })}
 						/>
 					</PanelBody>
+
+					<PanelBody title="Desktop Grid">
+						{categories ? (
+							<QueryControls
+								numberOfItems={postsPerPage}
+								onNumberOfItemsChange={(val) =>
+									setAttributes({ postsPerPage: val, currentIndex: 0 })
+								}
+								selectedCategoryId={selectedCategory}
+								categoriesList={formattedCategories}
+								onCategoryChange={(val) =>
+									setAttributes({
+										selectedCategory: val ? parseInt(val, 10) : undefined,
+										currentIndex: 0,
+									})
+								}
+							/>
+						) : (
+							<Spinner />
+						)}
+					</PanelBody>
+
+					<PanelBody title="Mobile Grid">
+						<QueryControls
+							numberOfItems={mobilePostsPerPage}
+							onNumberOfItemsChange={(val) =>
+								setAttributes({ mobilePostsPerPage: val, currentIndex: 0 })
+							}
+						/>
+					</PanelBody>
+
 					<PanelColorSettings
 						title="SVG Color"
 						colorSettings={[
