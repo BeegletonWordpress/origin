@@ -49,10 +49,9 @@ $context = [
     'desktopPostsPerPage'  => (int) $posts_per_page,
     'mobilePostsPerPage'   => (int) $mobile_posts_per_page,
     'postsPerPage'         => (int) $posts_per_page, // Current value (changes with breakpoint)
-    'desktopMaxPages'      => (int) $max_pages, // Original max pages at desktop size
-    'maxPages'             => (int) $max_pages, // Current value (changes with breakpoint)
     'selectedCategory'     => $selected_category ? (int) $selected_category : null,
     'currentPage'          => 1,
+    'maxPages'             => (int) $max_pages,
     'isMobile'             => false, // Will be set by client-side matchMedia listener
     'isInitialized'        => false, // Flag to prevent showing wrong posts on mobile load
 ];
@@ -68,7 +67,7 @@ $context = [
     data-wp-on-window--resize="callbacks.updateBreakpoint"
 >
     <!-- Background SVG -->
-    <div class="absolute max-w-375 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[135%] h-auto -z-10 pointer-events-none">
+    <div class="absolute max-w-375 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[135%] h-auto -z-10 pointer-events-none hidden md:block">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1704.1 794.1" style="color: <?php echo esc_attr($svg_color ?? "inherit"); ?>;">
             <rect fill="none" x="1560.2" y="-1364.5" width="1644" height="363" transform="translate(275.1 440.2) rotate(-11.2)"/>
             <rect fill="none" x="2025" y="-2061.1" width="514.8" height="1400.9" transform="translate(3055 1181.7) rotate(-76.1)"/>
