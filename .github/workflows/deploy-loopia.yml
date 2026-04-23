@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'plugins/my-custom-block/**'
+      - '.github/workflows/deploy-loopia.yml'
 
 jobs:
   deploy:
@@ -13,19 +16,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-          cache-dependency-path: /plugins/my-custom-block/package-lock.json
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'plugins/my-custom-block/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
-        working-directory: /plugins/my-custom-block
+        working-directory: plugins/my-custom-block
 
       - name: Build plugin
         run: npm run build
+        working-directory: plugins/my-custom-block
 
       - name: Prepare SSH
         run: |
@@ -34,24 +38,18 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.LOOPIA_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Create deploy package
+      - name: Prepare deploy directory
         run: |
           rm -rf .deploy
           mkdir -p .deploy
 
           rsync -av \
-            --exclude=".git" \
-            --exclude=".github" \
             --exclude="node_modules" \
             --exclude="src" \
-            --exclude="tests" \
-            --exclude=".editorconfig" \
-            --exclude=".eslintrc*" \
-            --exclude=".gitignore" \
-            --exclude="package-lock.json" \
             --exclude="package.json" \
-            --exclude="webpack.config.js" \
-            ./ .deploy/
+            --exclude="package-lock.json" \
+            --exclude="postcss.config.js" \
+            plugins/my-custom-block/ .deploy/
 
       - name: Deploy to Loopia
         run: |
