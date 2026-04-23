@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
+    paths: 
       - 'plugins/my-custom-block/**'
       - '.github/workflows/deploy-loopia.yml'
 
