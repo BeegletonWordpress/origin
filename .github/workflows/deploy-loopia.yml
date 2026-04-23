@@ -34,26 +34,27 @@ jobs:
       - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.LOOPIA_SSH_KEY }}" > ~/.ssh/id_ed25519
+          cat > ~/.ssh/id_ed25519 <<'EOF'
+          ${{ secrets.LOOPIA_SSH_KEY }}
+          EOF
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H "${{ secrets.LOOPIA_HOST }}" >> ~/.ssh/known_hosts
-
-      - name: Prepare deploy directory
+      
+      - name: Verify SSH key
         run: |
-          rm -rf .deploy
-          mkdir -p .deploy
-
-          rsync -av \
-            --exclude="node_modules" \
-            --exclude="src" \
-            --exclude="package.json" \
-            --exclude="package-lock.json" \
-            --exclude="postcss.config.js" \
-            plugins/my-custom-block/ .deploy/
-
+          ssh-keygen -lf ~/.ssh/id_ed25519
+      
+      - name: Test SSH login
+        run: |
+          ssh -i ~/.ssh/id_ed25519 \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            "${{ secrets.LOOPIA_USER }}@${{ secrets.LOOPIA_HOST }}" \
+            "pwd && whoami"
+      
       - name: Deploy to Loopia
         run: |
           rsync -az --delete \
-            -e "ssh -i ~/.ssh/id_ed25519" \
+            -e "ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
             .deploy/ \
             "${{ secrets.LOOPIA_USER }}@${{ secrets.LOOPIA_HOST }}:${{ secrets.LOOPIA_PATH }}/"
