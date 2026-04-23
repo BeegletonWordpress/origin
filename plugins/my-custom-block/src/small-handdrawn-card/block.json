@@ -22,7 +22,7 @@
 			"padding": true,
 			"margin": true
 		},
-		"align": [ "left", "center", "right" ],
+		"align": ["left", "center", "right"],
 		"html": false,
 		"typography": {
 			"fontSize": true,
@@ -38,29 +38,33 @@
 			}
 		}
 	},
-    "attributes": {
-        "style": {
-            "type": "object"
-        },
-        "cardWidth": {
-            "type": "number",
-            "default": 100
-        },
-        "cardHeight": {
-            "type": "number",
-            "default": 100
-        },
-        "offsetX": {
-            "type": "number",
-            "default": 0
-        },
-        "offsetY": {
-            "type": "number",
-            "default": 0
-        }
-    },
+	"attributes": {
+		"style": {
+			"type": "object"
+		},
+		"svgToggle": {
+			"type": "boolean",
+			"default": true
+		},
+		"cardWidth": {
+			"type": "number",
+			"default": 100
+		},
+		"cardHeight": {
+			"type": "number",
+			"default": 100
+		},
+		"offsetX": {
+			"type": "number",
+			"default": 0
+		},
+		"offsetY": {
+			"type": "number",
+			"default": 0
+		}
+	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": [ "file:./index.css", "file:./style-index.css" ],
+	"style": ["file:./index.css", "file:./style-index.css"],
 	"editorStyle": "file:./editor.css"
 }

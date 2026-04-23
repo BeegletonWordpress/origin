@@ -5,21 +5,32 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from "@wordpress/block-editor";
-import { PanelBody, RangeControl } from "@wordpress/components";
+import {
+	PanelBody,
+	RangeControl,
+	CheckboxControl,
+} from "@wordpress/components";
 import { cloneElement } from "@wordpress/element";
 import metadata from "./block.json";
-import { HAND_DRAWN_RING_SHAPE_2 } from "../constants";
+import { HAND_DRAWN_RING_SHAPE_4 } from "../constants";
 import "../index.css";
 import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES = "relative z-10";
-const WRAPPER_CLASSES = "relative z-10 flex flex-col gap-4 p-8";
+const WRAPPER_CLASSES = "relative z-10 flex flex-col gap-4 p-8 text-center";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { backgroundColor, style, cardWidth, cardHeight, offsetX, offsetY } =
-			attributes;
+		const {
+			backgroundColor,
+			style,
+			cardWidth,
+			cardHeight,
+			offsetX,
+			offsetY,
+			svgToggle,
+		} = attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -45,12 +56,13 @@ registerBlockType(metadata.name, {
 				(cardHeight ?? 100) / 100
 			}) translate(${offsetX - 2 ?? -2}rem, ${offsetY - 1 ?? -1}rem)`,
 			transformOrigin: "center",
+			display: svgToggle ? "block" : "none",
 		};
 
 		// Clone the SVG element constant and merge inline styles so we apply transforms directly to the SVG
-		const styledSvg = cloneElement(HAND_DRAWN_RING_SHAPE_2, {
+		const styledSvg = cloneElement(HAND_DRAWN_RING_SHAPE_4, {
 			style: {
-				...(HAND_DRAWN_RING_SHAPE_2.props?.style || {}),
+				...(HAND_DRAWN_RING_SHAPE_4.props?.style || {}),
 				...svgStyle,
 			},
 		});
@@ -58,7 +70,14 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Size & Position" initialOpen={false}>
+					<PanelBody title="SVG Visibility" initialOpen={false}>
+						<CheckboxControl
+							label="Show SVG"
+							checked={svgToggle}
+							onChange={(value) => setAttributes({ svgToggle: value })}
+						/>
+					</PanelBody>
+					<PanelBody title="SVG Size & Position" initialOpen={false}>
 						<RangeControl
 							label="Width (%)"
 							value={cardWidth}
@@ -106,8 +125,15 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: function save({ attributes }) {
-		const { backgroundColor, style, cardWidth, cardHeight, offsetX, offsetY } =
-			attributes;
+		const {
+			backgroundColor,
+			style,
+			cardWidth,
+			cardHeight,
+			offsetX,
+			offsetY,
+			svgToggle,
+		} = attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -127,11 +153,12 @@ registerBlockType(metadata.name, {
 				(cardHeight ?? 100) / 100
 			}) translate(${offsetX - 2 ?? -2}rem, ${offsetY - 1 ?? -1}rem)`,
 			transformOrigin: "center",
+			display: svgToggle ? "block" : "none",
 		};
 
-		const styledSvgSave = cloneElement(HAND_DRAWN_RING_SHAPE_2, {
+		const styledSvgSave = cloneElement(HAND_DRAWN_RING_SHAPE_4, {
 			style: {
-				...(HAND_DRAWN_RING_SHAPE_2.props?.style || {}),
+				...(HAND_DRAWN_RING_SHAPE_4.props?.style || {}),
 				...svgStyle,
 			},
 		});

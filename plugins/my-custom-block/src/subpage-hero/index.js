@@ -74,6 +74,8 @@ registerBlockType(metadata.name, {
 				document.querySelector('iframe[name="editor-canvas"]')?.contentDocument
 					?.body || document.body;
 
+			console.log("Applying theme colors to editor canvas:", canvas);
+
 			canvas.style.setProperty("--page-theme-bg", activeTheme.bg);
 			canvas.style.setProperty("--page-theme-text", activeTheme.text);
 			canvas.style.setProperty("--page-theme-svg", svgColor || activeTheme.svg);
@@ -198,7 +200,7 @@ registerBlockType(metadata.name, {
 							</div>
 						</div>
 
-						<div className="w-full md:flex-1 mt-24">
+						<div className="w-full h-[40vh] mt-0 md:h-auto md:flex-1 md:mt-24">
 							<MediaUploadCheck>
 								<MediaUpload
 									onSelect={onSelectImage}
@@ -311,7 +313,7 @@ registerBlockType(metadata.name, {
 						</div>
 					</div>
 
-					<div className="w-full md:flex-1 mt-24">
+					<div className="w-full h-[40vh] mt-0 md:h-auto md:flex-1 md:mt-24">
 						{imageUrl && (
 							<div className="subpage-hero-image-wrapper h-full">
 								<img

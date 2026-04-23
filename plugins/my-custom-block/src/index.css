@@ -30,7 +30,7 @@ header.wp-block-template-part {
   z-index: 9999;
 }
 
-body {
+html {
   overflow-x: hidden;
 }
 
@@ -65,4 +65,14 @@ a,
 
 .fluentform .check-personal-data .ff-el-tc label.ff_tc_label>span {
   padding-top: 0 !important;
+}
+
+.wp-block-navigation:not(.has-background) .wp-block-navigation__responsive-container.is-menu-open.is-menu-open {
+  background-color: var(--page-theme-bg, #eeb137);
+  color: var(--page-theme-text, #3b3632);
+}
+
+.wp-block-navigation__responsive-container-content .wp-block-navigation-item__content,
+.wp-block-navigation__responsive-container-close svg {
+  color: var(--page-theme-text, #3b3632);
 }
