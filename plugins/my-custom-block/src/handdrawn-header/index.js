@@ -8,6 +8,8 @@ import {
 } from "@wordpress/block-editor";
 import { PanelBody, RangeControl, SelectControl } from "@wordpress/components";
 import metadata from "./block.json";
+import "../index.css";
+import "./style.css";
 
 export const OldUnderlineSVG = ({ spacing, color }) => (
 	<svg
@@ -97,7 +99,7 @@ export const RingShapeSVG = ({ spacing, color }) => (
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 2304.49 624.09"
 		preserveAspectRatio="none"
-		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg z-0 scale-x-110"
+		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg z-0 scale-x-110 max-sm:-top-[6vw]"
 		style={{
 			bottom: `-${spacing}rem`,
 			color: color || "inherit",
