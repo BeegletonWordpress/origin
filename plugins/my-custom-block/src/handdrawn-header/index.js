@@ -62,6 +62,36 @@ export const UnderlineSVG = ({ spacing, color, width }) => {
 	);
 };
 
+export const AltUnderlineSVG = ({ spacing, color, width }) => {
+	const svgClasses = width
+		? "absolute left-1/2 -translate-x-1/2 h-10 pointer-events-none handdrawn-underline-svg z-1 rotate-4"
+		: "absolute left-0 w-full h-10 pointer-events-none handdrawn-underline-svg z-1 rotate-4";
+
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 1389.48 114.68"
+			className={svgClasses}
+			style={{
+				bottom: `-${spacing}rem`,
+				color: color || "inherit",
+				...(width && { width: `${width}px` }),
+			}}
+			preserveAspectRatio="none"
+			fill="none"
+		>
+			<path
+				d="M.22,58.89c409.43-17.94,819.55-20,1229.13-6.16-376.42-28.84-754.24,12.48-1129.26,56.92-3.39.4-4.45-4.45-1.2-5.5,64.93-20.81,133.44-29.35,201.35-37.03C661.8,26.29,1025.62,5.54,1389.47,5"
+				stroke="currentColor"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+				strokeWidth="10px"
+				className="handdrawn-underline-path"
+			/>
+		</svg>
+	);
+};
+
 export const RingShapeSVG = ({ spacing, color }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +149,7 @@ registerBlockType(metadata.name, {
 						{
 							level: 2,
 							placeholder: "Add a header...",
-							className: "inline-block",
+							className: "inline-block z-10",
 						},
 					],
 				],
@@ -136,40 +166,44 @@ registerBlockType(metadata.name, {
 							value={underlineShape}
 							options={[
 								{ label: "Default Underline", value: "underline" },
+								{ label: "Alternate Underline", value: "alt-underline" },
 								{ label: "Ring Shape", value: "ring" },
 							]}
 							onChange={(value) => setAttributes({ underlineShape: value })}
 						/>
-						{underlineShape === "underline" && (
-							<>
-								<RangeControl
-									label="Underline Spacing (rem)"
-									value={underlineSpacing}
-									onChange={(value) =>
-										setAttributes({ underlineSpacing: value })
-									}
-									min={0}
-									max={10}
-									step={0.1}
-								/>
-								<RangeControl
-									label="Minimum Underline Width (px)"
-									value={minWidth}
-									onChange={(value) => setAttributes({ minWidth: value })}
-									min={50}
-									max={1000}
-									step={1}
-								/>
-								<RangeControl
-									label="Underline Width (px)"
-									value={underlineWidth}
-									onChange={(value) => setAttributes({ underlineWidth: value })}
-									min={100}
-									max={1000}
-									step={10}
-								/>
-							</>
-						)}
+						{underlineShape === "underline" &&
+							underlineShape === "alt-underline" && (
+								<>
+									<RangeControl
+										label="Underline Spacing (rem)"
+										value={underlineSpacing}
+										onChange={(value) =>
+											setAttributes({ underlineSpacing: value })
+										}
+										min={0}
+										max={10}
+										step={0.1}
+									/>
+									<RangeControl
+										label="Minimum Underline Width (px)"
+										value={minWidth}
+										onChange={(value) => setAttributes({ minWidth: value })}
+										min={50}
+										max={1000}
+										step={1}
+									/>
+									<RangeControl
+										label="Underline Width (px)"
+										value={underlineWidth}
+										onChange={(value) =>
+											setAttributes({ underlineWidth: value })
+										}
+										min={100}
+										max={1000}
+										step={10}
+									/>
+								</>
+							)}
 						{underlineShape === "ring" && (
 							<RangeControl
 								label="Ring Spacing (rem)"
@@ -197,6 +231,12 @@ registerBlockType(metadata.name, {
 						{children}
 						{underlineShape === "underline" ? (
 							<UnderlineSVG
+								spacing={underlineSpacing}
+								color={svgColor}
+								width={underlineWidth}
+							/>
+						) : underlineShape === "alt-underline" ? (
+							<AltUnderlineSVG
 								spacing={underlineSpacing}
 								color={svgColor}
 								width={underlineWidth}
@@ -235,6 +275,12 @@ registerBlockType(metadata.name, {
 					<InnerBlocks.Content />
 					{underlineShape === "underline" ? (
 						<UnderlineSVG
+							spacing={underlineSpacing}
+							color={svgColor}
+							width={underlineWidth}
+						/>
+					) : underlineShape === "alt-underline" ? (
+						<AltUnderlineSVG
 							spacing={underlineSpacing}
 							color={svgColor}
 							width={underlineWidth}

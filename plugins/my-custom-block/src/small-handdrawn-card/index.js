@@ -18,7 +18,7 @@ import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES = "relative z-10";
-const WRAPPER_CLASSES = "relative z-10 flex flex-col gap-4 p-8 text-center";
+const WRAPPER_CLASSES = "relative z-10 flex flex-col gap-4 max-w-[360px]";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
