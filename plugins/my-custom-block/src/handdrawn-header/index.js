@@ -99,9 +99,10 @@ export const RingShapeSVG = ({ spacing, color }) => (
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 2304.49 624.09"
 		preserveAspectRatio="none"
-		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg z-0 scale-x-110 max-sm:-top-[6vw]"
+		className="absolute left-0 w-full pointer-events-none handdrawn-ring-svg z-0 scale-x-110"
 		style={{
-			bottom: `-${spacing}rem`,
+			top: "50%",
+			transform: `translateY(${spacing}%)`,
 			color: color || "inherit",
 		}}
 		fill="none"
@@ -109,10 +110,9 @@ export const RingShapeSVG = ({ spacing, color }) => (
 		<path
 			d="M5,302.83S-.26-7.75,997.29,5.41c997.55,13.16,1173.9,210.57,1150.21,297.42-23.69,86.86-224.85,291.06-1055.46,274.67C291.9,561.71,12.35,480.06,133.97,247.56"
 			stroke="currentColor"
-			strokeWidth="8"
+			strokeWidth="30"
 			strokeMiterlimit="10"
 			strokeLinecap="round"
-			vectorEffect="non-scaling-stroke"
 			transform="translate(50, 0)"
 		/>
 	</svg>
@@ -208,12 +208,12 @@ registerBlockType(metadata.name, {
 							)}
 						{underlineShape === "ring" && (
 							<RangeControl
-								label="Ring Spacing (rem)"
+								label="Ring Spacing (%)"
 								value={ringSpacing}
 								onChange={(value) => setAttributes({ ringSpacing: value })}
-								min={0}
-								max={10}
-								step={0.1}
+								min={-200}
+								max={200}
+								step={1}
 							/>
 						)}
 					</PanelBody>
