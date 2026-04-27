@@ -35,10 +35,9 @@
 			"selector": "h1",
 			"default": "Customer Case Hero"
 		},
-		"subheader": {
-			"type": "string",
-			"source": "html",
-			"selector": "h2"
+		"tags": {
+			"type": "array",
+			"default": []
 		},
 		"imageUrl": {
 			"type": "string",

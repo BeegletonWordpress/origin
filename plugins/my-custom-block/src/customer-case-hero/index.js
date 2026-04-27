@@ -11,6 +11,8 @@ import {
 import {
 	Button,
 	PanelBody,
+	PanelRow,
+	TextControl,
 	SelectControl,
 	ToggleControl,
 } from "@wordpress/components";
@@ -59,6 +61,7 @@ registerBlockType(metadata.name, {
 		const {
 			tagline,
 			title,
+			tags,
 			imageUrl,
 			imageAlt,
 			svgColor,
@@ -94,6 +97,22 @@ registerBlockType(metadata.name, {
 				imageId: media.id,
 				imageAlt: media.alt,
 			});
+		};
+
+		const addTag = () => {
+			setAttributes({ tags: [...tags, ""] });
+		};
+
+		const removeTag = (index) => {
+			const newTags = [...tags];
+			newTags.splice(index, 1);
+			setAttributes({ tags: newTags });
+		};
+
+		const updateTag = (index, value) => {
+			const newTags = [...tags];
+			newTags[index] = value;
+			setAttributes({ tags: newTags });
 		};
 
 		const blockProps = useBlockProps({
@@ -133,26 +152,51 @@ registerBlockType(metadata.name, {
 							},
 						]}
 					/>
+					<PanelBody title="Tags">
+						{tags.map((tag, index) => (
+							<PanelRow key={index}>
+								<div className="flex gap-2 w-full">
+									<TextControl
+										value={tag}
+										onChange={(value) => updateTag(index, value)}
+										placeholder={`Tag ${index + 1}`}
+										className="flex-1"
+									/>
+									<Button
+										onClick={() => removeTag(index)}
+										icon="no-alt"
+										className="components-tab-button"
+									/>
+								</div>
+							</PanelRow>
+						))}
+						<Button onClick={addTag} variant="secondary" className="mt-2">
+							Add Tag
+						</Button>
+					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
-						className={`flex flex-col py-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch ${
+						className={`flex flex-col pt-16 pb-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 ${
 							reverseLayout ? "md:flex-row-reverse" : ""
 						}`}
 					>
 						<div className="w-full md:w-[40%] relative">
 							<div
-								className={`md:relative ${
+								className={`md:relative z-9 ${
 									reverseLayout ? "md:ml-auto" : "md:mr-auto"
 								}`}
+								style={{ isolation: "isolate" }}
 							>
-								<RichText
-									tagName="p"
-									value={tagline}
-									onChange={(value) => setAttributes({ tagline: value })}
-									placeholder="Tagline..."
-									className="has-cas-red-ink-font-family text-5xl"
-								/>
+								{tagline && (
+									<RichText
+										tagName="p"
+										value={tagline}
+										onChange={(value) => setAttributes({ tagline: value })}
+										placeholder="Tagline..."
+										className="has-cas-red-ink-font-family text-5xl"
+									/>
+								)}
 								<RichText
 									tagName="h1"
 									value={title}
@@ -160,13 +204,25 @@ registerBlockType(metadata.name, {
 									placeholder="Hero Title"
 									className="text-pretty whitespace-nowrap"
 								/>
+								{tags.length > 0 && (
+									<div className="flex flex-wrap gap-2 mt-3">
+										{tags.map((tag, index) => (
+											<span
+												key={index}
+												className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
+											>
+												{tag}
+											</span>
+										))}
+									</div>
+								)}
 								<div className="scale-125 -rotate-2">
 									<UnderlineSVG color={svgColor || activeTheme.svg} />
 								</div>
 							</div>
 						</div>
 
-						<div className="w-full h-[40vh] mt-0 max-w-128.75">
+						<div className="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
 							<InnerBlocks
 								allowedBlocks={[
 									"core/heading",
@@ -198,6 +254,7 @@ registerBlockType(metadata.name, {
 		const {
 			tagline,
 			title,
+			tags,
 			imageUrl,
 			imageAlt,
 			svgColor,
@@ -231,7 +288,7 @@ registerBlockType(metadata.name, {
 					}}
 				/>
 				<div
-					className={`flex flex-col py-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 ${
+					className={`flex flex-col pt-16 pb-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 ${
 						reverseLayout ? "md:flex-row-reverse" : ""
 					}`}
 				>
@@ -250,13 +307,25 @@ registerBlockType(metadata.name, {
 								/>
 							)}
 							<RichText.Content tagName="h1" value={title} />
+							{tags.length > 0 && (
+								<div className="flex flex-wrap gap-2 mt-3">
+									{tags.map((tag, index) => (
+										<span
+											key={index}
+											className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
+										>
+											{tag}
+										</span>
+									))}
+								</div>
+							)}
 							<div className="scale-125 -rotate-2">
 								<UnderlineSVG color={svgColor || activeTheme.svg} />
 							</div>
 						</div>
 					</div>
 
-					<div className="w-full h-[40vh] mt-0 max-w-128.75">
+					<div className="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
 						{imageUrl && (
 							<div className="customer-case-hero-content">
 								<InnerBlocks.Content />
