@@ -34,11 +34,9 @@ jobs:
       - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh
-          cat > ~/.ssh/id_ed25519 <<'EOF'
-          ${{ secrets.LOOPIA_SSH_KEY }}
-          EOF
+          printf '%s\n' "${{ secrets.LOOPIA_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H "${{ secrets.LOOPIA_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -H ssh.loopia.se >> ~/.ssh/known_hosts
       
       - name: Verify SSH key
         run: |
@@ -46,10 +44,10 @@ jobs:
       
       - name: Test SSH login
         run: |
-          ssh -i ~/.ssh/id_ed25519 \
+          ssh -vvv -i ~/.ssh/id_ed25519 \
             -o IdentitiesOnly=yes \
             -o StrictHostKeyChecking=yes \
-            "${{ secrets.LOOPIA_USER }}@${{ secrets.LOOPIA_HOST }}" \
+            c2dge7@ssh.loopia.se \
             "pwd && whoami"
       
       - name: Deploy to Loopia
