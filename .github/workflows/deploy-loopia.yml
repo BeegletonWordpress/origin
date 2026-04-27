@@ -49,6 +49,22 @@ jobs:
             -o StrictHostKeyChecking=yes \
             c2dge7@ssh.loopia.se \
             "pwd && whoami"
+
+      - name: Prepare deploy directory
+        run: |
+          rm -rf .deploy
+          mkdir -p .deploy
+
+          rsync -av \
+            --exclude="node_modules" \
+            --exclude="src" \
+            --exclude="package.json" \
+            --exclude="package-lock.json" \
+            --exclude="postcss.config.js" \
+            plugins/my-custom-block/ .deploy/
+
+          echo "Deploy contents:"
+          find .deploy -maxdepth 3 | sort
       
       - name: Deploy to Loopia
         run: |
