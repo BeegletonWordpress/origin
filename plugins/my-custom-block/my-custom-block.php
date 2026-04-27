@@ -57,6 +57,48 @@ function create_block_my_custom_block_block_init() {
 }
 add_action( 'init', 'create_block_my_custom_block_block_init' );
 
+function register_customer_case_post_type() {
+    $labels = [
+        'name' => 'Customer Cases',
+        'singular_name' => 'Customer Case',
+        'menu_name' => 'Customer Cases',
+        'add_new' => 'Add New',
+        'add_new_item' => 'Add New Customer Case',
+        'edit_item' => 'Edit Customer Case',
+        'new_item'           => 'New Customer Case',
+        'view_item'          => 'View Customer Case',
+        'search_items'       => 'Search Customer Cases',
+        'not_found'          => 'No customer cases found',
+        'not_found_in_trash' => 'No customer cases found in trash',
+    ];
+
+    $args = [
+        'labels'              => $labels,
+        'public'              => true,
+        'publicly_queryable'  => true,
+        'show_ui'             => true,
+        'show_in_menu'        => true,
+        'show_in_rest'        => true,
+        'query_var'           => true,
+        'rewrite'             => ['slug' => 'case'],
+        'capability_type'     => 'post',
+        'has_archive'         => true,
+        'hierarchical'        => false,
+        'menu_position'       => 5,
+        'menu_icon'           => 'dashicons-businessman',
+        'supports'            => [
+            'title',
+            'editor',
+            'thumbnail',
+            'excerpt',
+            'custom-fields',
+        ],
+    ];
+
+    register_post_type('customer_case', $args);
+}
+add_action('init', 'register_customer_case_post_type');
+
 /**
  * Enqueue Lenis smooth scroll.
  */
