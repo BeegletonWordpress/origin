@@ -21,7 +21,7 @@ import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
 
-import { UnderlineSVG } from "../handdrawn-header";
+import { SmallRingShapeSVG } from "../handdrawn-header";
 
 const THEMES = {
 	default: {
@@ -181,9 +181,9 @@ registerBlockType(metadata.name, {
 							reverseLayout ? "md:flex-row-reverse" : ""
 						}`}
 					>
-						<div className="w-full md:w-[40%] relative">
+						<div className="w-full md:w-[40%] relative flex flex-col justify-center">
 							<div
-								className={`md:relative z-9 ${
+								className={`md:relative z-9 flex flex-col justify-center ${
 									reverseLayout ? "md:ml-auto" : "md:mr-auto"
 								}`}
 								style={{ isolation: "isolate" }}
@@ -194,7 +194,7 @@ registerBlockType(metadata.name, {
 										value={tagline}
 										onChange={(value) => setAttributes({ tagline: value })}
 										placeholder="Tagline..."
-										className="has-cas-red-ink-font-family text-5xl"
+										className="has-cas-red-ink-font-family text-5xl z-10 relative"
 									/>
 								)}
 								<RichText
@@ -202,24 +202,22 @@ registerBlockType(metadata.name, {
 									value={title}
 									onChange={(value) => setAttributes({ title: value })}
 									placeholder="Hero Title"
-									className="text-pretty whitespace-nowrap"
+									className="text-pretty whitespace-nowrap z-10 relative"
 								/>
-								{tags.length > 0 && (
-									<div className="flex flex-wrap gap-2 mt-3">
-										{tags.map((tag, index) => (
-											<span
-												key={index}
-												className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
-											>
-												{tag}
-											</span>
-										))}
-									</div>
-								)}
-								<div className="scale-125 -rotate-2">
-									<UnderlineSVG color={svgColor || activeTheme.svg} />
-								</div>
+								<SmallRingShapeSVG color={svgColor || activeTheme.svg} />
 							</div>
+							{tags.length > 0 && (
+								<div className="flex flex-wrap gap-2 mt-8 z-10 relative">
+									{tags.map((tag, index) => (
+										<span
+											key={index}
+											className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
+										>
+											{tag}
+										</span>
+									))}
+								</div>
+							)}
 						</div>
 
 						<div className="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
@@ -292,7 +290,7 @@ registerBlockType(metadata.name, {
 						reverseLayout ? "md:flex-row-reverse" : ""
 					}`}
 				>
-					<div className="w-full md:w-[40%] relative">
+					<div className="w-full md:w-[40%] relative flex flex-col justify-center">
 						<div
 							className={`md:relative z-9 ${
 								reverseLayout ? "md:ml-auto" : "md:mr-auto"
@@ -302,27 +300,29 @@ registerBlockType(metadata.name, {
 							{tagline && (
 								<RichText.Content
 									tagName="p"
-									className="has-cas-red-ink-font-family text-5xl"
+									className="has-cas-red-ink-font-family text-5xl z-10 relative"
 									value={tagline}
 								/>
 							)}
-							<RichText.Content tagName="h1" value={title} />
-							{tags.length > 0 && (
-								<div className="flex flex-wrap gap-2 mt-3">
-									{tags.map((tag, index) => (
-										<span
-											key={index}
-											className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
-										>
-											{tag}
-										</span>
-									))}
-								</div>
-							)}
-							<div className="scale-125 -rotate-2">
-								<UnderlineSVG color={svgColor || activeTheme.svg} />
-							</div>
+							<RichText.Content
+								tagName="h1"
+								value={title}
+								className="z-10 relative"
+							/>
+							<SmallRingShapeSVG color={svgColor || activeTheme.svg} />
 						</div>
+						{tags.length > 0 && (
+							<div className="flex flex-wrap gap-2 mt-8 z-10 relative">
+								{tags.map((tag, index) => (
+									<span
+										key={index}
+										className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
+									>
+										{tag}
+									</span>
+								))}
+							</div>
+						)}
 					</div>
 
 					<div className="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
