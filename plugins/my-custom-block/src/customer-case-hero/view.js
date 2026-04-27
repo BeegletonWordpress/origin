@@ -9,15 +9,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		return;
 	}
 
-	customerCaseHeroBlocks.forEach( ( block ) => {
-		const svg = block.querySelector( '.handdrawn-underline-svg' );
-		if ( ! svg ) {
-			return;
-		}
-
-		const path = svg.querySelector( '.handdrawn-underline-path' );
+	function setupPath( block, selector ) {
+		const path = block.querySelector( selector );
 		if ( ! path ) {
-			return;
+			return null;
 		}
 
 		const actualLength = path.getTotalLength
@@ -27,21 +22,31 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		path.style.strokeDasharray = actualLength;
 		path.style.strokeDashoffset = actualLength;
 		path.style.fill = 'none';
+
+		return { path, actualLength };
+	}
+
+	customerCaseHeroBlocks.forEach( ( block ) => {
+		setupPath( block, '.handdrawn-underline-path' );
+		setupPath( block, '.handdrawn-ring-path' );
 	} );
 
 	function animateDraw() {
 		customerCaseHeroBlocks.forEach( ( block ) => {
-			const path = block.querySelector( '.handdrawn-underline-path' );
-			if ( ! path || path.dataset.drawn === 'true' ) {
-				return;
+			const underline = setupPath( block, '.handdrawn-underline-path' );
+			const ring = setupPath( block, '.handdrawn-ring-path' );
+
+			const pathsToAnimate = [];
+			if ( underline && underline.path.dataset.drawn !== 'true' ) {
+				pathsToAnimate.push( underline );
+			}
+			if ( ring && ring.path.dataset.drawn !== 'true' ) {
+				pathsToAnimate.push( ring );
 			}
 
-			const actualLength = path.getTotalLength
-				? path.getTotalLength()
-				: VISIBLE_LENGTH;
-
-			path.style.strokeDasharray = actualLength;
-			path.style.strokeDashoffset = actualLength;
+			if ( pathsToAnimate.length === 0 ) {
+				return;
+			}
 
 			const startTime = performance.now();
 			const duration = 1000;
@@ -54,12 +59,16 @@ document.addEventListener( 'DOMContentLoaded', () => {
 						? 4 * progress * progress * progress
 						: 1 - Math.pow( -2 * progress + 2, 3 ) / 2;
 
-				path.style.strokeDashoffset = actualLength * ( 1 - eased );
+				pathsToAnimate.forEach( ( { path, actualLength } ) => {
+					path.style.strokeDashoffset = actualLength * ( 1 - eased );
+				} );
 
 				if ( progress < 1 ) {
 					requestAnimationFrame( draw );
 				} else {
-					path.dataset.drawn = 'true';
+					pathsToAnimate.forEach( ( { path } ) => {
+						path.dataset.drawn = 'true';
+					} );
 				}
 			}
 
