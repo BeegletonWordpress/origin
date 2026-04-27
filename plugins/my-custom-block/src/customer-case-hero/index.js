@@ -188,15 +188,13 @@ registerBlockType(metadata.name, {
 								}`}
 								style={{ isolation: "isolate" }}
 							>
-								{tagline && (
-									<RichText
-										tagName="p"
-										value={tagline}
-										onChange={(value) => setAttributes({ tagline: value })}
-										placeholder="Tagline..."
-										className="has-cas-red-ink-font-family text-5xl z-10 relative"
-									/>
-								)}
+								<RichText
+									tagName="p"
+									value={tagline}
+									onChange={(value) => setAttributes({ tagline: value })}
+									placeholder="Tagline..."
+									className="has-cas-red-ink-font-family text-5xl z-10 relative"
+								/>
 								<RichText
 									tagName="h1"
 									value={title}
