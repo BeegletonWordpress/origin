@@ -1,0 +1,8 @@
+/* Customer case hero styles */
+
+/* Your block's style.css */
+.customer-case-hero__content h2,
+.customer-case-hero__content h3,
+.customer-case-hero__content h4 {
+    margin-bottom: 1rem; /* fallback default */
+}

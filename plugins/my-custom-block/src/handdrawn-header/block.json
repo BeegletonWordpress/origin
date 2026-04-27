@@ -49,10 +49,10 @@
 			"type": "string",
 			"default": "underline"
 		},
-	"ringSpacing": {
-		"type": "number",
-		"default": 50
-	}
+		"ringSpacing": {
+			"type": "number",
+			"default": -57
+		}
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
