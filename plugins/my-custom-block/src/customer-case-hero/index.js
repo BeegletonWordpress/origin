@@ -136,7 +136,7 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
-						className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-20 m-auto md:items-stretch md:min-h-[65vh] ${
+						className={`flex flex-col py-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch ${
 							reverseLayout ? "md:flex-row-reverse" : ""
 						}`}
 					>
@@ -166,7 +166,7 @@ registerBlockType(metadata.name, {
 							</div>
 						</div>
 
-						<div className="w-full h-[40vh] mt-0">
+						<div className="w-full h-[40vh] mt-0 max-w-128.75">
 							<InnerBlocks
 								allowedBlocks={[
 									"core/heading",
@@ -231,7 +231,7 @@ registerBlockType(metadata.name, {
 					}}
 				/>
 				<div
-					className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-20 m-auto md:items-stretch md:min-h-[65vh] md:max-h-187.5 ${
+					className={`flex flex-col py-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 ${
 						reverseLayout ? "md:flex-row-reverse" : ""
 					}`}
 				>
@@ -256,7 +256,7 @@ registerBlockType(metadata.name, {
 						</div>
 					</div>
 
-					<div className="w-full h-[40vh] mt-0">
+					<div className="w-full h-[40vh] mt-0 max-w-128.75">
 						{imageUrl && (
 							<div className="customer-case-hero-content">
 								<InnerBlocks.Content />
