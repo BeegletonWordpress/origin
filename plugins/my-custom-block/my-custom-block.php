@@ -98,10 +98,16 @@ function register_customer_case_post_type() {
     register_post_type('customer_case', $args);
 
     register_post_meta( 'customer_case', 'hero_tagline', [
-    'show_in_rest' => true,
-    'single'       => true,
-    'type'         => 'string',
-] );
+        'show_in_rest' => true,
+        'single'       => true,
+        'type'         => 'string',
+    ] );
+
+    register_post_meta( 'customer_case', 'hero_theme', [
+        'show_in_rest' => true,
+        'single'       => true,
+        'type'         => 'string',
+    ] );
 }
 add_action('init', 'register_customer_case_post_type');
 
@@ -135,6 +141,17 @@ function render_customer_case_metabox( $post ) {
         <option value="SEO & GEO Anpassat Innehåll" <?php selected( $meta, 'SEO & GEO Anpassat Innehåll' ); ?>>SEO & GEO Anpassat Innehåll</option>
     </select>
     <?php
+    $theme = get_post_meta( $post->ID, 'hero_theme', true );
+    ?>
+    <label for="hero_theme" style="display:block; margin-top:12px;">Hero Theme</label>
+    <select name="hero_theme" id="hero_theme" style="margin-top:5px;">
+        <option value="default" <?php selected( $theme, 'default' ); ?>>Default (Accent 1)</option>
+        <option value="dark_1" <?php selected( $theme, 'dark_1' ); ?>>Dark 1 (Dark Gray/Blue)</option>
+        <option value="dark_2" <?php selected( $theme, 'dark_2' ); ?>>Dark 2 (Dark Gray/Yellow)</option>
+        <option value="light_1" <?php selected( $theme, 'light_1' ); ?>>Light 1 (Light Yellow/Blue)</option>
+        <option value="light_2" <?php selected( $theme, 'light_2' ); ?>>Light 2 (Light Yellow/Yellow)</option>
+    </select>
+    <?php
 }
 
 function save_customer_case_metabox( $post_id ) {
@@ -145,6 +162,9 @@ function save_customer_case_metabox( $post_id ) {
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
     if ( isset( $_POST['hero_tagline'] ) ) {
         update_post_meta( $post_id, 'hero_tagline', sanitize_text_field( $_POST['hero_tagline'] ) );
+    }
+    if ( isset( $_POST['hero_theme'] ) ) {
+        update_post_meta( $post_id, 'hero_theme', sanitize_text_field( $_POST['hero_theme'] ) );
     }
 }
 add_action( 'save_post_customer_case', 'save_customer_case_metabox' );

@@ -8,7 +8,7 @@
 $tagline = get_post_meta( get_the_ID(), 'hero_tagline', true );
 $tags = $attributes['tags'] ?? [];
 $svg_color = $attributes['svgColor'] ?? '';
-$theme = $attributes['theme'] ?? 'default';
+$theme = get_post_meta( get_the_ID(), 'hero_theme', true ) ?: 'default';
 $reverse_layout = $attributes['reverseLayout'] ?? false;
 
 // Define themes
