@@ -17,6 +17,7 @@ import {
 	SelectControl,
 	ToggleControl,
 } from "@wordpress/components";
+import { useEntityProp } from "@wordpress/core-data";
 import { useEffect } from "@wordpress/element";
 import { useSelect } from "@wordpress/data";
 import metadata from "./block.json";
@@ -56,26 +57,42 @@ const THEMES = {
 	},
 };
 
+const taglineOptions = [
+	{ label: "Välj en tjänst...", value: "" },
+	{
+		label: "Marknadsstrategi & Position",
+		value: "Marknadsstrategi & Position",
+	},
+	{ label: "Identitet & Varumärke", value: "Identitet & Varumärke" },
+	{ label: "Workshop & Strategiarbete", value: "Workshop & Strategiarbete" },
+	{ label: "Webbutveckling & Design", value: "Webbutveckling & Design" },
+	{ label: "Designsystem & UX", value: "Designsystem & UX" },
+	{ label: "Content & Filmproduktion", value: "Content & Filmproduktion" },
+	{ label: "Performance Marketing", value: "Performance Marketing" },
+	{ label: "Mäss- & Eventmaterial", value: "Mäss- & Eventmaterial" },
+	{
+		label: "SEO & GEO Anpassat Innehåll",
+		value: "SEO & GEO Anpassat Innehåll",
+	},
+];
+
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const {
-			tagline,
-			tags,
-			imageUrl,
-			imageAlt,
-			svgColor,
-			theme,
-			reverseLayout,
-		} = attributes;
+		const { tags, imageUrl, imageAlt, svgColor, theme, reverseLayout } =
+			attributes;
 
 		const activeTheme = THEMES[theme] || THEMES.default;
+
+		const [meta, setMeta] = useEntityProp("postType", "customer_case", "meta");
+
+		const excerpt = useSelect((select) =>
+			select("core/editor").getEditedPostAttribute("excerpt"),
+		);
 
 		useEffect(() => {
 			const canvas =
 				document.querySelector('iframe[name="editor-canvas"]')?.contentDocument
 					?.body || document.body;
-
-			console.log("Applying theme colors to editor canvas:", canvas);
 
 			canvas.style.setProperty("--page-theme-bg", activeTheme.bg);
 			canvas.style.setProperty("--page-theme-text", activeTheme.text);
@@ -118,10 +135,6 @@ registerBlockType(metadata.name, {
 			className: `customer-case-hero theme-${theme}`,
 			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
 		});
-
-		const excerpt = useSelect((select) =>
-			select("core/editor").getEditedPostAttribute("excerpt"),
-		);
 
 		return (
 			<>
@@ -177,6 +190,14 @@ registerBlockType(metadata.name, {
 							Add Tag
 						</Button>
 					</PanelBody>
+					<PanelBody title="Content Settings">
+						<SelectControl
+							label="Service Tagline"
+							value={meta?.hero_tagline || ""}
+							options={taglineOptions}
+							onChange={(val) => setMeta({ ...meta, hero_tagline: val })}
+						/>
+					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
@@ -191,13 +212,9 @@ registerBlockType(metadata.name, {
 								}`}
 								style={{ isolation: "isolate" }}
 							>
-								<RichText
-									tagName="p"
-									value={tagline}
-									onChange={(value) => setAttributes({ tagline: value })}
-									placeholder="Tagline..."
-									className="has-cas-red-ink-font-family text-5xl z-10 relative"
-								/>
+								<p className="has-cas-red-ink-font-family text-5xl z-10 relative">
+									{meta?.hero_tagline || "Tagline goes here..."}
+								</p>
 								<PostTitle className="text-pretty whitespace-nowrap z-10 relative" />
 								<div
 									className="ring-svg-placeholder"

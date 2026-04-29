@@ -5,7 +5,7 @@
  */
 
 // Extract attributes
-$tagline = $attributes['tagline'] ?? '';
+$tagline = get_post_meta( get_the_ID(), 'hero_tagline', true );
 $tags = $attributes['tags'] ?? [];
 $svg_color = $attributes['svgColor'] ?? '';
 $theme = $attributes['theme'] ?? 'default';

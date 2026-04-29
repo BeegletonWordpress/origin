@@ -96,8 +96,58 @@ function register_customer_case_post_type() {
     ];
 
     register_post_type('customer_case', $args);
+
+    register_post_meta( 'customer_case', 'hero_tagline', [
+    'show_in_rest' => true,
+    'single'       => true,
+    'type'         => 'string',
+] );
 }
 add_action('init', 'register_customer_case_post_type');
+
+function register_customer_case_metaboxes() {
+    add_meta_box(
+        'customer_case_settings',
+        'Customer Case Settings',
+        'render_customer_case_metabox',
+        'customer_case',
+        'side',
+        'high'
+    );
+}
+add_action( 'add_meta_boxes', 'register_customer_case_metaboxes' );
+
+function render_customer_case_metabox( $post ) {
+    $meta = get_post_meta( $post->ID, 'hero_tagline', true );
+    wp_nonce_field( 'customer_case_meta', 'customer_case_nonce' );
+    ?>
+    <label for="hero_tagline">Service Tagline</label>
+    <select name="hero_tagline" id="hero_tagline" style="margin-top:5px;">
+        <option value="">Välj en tjänst...</option>
+        <option value="Marknadsstrategi & Position" <?php selected( $meta, 'Marknadsstrategi & Position' ); ?>>Marknadsstrategi & Position</option>
+        <option value="Identitet & Varumärke" <?php selected( $meta, 'Identitet & Varumärke' ); ?>>Identitet & Varumärke</option>
+        <option value="Workshop & Strategiarbete" <?php selected( $meta, 'Workshop & Strategiarbete' ); ?>>Workshop & Strategiarbete</option>
+        <option value="Webbutveckling & Design" <?php selected( $meta, 'Webbutveckling & Design' ); ?>>Webbutveckling & Design</option>
+        <option value="Designsystem & UX" <?php selected( $meta, 'Designsystem & UX' ); ?>>Designsystem & UX</option>
+        <option value="Content & Filmproduktion" <?php selected( $meta, 'Content & Filmproduktion' ); ?>>Content & Filmproduktion</option>
+        <option value="Performance Marketing" <?php selected( $meta, 'Performance Marketing' ); ?>>Performance Marketing</option>
+        <option value="Mäss- & Eventmaterial" <?php selected( $meta, 'Mäss- & Eventmaterial' ); ?>>Mäss- & Eventmaterial</option>
+        <option value="SEO & GEO Anpassat Innehåll" <?php selected( $meta, 'SEO & GEO Anpassat Innehåll' ); ?>>SEO & GEO Anpassat Innehåll</option>
+    </select>
+    <?php
+}
+
+function save_customer_case_metabox( $post_id ) {
+    if ( ! isset( $_POST['customer_case_nonce'] ) || 
+         ! wp_verify_nonce( $_POST['customer_case_nonce'], 'customer_case_meta' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+    if ( isset( $_POST['hero_tagline'] ) ) {
+        update_post_meta( $post_id, 'hero_tagline', sanitize_text_field( $_POST['hero_tagline'] ) );
+    }
+}
+add_action( 'save_post_customer_case', 'save_customer_case_metabox' );
 
 /**
  * Enqueue Lenis smooth scroll.
