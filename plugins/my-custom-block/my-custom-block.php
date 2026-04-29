@@ -38,6 +38,7 @@ function create_block_my_custom_block_block_init() {
     register_block_type( __DIR__ . '/build/subpage-template' );
     register_block_type( __DIR__ . '/build/subpage-hero' );
     register_block_type( __DIR__ . '/build/customer-case-hero' );
+    register_block_type( __DIR__ . '/build/alt-subpage-hero' );
     register_block_type( __DIR__ . '/build/subpage-content' );
 
     register_block_type( __DIR__ . '/build/team-gallery' );
@@ -290,33 +291,6 @@ function subpage_hero_frontend_scripts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'subpage_hero_frontend_scripts' );
-
-/**
- * Add rewrite rule for /case/all URL.
- */
-function add_case_all_rewrite_rule() {
-    add_rewrite_rule(
-        '^case/all/?$',
-        'index.php?post_type=customer_case',
-        'top'
-    );
-}
-add_action( 'init', 'add_case_all_rewrite_rule' );
-
-/**
- * 301 Redirect from /case/ to /case/all.
- */
-function redirect_case_archive_to_all() {
-    if ( is_post_type_archive( 'customer_case' ) && ! isset( $_GET['paged'] ) ) {
-        global $wp;
-        $current_url = home_url( $wp->request );
-        if ( trailingslashit( $current_url ) === home_url( 'case/', 'relative' ) ) {
-            wp_redirect( home_url( 'case/all/' ), 301 );
-            exit;
-        }
-    }
-}
-add_action( 'template_redirect', 'redirect_case_archive_to_all' );
 
 /**
  * Show all customer cases (no pagination) for main query.

@@ -1,0 +1,8 @@
+/* Alt Subpage Hero styles */
+
+/* Your block's style-index.css */
+.alt-subpage-hero__content h2,
+.alt-subpage-hero__content h3,
+.alt-subpage-hero__content h4 {
+    margin-bottom: 1rem; /* fallback default */
+}
