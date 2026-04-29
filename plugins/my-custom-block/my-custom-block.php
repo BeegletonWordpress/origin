@@ -290,3 +290,84 @@ function subpage_hero_frontend_scripts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'subpage_hero_frontend_scripts' );
+
+/**
+ * Add rewrite rule for /case/all URL.
+ */
+function add_case_all_rewrite_rule() {
+    add_rewrite_rule(
+        '^case/all/?$',
+        'index.php?post_type=customer_case',
+        'top'
+    );
+}
+add_action( 'init', 'add_case_all_rewrite_rule' );
+
+/**
+ * 301 Redirect from /case/ to /case/all.
+ */
+function redirect_case_archive_to_all() {
+    if ( is_post_type_archive( 'customer_case' ) && ! isset( $_GET['paged'] ) ) {
+        global $wp;
+        $current_url = home_url( $wp->request );
+        if ( trailingslashit( $current_url ) === home_url( 'case/', 'relative' ) ) {
+            wp_redirect( home_url( 'case/all/' ), 301 );
+            exit;
+        }
+    }
+}
+add_action( 'template_redirect', 'redirect_case_archive_to_all' );
+
+/**
+ * Show all customer cases (no pagination) for main query.
+ */
+function show_all_customer_cases( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && $query->get( 'post_type' ) === 'customer_case' ) {
+        $query->set( 'posts_per_page', -1 );
+    }
+}
+add_action( 'pre_get_posts', 'show_all_customer_cases' );
+
+/**
+ * Register block template for customer_case archive.
+ */
+function register_customer_case_archive_template() {
+    $template_content = '
+    <!-- wp:template-part {"slug":"header"} /-->
+    <!-- wp:group {"tagName":"main","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
+    <main class="wp-block-group">
+        <!-- wp:heading {"textAlign":"center","level":1,"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|40"}}}} -->
+        <h1 class="has-text-align-center">All Customer Cases</h1>
+        <!-- /wp:heading -->
+        <!-- wp:create-block/my-case-grid {"postsPerPage":100} /-->
+    </main>
+    <!-- /wp:group -->
+    <!-- wp:template-part {"slug":"footer"} /-->
+    ';
+
+    register_block_template( 'my-custom-block//archive-customer_case', [
+        'title'       => __( 'Customer Case Archive', 'my-custom-block' ),
+        'description' => __( 'Displays all customer cases at /case/all', 'my-custom-block' ),
+        'content'     => $template_content,
+        'post_types'  => [ 'customer_case' ],
+    ] );
+}
+add_action( 'init', 'register_customer_case_archive_template', 20 );
+
+/**
+ * Enqueue customer case hero script for single customer case pages.
+ */
+function customer_case_hero_frontend_scripts() {
+    if ( ! has_block( 'create-block/customer-case-hero' ) && ! is_singular( 'customer_case' ) ) {
+        return;
+    }
+
+    wp_enqueue_script(
+        'customer-case-hero-frontend',
+        plugin_dir_url( __FILE__ ) . 'build/customer-case-hero/view.js',
+        [],
+        '1.0.0',
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'customer_case_hero_frontend_scripts' );

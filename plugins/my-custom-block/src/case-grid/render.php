@@ -29,7 +29,8 @@ if ($query->have_posts()) : ?>
 	<div <?php echo get_block_wrapper_attributes(['class' => 'case-grid flex flex-col items-center w-full']); ?> <?php echo $style; ?>>
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-12">
 			<?php while ($query->have_posts()) : $query->the_post(); ?>
-				<article class="flex flex-col h-full group">
+			<a href="<?php the_permalink(); ?>" class="group hover:no-underline no-underline!">
+				<article class="flex flex-col h-full">
 					<?php if (has_post_thumbnail()) : ?>
 						<div class="mb-6 aspect-3/4 w-full overflow-hidden">
 							<?php the_post_thumbnail('medium_large', [
@@ -46,6 +47,7 @@ if ($query->have_posts()) : ?>
 						<?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
 					</div>
 				</article>
+			</a>
 			<?php endwhile; wp_reset_postdata(); ?>
 		</div>
 		<?php echo $content; ?>
