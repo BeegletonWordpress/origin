@@ -4,9 +4,8 @@
  */
 
 $args = array(
-	'post_type'      => 'post',
+	'post_type'      => 'customer_case',
 	'posts_per_page' => $attributes['postsPerPage'] ?? 3,
-	'cat'            => $attributes['selectedCategory'] ?? '',
 );
 
 $query = new WP_Query($args);

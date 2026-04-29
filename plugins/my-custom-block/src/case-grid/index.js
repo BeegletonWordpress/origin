@@ -14,11 +14,10 @@ import {
 import { useSelect } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
 import metadata from "./block.json";
-import { SelectControl } from "@wordpress/components";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { postsPerPage, selectedCategory, backgroundColor, style } =
+		const { postsPerPage, backgroundColor, style } =
 			attributes;
 
 		const textColor = style?.color?.text;
@@ -43,13 +42,6 @@ registerBlockType(metadata.name, {
 			},
 		);
 
-		// Fetch categories
-		const categories = useSelect((select) => {
-			return select(coreStore).getEntityRecords("taxonomy", "category", {
-				per_page: -1,
-			});
-		}, []);
-
 		// Fetch posts using the REST API
 		const { posts, hasResolved } = useSelect(
 			(select) => {
@@ -57,55 +49,28 @@ registerBlockType(metadata.name, {
 					per_page: postsPerPage,
 					_embed: true, // Critical for getting featured images
 				};
-				if (selectedCategory) {
-					query.categories = [selectedCategory];
-				}
 
 				return {
-					posts: select(coreStore).getEntityRecords("postType", "post", query),
+					posts: select(coreStore).getEntityRecords("postType", "customer_case", query),
 					hasResolved: select(coreStore).hasFinishedResolution(
 						"getEntityRecords",
-						["postType", "post", query],
+						["postType", "customer_case", query],
 					),
 				};
 			},
-			[postsPerPage, selectedCategory],
+			[postsPerPage],
 		);
-
-		// Format categories for QueryControls
-		const formattedCategories = categories?.map((cat) => ({
-			id: cat.id,
-			name: cat.name,
-		}));
 
 		return (
 			<div {...blockProps}>
 				<InspectorControls>
 					<PanelBody title="Grid Settings">
-						{categories ? (
-							<QueryControls
-								numberOfItems={postsPerPage}
-								onNumberOfItemsChange={(val) =>
-									setAttributes({ postsPerPage: val })
-								}
-								selectedCategoryId={selectedCategory}
-								categoriesList={formattedCategories}
-								onCategoryChange={(val) =>
-									setAttributes({
-										selectedCategory: val ? parseInt(val, 10) : undefined,
-									})
-								}
-							/>
-						) : (
-							<div
-								style={{
-									padding: "20px",
-									textAlign: "center",
-								}}
-							>
-								<Spinner />
-							</div>
-						)}
+						<QueryControls
+							numberOfItems={postsPerPage}
+							onNumberOfItemsChange={(val) =>
+								setAttributes({ postsPerPage: val })
+							}
+						/>
 					</PanelBody>
 				</InspectorControls>
 
@@ -155,7 +120,7 @@ registerBlockType(metadata.name, {
 					</div>
 				) : (
 					<Placeholder label="No cases found" icon="grid-view">
-						Try selecting a different category or creating some posts.
+						Try creating some customer cases.
 					</Placeholder>
 				)}
 			</div>

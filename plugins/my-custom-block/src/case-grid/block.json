@@ -11,9 +11,6 @@
 		"postsPerPage": {
 			"type": "number",
 			"default": 6
-		},
-		"selectedCategory": {
-			"type": "number"
 		}
 	},
 	"supports": {
