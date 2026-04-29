@@ -10,6 +10,7 @@ import {
 	QueryControls,
 	Placeholder,
 	Spinner,
+	ToggleControl,
 } from "@wordpress/components";
 import { useSelect } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
@@ -17,8 +18,7 @@ import metadata from "./block.json";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { postsPerPage, backgroundColor, style } =
-			attributes;
+		const { postsPerPage, backgroundColor, style, showButton } = attributes;
 
 		const textColor = style?.color?.text;
 
@@ -36,9 +36,9 @@ registerBlockType(metadata.name, {
 			{ className: "w-full flex flex-col items-center" },
 			{
 				allowedBlocks: ["create-block/my-handdrawn-button"],
-				template: [
-					["create-block/my-handdrawn-button", { text: "Visa alla case" }],
-				],
+				template: showButton
+					? [["create-block/my-handdrawn-button", { text: "Visa alla case" }]]
+					: [],
 			},
 		);
 
@@ -51,7 +51,11 @@ registerBlockType(metadata.name, {
 				};
 
 				return {
-					posts: select(coreStore).getEntityRecords("postType", "customer_case", query),
+					posts: select(coreStore).getEntityRecords(
+						"postType",
+						"customer_case",
+						query,
+					),
 					hasResolved: select(coreStore).hasFinishedResolution(
 						"getEntityRecords",
 						["postType", "customer_case", query],
@@ -70,6 +74,11 @@ registerBlockType(metadata.name, {
 							onNumberOfItemsChange={(val) =>
 								setAttributes({ postsPerPage: val })
 							}
+						/>
+						<ToggleControl
+							label="Show Button"
+							checked={showButton}
+							onChange={(val) => setAttributes({ showButton: val })}
 						/>
 					</PanelBody>
 				</InspectorControls>

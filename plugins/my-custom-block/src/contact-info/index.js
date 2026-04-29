@@ -92,7 +92,7 @@ registerBlockType(metadata.name, {
 							value={header}
 							onChange={(val) => setAttributes({ header: val })}
 							placeholder="Header..."
-							className="font-bold mb-2"
+							className="has-cas-red-ink-font-family text-4xl! capitalize! font-bold!"
 						/>
 						<RichText
 							tagName="p"
@@ -135,7 +135,7 @@ registerBlockType(metadata.name, {
 						<RichText.Content
 							tagName="h3"
 							value={header}
-							className="font-bold mb-2"
+							className="has-cas-red-ink-font-family capitalize! font-bold! text-4xl!"
 						/>
 					)}
 					{paragraph && (

@@ -11,6 +11,10 @@
 		"postsPerPage": {
 			"type": "number",
 			"default": 6
+		},
+		"showButton": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"supports": {
