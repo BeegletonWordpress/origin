@@ -108,17 +108,11 @@ $wrapper_attributes = get_block_wrapper_attributes(
 		</div>
 
 		<div class="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
-			<div class="customer-case-hero-content">
+			<p class="mt-4">
 				<?php
-				// Render inner blocks using parse_blocks and render_block
-				if ( ! empty( $content ) ) {
-					$inner_blocks = parse_blocks( $content );
-					foreach ( $inner_blocks as $inner_block ) {
-						echo render_block( $inner_block );
-					}
-				}
+				echo wp_kses_post( get_the_excerpt() );
 				?>
-			</div>
+			</p>
 		</div>
 	</div>
 </div>

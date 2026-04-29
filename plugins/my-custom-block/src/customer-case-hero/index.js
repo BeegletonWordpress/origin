@@ -18,6 +18,7 @@ import {
 	ToggleControl,
 } from "@wordpress/components";
 import { useEffect } from "@wordpress/element";
+import { useSelect } from "@wordpress/data";
 import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
@@ -118,6 +119,10 @@ registerBlockType(metadata.name, {
 			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
 		});
 
+		const excerpt = useSelect((select) =>
+			select("core/editor").getEditedPostAttribute("excerpt"),
+		);
+
 		return (
 			<>
 				<InspectorControls>
@@ -214,27 +219,7 @@ registerBlockType(metadata.name, {
 						</div>
 
 						<div className="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
-							<InnerBlocks
-								allowedBlocks={[
-									"core/heading",
-									"core/paragraph",
-									"core/list",
-									"create-block/my-handdrawn-button",
-								]}
-								template={[
-									[
-										"core/paragraph",
-										{
-											placeholder: "description goes here...",
-										},
-										"create-block/my-handdrawn-button",
-										{
-											placeholder: "CTA text",
-											className: "mt-4",
-										},
-									],
-								]}
-							/>
+							<p className="mt-4">{excerpt || "Post excerpt goes here..."}</p>
 						</div>
 					</div>
 				</div>
