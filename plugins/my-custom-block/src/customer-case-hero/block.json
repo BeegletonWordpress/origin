@@ -28,12 +28,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"title": {
-			"type": "string",
-			"source": "html",
-			"selector": "h1",
-			"default": "Customer Case Hero"
-		},
 		"tags": {
 			"type": "array",
 			"default": []
@@ -63,7 +57,7 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": "file:./style-index.css",
-	"editorStyle": "file:./index.css",
-	"viewScript": "file:./view.js"
+	"style": "file:./style.css",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
 }

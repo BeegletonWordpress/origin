@@ -8,6 +8,7 @@ import {
 	InspectorControls,
 	PanelColorSettings,
 } from "@wordpress/block-editor";
+import { PostTitle } from "@wordpress/editor";
 import {
 	Button,
 	PanelBody,
@@ -20,8 +21,6 @@ import { useEffect } from "@wordpress/element";
 import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
-
-import { SmallRingShapeSVG } from "../handdrawn-header";
 
 const THEMES = {
 	default: {
@@ -60,7 +59,6 @@ registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
 		const {
 			tagline,
-			title,
 			tags,
 			imageUrl,
 			imageAlt,
@@ -195,14 +193,11 @@ registerBlockType(metadata.name, {
 									placeholder="Tagline..."
 									className="has-cas-red-ink-font-family text-5xl z-10 relative"
 								/>
-								<RichText
-									tagName="h1"
-									value={title}
-									onChange={(value) => setAttributes({ title: value })}
-									placeholder="Hero Title"
-									className="text-pretty whitespace-nowrap z-10 relative"
+								<PostTitle className="text-pretty whitespace-nowrap z-10 relative" />
+								<div
+									className="ring-svg-placeholder"
+									data-svg-color={svgColor || activeTheme.svg}
 								/>
-								<SmallRingShapeSVG color={svgColor || activeTheme.svg} />
 							</div>
 							{tags.length > 0 && (
 								<div className="flex flex-wrap gap-2 mt-8 z-10 relative">
@@ -246,92 +241,5 @@ registerBlockType(metadata.name, {
 			</>
 		);
 	},
-	save: ({ attributes }) => {
-		const {
-			tagline,
-			title,
-			tags,
-			imageUrl,
-			imageAlt,
-			svgColor,
-			theme,
-			reverseLayout,
-		} = attributes;
-		const activeTheme = THEMES[theme] || THEMES.default;
-
-		const blockProps = useBlockProps.save({
-			className: `customer-case-hero theme-${theme}`,
-			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
-		});
-
-		return (
-			<div {...blockProps}>
-				<style
-					dangerouslySetInnerHTML={{
-						__html: `
-						:root {
-							--page-theme-bg: ${activeTheme.bg};
-							--page-theme-text: ${activeTheme.text};
-							--page-theme-svg: ${svgColor || activeTheme.svg};
-							--page-theme-is-dark: ${activeTheme.isDark ? "1" : "0"};
-							--page-theme-is-light: ${activeTheme.isDark ? "0" : "1"};
-						}
-						body {
-							background-color: var(--page-theme-bg);
-							color: var(--page-theme-text);
-						}
-					`,
-					}}
-				/>
-				<div
-					className={`flex flex-col pt-16 pb-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 ${
-						reverseLayout ? "md:flex-row-reverse" : ""
-					}`}
-				>
-					<div className="w-full md:w-[40%] relative flex flex-col justify-center">
-						<div
-							className={`md:relative z-9 ${
-								reverseLayout ? "md:ml-auto" : "md:mr-auto"
-							}`}
-							style={{ isolation: "isolate" }}
-						>
-							{tagline && (
-								<RichText.Content
-									tagName="p"
-									className="has-cas-red-ink-font-family text-5xl z-10 relative"
-									value={tagline}
-								/>
-							)}
-							<RichText.Content
-								tagName="h1"
-								value={title}
-								className="z-10 relative"
-							/>
-							<SmallRingShapeSVG color={svgColor || activeTheme.svg} />
-						</div>
-						{tags.length > 0 && (
-							<div className="flex flex-wrap gap-2 mt-8 z-10 relative">
-								{tags.map((tag, index) => (
-									<span
-										key={index}
-										className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
-									>
-										{tag}
-									</span>
-								))}
-							</div>
-						)}
-					</div>
-
-					<div className="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
-						{imageUrl && (
-							<div className="customer-case-hero-content">
-								<InnerBlocks.Content />
-							</div>
-						)}
-					</div>
-				</div>
-			</div>
-		);
-	},
+	save: () => <InnerBlocks.Content />,
 });
