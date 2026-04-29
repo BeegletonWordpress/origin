@@ -1,5 +1,9 @@
 /* Alt Subpage Hero styles */
 
+.alt-subpage-hero {
+     max-width: 1000px !important;
+}
+
 /* Your block's style-index.css */
 .alt-subpage-hero__content h2,
 .alt-subpage-hero__content h3,

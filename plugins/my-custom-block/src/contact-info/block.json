@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/contact-info",
+	"version": "0.1.0",
+	"title": "Contact Info",
+	"category": "theme",
+	"icon": "phone",
+	"description": "A contact information block with icon and text.",
+	"supports": {
+		"html": false,
+		"align": ["full", "wide"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"attributes": {
+		"imageId": {
+			"type": "number"
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"header": {
+			"type": "string",
+			"default": ""
+		},
+		"paragraph": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css"
+}

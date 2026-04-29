@@ -122,7 +122,7 @@ registerBlockType(metadata.name, {
 						{/* Left Column - Header */}
 						<div
 							className={`relative ${
-								showRightColumn ? "w-full md:w-[40%]" : "w-full"
+								showRightColumn ? "w-full md:w-[60%]" : "w-full"
 							}`}
 						>
 							<div
@@ -167,7 +167,15 @@ registerBlockType(metadata.name, {
 										"core/heading",
 										"core/paragraph",
 										"core/list",
+										"core/image",
+										"core/cover",
+										"core/group",
+										"core/button",
+										"core/buttons",
+										"core/spacer",
+										"core/separator",
 										"create-block/my-handdrawn-button",
+										"create-block/contact-info",
 									]}
 									template={[
 										[
@@ -230,7 +238,7 @@ registerBlockType(metadata.name, {
 					{/* Left Column - Header */}
 					<div
 						className={`relative ${
-							showRightColumn ? "w-full md:w-[40%]" : "w-full"
+							showRightColumn ? "w-full md:w-[60%]" : "w-full"
 						}`}
 					>
 						<div
