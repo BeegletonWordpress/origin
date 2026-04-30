@@ -7,3 +7,19 @@
 .wp-block-create-block-my-small-handdrawn-card[class*="has-"][class*="-background-color"] {
 	background-color: transparent !important;
 }
+
+.wp-block-create-block-my-small-handdrawn-card-row .wp-block-create-block-my-small-handdrawn-card {
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.wp-block-create-block-my-small-handdrawn-card-row .wp-block-create-block-my-small-handdrawn-card > div {
+  justify-content: center;
+}
+
+.wp-block-create-block-my-small-handdrawn-card-row .wp-block-create-block-my-small-handdrawn-card p {
+	padding: 0 23px;
+}

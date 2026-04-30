@@ -80,3 +80,17 @@ a,
 .wp-block-navigation__responsive-container-close svg {
   color: var(--page-theme-text, #3b3632);
 }
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75 rem;
+  margin-left: 5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.breadcrumbs > :last-child {
+  opacity: 0.25;
+}

@@ -28,6 +28,7 @@ function create_block_my_custom_block_block_init() {
     register_block_type( __DIR__ . '/build/handdrawn-button' );
     register_block_type( __DIR__ . '/build/handdrawn-card' );
     register_block_type( __DIR__ . '/build/small-handdrawn-card' );
+    register_block_type( __DIR__ . '/build/small-handdrawn-card-row' );
     register_block_type( __DIR__ . '/build/handdrawn-container' );
     register_block_type( __DIR__ . '/build/handdrawn-header' );
     register_block_type( __DIR__ . '/build/contact-card' );

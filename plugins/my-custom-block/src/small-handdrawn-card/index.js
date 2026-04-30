@@ -18,7 +18,18 @@ import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES = "relative z-10";
-const WRAPPER_CLASSES = "relative z-10 flex flex-col gap-4 max-w-[360px]";
+const WRAPPER_CLASSES =
+	"relative z-10 flex flex-col gap-4 max-w-[360px] min-h-[200px]";
+const INNER_TEMPLATE = [
+	[
+		"core/heading",
+		{
+			level: 4,
+			placeholder: "Heading...",
+		},
+	],
+	["core/paragraph", { placeholder: "Add content..." }],
+];
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
@@ -47,7 +58,7 @@ registerBlockType(metadata.name, {
 
 		const innerBlocksProps = useInnerBlocksProps(
 			{ className: WRAPPER_CLASSES },
-			{},
+			{ template: INNER_TEMPLATE },
 		);
 
 		// Calculate transform: scale based on percentage and translate based on rem offsets

@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-small-handdrawn-card-row",
+	"version": "0.1.0",
+	"title": "Small Handdrawn Card Row",
+	"category": "theme",
+	"icon": "admin-page",
+	"description": "A row of 4 small handdrawn cards.",
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": "file:./style.css"
+}
