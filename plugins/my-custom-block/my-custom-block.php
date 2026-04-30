@@ -13,6 +13,8 @@
  * @package CreateBlock
  */
 function create_block_my_custom_block_block_init() {
+    register_block_type( __DIR__ . '/build/breadcrumb' );
+
     register_block_type( __DIR__ . '/build/footer/block' );
     register_block_type( __DIR__ . '/build/footer/row' );
     register_block_type( __DIR__ . '/build/footer/column' );
@@ -347,3 +349,13 @@ function customer_case_hero_frontend_scripts() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'customer_case_hero_frontend_scripts' );
+
+function breadcrumb_frontend_styles() {
+    wp_enqueue_style(
+        'breadcrumb-style',
+        plugin_dir_url( __FILE__ ) . 'build/breadcrumb/style-index.css',
+        [],
+        '1.0.0'
+    );
+}
+add_action( 'wp_enqueue_scripts', 'breadcrumb_frontend_styles' );

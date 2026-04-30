@@ -1,0 +1,14 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/breadcrumb",
+	"version": "0.1.0",
+	"title": "Breadcrumbs",
+	"category": "theme",
+	"icon": "shortcode",
+	"description": "Display breadcrumbs navigation.",
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php",
+	"style": "file:./style.css"
+}

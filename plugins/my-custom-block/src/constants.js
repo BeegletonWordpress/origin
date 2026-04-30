@@ -279,3 +279,13 @@ export const BEE_SHAPE = (
 		/>
 	</svg>
 );
+
+export const TEST_BREADCRUMB_SHAPE = (
+	<nav class="breadcrumbs">
+		<a href="/">{BEE_SHAPE}</a>
+		<span> / </span>
+		<a href="/case">kundcase</a>
+		<span> / </span>
+		<span>vita hästen</span>
+	</nav>
+);

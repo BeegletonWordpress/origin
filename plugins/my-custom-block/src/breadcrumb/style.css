@@ -1,0 +1,18 @@
+.rank-math-breadcrumb > p{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  margin-left: 5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.rank-math-breadcrumb > p > :last-child {
+  opacity: 0.25;
+}
+
+.rank-math-breadcrumb .home {
+  width: 2rem;
+  height: 2rem;
+}
