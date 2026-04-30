@@ -115,13 +115,13 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
-						className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch ${
-							showRightColumn && "md:min-h-[65vh]"
-						}  ${reverseLayout ? "md:flex-row-reverse" : ""}`}
+						className={`flex flex-col py-12 mb-8 md:flex-row w-full h-fit gap-4 md:gap-2 m-auto items-center ${
+							reverseLayout ? "md:flex-row-reverse" : ""
+						}`}
 					>
 						{/* Left Column - Header */}
 						<div
-							className={`relative ${
+							className={`relative h-fit ${
 								showRightColumn ? "w-full md:w-[60%]" : "w-full"
 							}`}
 						>
@@ -161,7 +161,7 @@ registerBlockType(metadata.name, {
 
 						{/* Right Column - Only if showRightColumn is true */}
 						{showRightColumn && (
-							<div className="w-full h-[40vh] mt-0 md:h-auto md:flex-1 md:mt-24">
+							<div className="w-full h-fit mt-0 md:h-auto md:flex-1">
 								<InnerBlocks
 									allowedBlocks={[
 										"core/heading",
@@ -207,7 +207,7 @@ registerBlockType(metadata.name, {
 		const activeTheme = THEMES[theme] || THEMES.default;
 
 		const blockProps = useBlockProps.save({
-			className: `alt-subpage-hero theme-${theme}`,
+			className: `alt-subpage-hero theme-${theme} flex items-center`,
 			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
 		});
 
@@ -231,13 +231,13 @@ registerBlockType(metadata.name, {
 					}}
 				/>
 				<div
-					className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch ${
-						showRightColumn && "md:min-h-[65vh]"
-					}  ${reverseLayout ? "md:flex-row-reverse" : ""}`}
+					className={`flex flex-col py-12 mb-8 md:flex-row w-full h-fit gap-4 md:gap-2 m-auto items-center ${
+						reverseLayout ? "md:flex-row-reverse" : ""
+					}`}
 				>
 					{/* Left Column - Header */}
 					<div
-						className={`relative ${
+						className={`relative h-fit ${
 							showRightColumn ? "w-full md:w-[60%]" : "w-full"
 						}`}
 					>
@@ -275,7 +275,7 @@ registerBlockType(metadata.name, {
 
 					{/* Right Column - Only if showRightColumn is true */}
 					{showRightColumn && (
-						<div className="w-full h-[40vh] mt-0 md:h-auto md:flex-1 md:mt-24">
+						<div className="w-full h-[40vh] mt-0 md:h-auto md:flex-1">
 							<InnerBlocks.Content />
 						</div>
 					)}
