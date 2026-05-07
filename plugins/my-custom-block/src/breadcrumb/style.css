@@ -1,9 +1,16 @@
+.rank-math-breadcrumb {
+  max-width: var(--wp--style--global--content-size);
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 .rank-math-breadcrumb > p{
   display: flex;
+  width: 100%;
+  padding-inline: 32px;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.75rem;
-  margin-left: 5rem;
   text-transform: uppercase;
   font-weight: 700;
 }

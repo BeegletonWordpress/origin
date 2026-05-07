@@ -80,3 +80,21 @@ a,
 .wp-block-navigation__responsive-container-close svg {
   color: var(--page-theme-text, #3b3632);
 }
+
+.case-content .wp-block-group.is-layout-flex {
+  align-items: stretch;
+}
+
+/* Make each figure fill the row height */
+.case-content .wp-block-group.is-layout-flex .wp-block-image {
+  display: flex;
+  margin: 0;
+}
+
+/* Make the img fill its figure fully */
+.case-content .wp-block-group.is-layout-flex .wp-block-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

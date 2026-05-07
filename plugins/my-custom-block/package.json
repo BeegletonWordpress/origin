@@ -6,8 +6,8 @@
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
-		"compile": "wp-scripts start --experimental-modules",
-		"build": "wp-scripts build --experimental-modules",
+		"compile": "node scripts/build.js start",
+		"build": "node scripts/build.js build",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
@@ -25,6 +25,8 @@
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4.2.1",
 		"@wordpress/scripts": "^31.5.0",
+		"dotenv": "^17.4.2",
+		"dotenv-cli": "^11.0.0",
 		"glob": "^13.0.6",
 		"tailwindcss": "^4.2.1"
 	}
