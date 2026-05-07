@@ -1,4 +1,9 @@
-.wp-block-create-block-contact-card .contact-card {
+.wp-block-create-block-contact-card {
+	width: 320px;
+	height: 500px;
+}
+
+/* .wp-block-create-block-contact-card .contact-card {
 	transition: transform 0.3s ease;
 }
 
@@ -23,3 +28,4 @@
 .wp-block-create-block-contact-card p {
 	margin-top: 0;
 }
+ */

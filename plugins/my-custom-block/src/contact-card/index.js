@@ -26,6 +26,8 @@ import {
 	CONTACT_CARD_BORDER_3_FRONT,
 } from "../constants";
 
+import "./style.css";
+
 const SHAPES = {
 	shape1: {
 		back: CONTACT_CARD_BORDER_1_BACK,
@@ -82,7 +84,9 @@ registerBlockType(metadata.name, {
 			phone,
 		} = attributes;
 
-		const blockProps = useBlockProps();
+		const blockProps = useBlockProps({
+			className: "w-[320px] h-[500px] mb-12!",
+		});
 
 		const staffMembers = useSelect((select) => {
 			return select(coreStore).getEntityRecords("postType", "post", {
@@ -222,7 +226,7 @@ registerBlockType(metadata.name, {
 					</PanelBody>
 				</InspectorControls>
 
-				<div className="contact-card flex flex-col items-center gap-8 group cursor-pointer w-fit max-w-[320px]">
+   			<div className="contact-card flex flex-col items-center gap-8 group cursor-pointer w-fit max-w-[320px] justify-between h-full">
 					<div className="relative w-75 aspect-square shrink-0">
 						{/* Background Border (z-0) */}
 						<BorderSVG
@@ -262,11 +266,11 @@ registerBlockType(metadata.name, {
 						/>
 					</div>
 
-					<div className="flex flex-col justify-center w-full">
+					<div className="flex flex-col justify-start w-full min-h-34.25">
 						<h3 className="text-2xl!">{name || "Staff Name"}</h3>
 						<p className="text-wrap!">{role || "Job Title"}</p>
 						{(email || phone) && (
-							<div className="flex flex-col gap-2 mt-4">
+							<div className="flex flex-col gap-2 mt-4 min-h-16">
 								{email && (
 									<a
 										href={`mailto:${email}`}
@@ -306,9 +310,13 @@ registerBlockType(metadata.name, {
 
 		const currentShape = SHAPES[cardShape] || SHAPES.shape1;
 
+		const blockProps = useBlockProps.save({
+			className: "w-[320px] h-[500px] mb-12!",
+		});
+
 		return (
-			<div {...useBlockProps.save()}>
-				<div className="contact-card flex flex-col items-center gap-8 group cursor-pointer w-fit max-w-[320px]">
+			<div {...blockProps}>
+				<div className="contact-card flex flex-col items-center gap-8 group cursor-pointer w-fit max-w-[320px] justify-between h-full">
 					<div className="relative w-75 aspect-square shrink-0">
 						{/* Background Border (z-0) */}
 						<div
@@ -350,7 +358,7 @@ registerBlockType(metadata.name, {
 						</div>
 					</div>
 
-					<div className="flex flex-col justify-center w-full">
+					<div className="flex flex-col justify-start w-full min-h-34.25">
 						<h3 className="text-2xl!">{name}</h3>
 						<p className="text-wrap!">{role}</p>
 						{(email || phone) && (
