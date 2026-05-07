@@ -53,7 +53,11 @@
 /* 3. Scrolled State (Always Symbol) */
 .is-scrolled .logo-scrolled {
     opacity: 1 !important;
-    width: 40px; /* Symbol is usually smaller/square */
+    height: 40px; /* Symbol is usually smaller/square */
+}
+
+.is-scrolled .header-logo-container .logo-scrolled {
+    width: auto;
 }
 
 /* Hide others when scrolled */
