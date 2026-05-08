@@ -101,7 +101,7 @@ $context = [
     <!-- Main Grid Content -->
     <div class="team-gallery-content w-full flex flex-col items-center">
         <!-- Post Grid Container -->
-        <div class="grid grid-cols-1 md:grid-cols-4 min-h-107 gap-4 w-full mb-12 relative" data-wp-class--opacity-50="state.isLoading" data-wp-class--invisible="!context.isInitialized">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 w-full mb-12 relative" data-wp-class--opacity-50="state.isLoading" data-wp-class--invisible="!context.isInitialized">
             
             <!-- Loading Spinner -->
             <div 
