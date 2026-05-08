@@ -1,7 +1,7 @@
 .wp-block-create-block-hero {
 	padding-left: 2rem;
 	position: relative;
-	min-height: 550px;
+	min-height: 771px;
 	height: fit-content;
 	display: flex;
 	align-items: stretch;
@@ -35,15 +35,15 @@
 	display: inline !important; /* Force inline for box-decoration-break */
 	width: auto;
 	margin-left: -0.75em;
-	
+
 	background-image: var(--hero-svg-bg);
 	background-size: 150% 2em;
 	background-repeat: no-repeat;
 	background-position: center center;
-	
+
 	box-decoration-break: clone;
 	-webkit-box-decoration-break: clone;
-	
+
 	padding: 0.15em 0.25em 0.15em 0.75em;
 	z-index: 1;
 	line-height: 1.4;
@@ -65,7 +65,7 @@
 	padding: 0 !important;
 	height: 100%;
 	display: flex;
-  align-items: center;
+	align-items: center;
 }
 
 /* Image grid styling - Restored original sizing and gap */
@@ -89,13 +89,15 @@
 	opacity: 0; /* Start hidden for animation */
 }
 
-.wp-block-create-block-hero .hero-img-2, .wp-block-create-block-hero .hero-img-3 {
+.wp-block-create-block-hero .hero-img-2,
+.wp-block-create-block-hero .hero-img-3 {
 	animation: fadeInUp 0.6s ease forwards;
 	animation-delay: 0.9s;
 	opacity: 0; /* Start hidden for animation */
 }
 
-.wp-block-create-block-hero .hero-description, .wp-block-create-block-hero .wp-block-create-block-my-handdrawn-button {
+.wp-block-create-block-hero .hero-description,
+.wp-block-create-block-hero .wp-block-create-block-my-handdrawn-button {
 	animation: fadeInUp 0.6s ease forwards;
 	animation-delay: 1.2s;
 	opacity: 0; /* Start hidden for animation */
@@ -130,6 +132,7 @@
 	}
 
 	.wp-block-create-block-hero .hero-image-grid {
+		width: 100%;
 		gap: 0.5rem !important;
 		padding: 0 !important;
 	}
@@ -144,6 +147,16 @@
 		height: 50%;
 		transform: none;
 		margin-bottom: 0 !important;
+	}
+}
+
+@media (max-width: 768px) {
+	.wp-block-my-custom-block-animation-arrow {
+		display: none;
+	}
+
+	.wp-block-create-block-hero {
+		overflow: visible;
 	}
 }
 
