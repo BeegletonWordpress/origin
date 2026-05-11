@@ -294,7 +294,7 @@ registerBlockType(metadata.name, {
 		} = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: "handdrawn-header w-fit pb-8! md:pb-0!",
+			className: "handdrawn-header w-fit pb-0!",
 			style: {
 				marginBottom: `${underlineSpacing}rem`,
 			},

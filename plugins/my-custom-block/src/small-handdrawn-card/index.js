@@ -19,7 +19,7 @@ import "./editor.css";
 
 const BLOCK_CLASSES = "relative z-10";
 const WRAPPER_CLASSES =
-	"relative z-10 flex flex-col gap-4 max-w-[360px] min-h-[200px]";
+	"relative z-10 flex flex-col items-center gap-4 max-w-[360px] min-h-[200px]";
 const INNER_TEMPLATE = [
 	[
 		"core/heading",
