@@ -201,11 +201,11 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
-						className={`flex flex-col pt-16 pb-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 ${
+						className={`flex flex-col pt-16 pb-12 mb-8 xl:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 ${
 							reverseLayout ? "md:flex-row-reverse" : ""
 						}`}
 					>
-						<div className="w-full md:w-[40%] relative flex flex-col justify-center">
+						<div className="w-full md:w-[50%] flex-1 relative flex flex-col justify-center">
 							<div
 								className={`md:relative z-9 flex flex-col justify-center ${
 									reverseLayout ? "md:ml-auto" : "md:mr-auto"
@@ -235,7 +235,7 @@ registerBlockType(metadata.name, {
 							)}
 						</div>
 
-						<div className="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
+						<div className="w-full h-fit max-h-[40vh] flex flex-col justify-start md:justify-center mt-0 max-w-128.75">
 							<p className="mt-4">{excerpt || "Post excerpt goes here..."}</p>
 						</div>
 					</div>

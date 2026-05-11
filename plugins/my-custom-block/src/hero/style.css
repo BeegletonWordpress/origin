@@ -140,7 +140,7 @@
 	.wp-block-create-block-hero .hero-left-col {
 		flex-basis: 100% !important;
 		max-width: 100% !important;
-		padding: 0 !important;
+		padding: 0 2rem !important;
 	}
 	.wp-block-create-block-hero .hero-right-col {
 		width: 100% !important;

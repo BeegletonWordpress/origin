@@ -115,7 +115,7 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
-						className={`flex flex-col py-12 mb-8 md:flex-row w-full h-fit gap-4 md:gap-2 m-auto items-center ${
+						className={`flex flex-col py-12 px-8 md:px-0 mb-8 md:flex-row w-full h-fit gap-4 md:gap-2 m-auto items-center ${
 							reverseLayout ? "md:flex-row-reverse" : ""
 						}`}
 					>
@@ -231,7 +231,7 @@ registerBlockType(metadata.name, {
 					}}
 				/>
 				<div
-					className={`flex flex-col py-12 mb-8 md:flex-row w-full h-fit gap-4 md:gap-2 m-auto items-center ${
+					className={`flex flex-col py-12 px-8 md:px-0 mb-8 md:flex-row w-full h-fit gap-4 md:gap-2 m-auto items-center ${
 						reverseLayout ? "md:flex-row-reverse" : ""
 					}`}
 				>

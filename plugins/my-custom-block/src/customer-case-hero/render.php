@@ -72,8 +72,8 @@ $wrapper_attributes = get_block_wrapper_attributes(
 		}
 	</style>
 
-	<div class="flex flex-col pt-16 pb-12 mb-8 md:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 <?php echo $reverse_layout ? 'md:flex-row-reverse' : ''; ?>">
-		<div class="w-full md:w-[40%] relative flex flex-col justify-center">
+	<div class="flex flex-col pt-16 pb-12 mb-8 xl:flex-row w-full justify-between gap-10 m-auto md:items-stretch md:max-h-187.5 <?php echo $reverse_layout ? 'md:flex-row-reverse' : ''; ?>">
+		<div class="w-full md:w-[50%] flex-1 relative flex flex-col justify-center">
 			<div class="md:relative z-9 flex flex-col justify-center <?php echo $reverse_layout ? 'md:ml-auto' : 'md:mr-auto'; ?>" style="isolation: isolate;">
 				
 				<?php if ( $tagline ) : ?>
@@ -107,7 +107,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 
 		</div>
 
-		<div class="w-full h-[40vh] flex flex-col justify-center mt-0 max-w-128.75">
+		<div class="w-full h-fit max-h-[40vh] flex flex-col justify-start md:justify-center mt-0 max-w-128.75">
 			<p class="mt-4">
 				<?php
 				echo wp_kses_post( get_the_excerpt() );
