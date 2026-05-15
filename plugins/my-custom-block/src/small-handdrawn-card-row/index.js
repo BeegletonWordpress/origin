@@ -16,7 +16,7 @@ const TEMPLATE = [
 	["create-block/my-small-handdrawn-card"],
 ];
 const CLASSES =
-	"flex flex-col md:flex-row w-full justify-center flex-wrap items-center gap-4";
+	"flex flex-col md:flex-row w-full justify-center flex-wrap items-center gap-10";
 
 registerBlockType(metadata.name, {
 	edit: () => {
