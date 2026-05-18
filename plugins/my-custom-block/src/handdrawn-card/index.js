@@ -24,8 +24,15 @@ import "./editor.css";
 
 const BLOCK_CLASSES =
 	"relative flex flex-col w-full h-full !max-w-md min-h-[500px] flex-1 basis-[350px]";
-const WRAPPER_CLASSES =
-	"relative z-10 flex flex-col gap-4 p-14 justify-between flex-1 items-center";
+const WRAPPER_CLASSES_BASE = "relative z-10 flex p-14 flex-1";
+const WRAPPER_CLASSES_DEFAULT = "flex-col gap-4 justify-between items-center";
+const WRAPPER_CLASSES_SMALL =
+	"flex-row flex-auto h-full justify-center min-h-[425px]";
+
+const getWrapperClasses = (cardLayout) =>
+	`${WRAPPER_CLASSES_BASE} ${
+		cardLayout === "small" ? WRAPPER_CLASSES_SMALL : WRAPPER_CLASSES_DEFAULT
+	}`;
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
@@ -62,11 +69,15 @@ registerBlockType(metadata.name, {
 
 		const innerBlocksProps = useInnerBlocksProps(
 			{
-				className: `${WRAPPER_CLASSES}${
+				className: cardLayout === "small" ? "" : getWrapperClasses(cardLayout),
+				style:
 					cardLayout === "small"
-						? " flex-row flex-auto h-full justify-center"
-						: ""
-				}`,
+						? {
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "space-evenly",
+						  }
+						: {},
 			},
 			{
 				template: currentTemplate,
@@ -103,7 +114,13 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 				<div {...blockProps}>
 					{currentShape}
-					<div {...innerBlocksProps} />
+					{cardLayout === "small" ? (
+						<div className={getWrapperClasses(cardLayout)}>
+							<div {...innerBlocksProps} />
+						</div>
+					) : (
+						<div {...innerBlocksProps} />
+					)}
 				</div>
 			</>
 		);
@@ -134,15 +151,23 @@ registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				{currentShape}
-				<div
-					className={`${WRAPPER_CLASSES}${
-						cardLayout === "small"
-							? " flex-row flex-auto h-full justify-center"
-							: ""
-					}`}
-				>
-					<InnerBlocks.Content />
-				</div>
+				{cardLayout === "small" ? (
+					<div className={getWrapperClasses(cardLayout)}>
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "space-evenly",
+							}}
+						>
+							<InnerBlocks.Content />
+						</div>
+					</div>
+				) : (
+					<div className={getWrapperClasses(cardLayout)}>
+						<InnerBlocks.Content />
+					</div>
+				)}
 			</div>
 		);
 	},

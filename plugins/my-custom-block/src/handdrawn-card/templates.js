@@ -392,60 +392,47 @@ export const TEMPLATE_BOOST = [
 ];
 
 export const TEMPLATE_SMALL = [
+	["core/heading", { level: 3, content: "boost" }],
 	[
-		"core/group",
+		"core/paragraph",
 		{
-			layout: {
-				type: "flex",
-				orientation: "vertical",
-				justifyContent: "center",
-			},
-			style: { spacing: { blockGap: "0rem" } },
+			content: "<em>Lorem ipsum 1</em>",
+			className: "has-medium-font-size",
 		},
-		[
-			["core/heading", { level: 3, content: "boost" }],
-			[
-				"core/paragraph",
-				{
-					content: "<em>Lorem ipsum 1</em>",
-					className: "has-medium-font-size",
-				},
-			],
-			[
-				"core/paragraph",
-				{
-					content: "<em>Lorem ipsum 2</em>",
-					className: "has-medium-font-size",
-				},
-			],
-			[
-				"core/paragraph",
-				{
-					content: "<em>Lorem ipsum 3</em>",
-					className: "has-medium-font-size",
-				},
-			],
-			[
-				"core/paragraph",
-				{
-					content: "<em>Lorem ipsum 4</em>",
-					className: "has-medium-font-size",
-				},
-			],
-			[
-				"core/paragraph",
-				{
-					content: "<em>Lorem ipsum 5</em>",
-					className: "has-medium-font-size",
-				},
-			],
-			[
-				"core/paragraph",
-				{
-					content: "<em>Lorem ipsum 6</em>",
-					className: "has-medium-font-size",
-				},
-			],
-		],
+	],
+	[
+		"core/paragraph",
+		{
+			content: "<em>Lorem ipsum 2</em>",
+			className: "has-medium-font-size",
+		},
+	],
+	[
+		"core/paragraph",
+		{
+			content: "<em>Lorem ipsum 3</em>",
+			className: "has-medium-font-size",
+		},
+	],
+	[
+		"core/paragraph",
+		{
+			content: "<em>Lorem ipsum 4</em>",
+			className: "has-medium-font-size",
+		},
+	],
+	[
+		"core/paragraph",
+		{
+			content: "<em>Lorem ipsum 5</em>",
+			className: "has-medium-font-size",
+		},
+	],
+	[
+		"core/paragraph",
+		{
+			content: "<em>Lorem ipsum 6</em>",
+			className: "has-medium-font-size",
+		},
 	],
 ];
