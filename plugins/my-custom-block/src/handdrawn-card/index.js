@@ -61,7 +61,13 @@ registerBlockType(metadata.name, {
 		});
 
 		const innerBlocksProps = useInnerBlocksProps(
-			{ className: WRAPPER_CLASSES },
+			{
+				className: `${WRAPPER_CLASSES}${
+					cardLayout === "small"
+						? " flex-row flex-auto h-full justify-center"
+						: ""
+				}`,
+			},
 			{
 				template: currentTemplate,
 				templateLock: "all",
@@ -103,7 +109,7 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: function save({ attributes }) {
-		const { backgroundColor, style, cardShape } = attributes;
+		const { backgroundColor, style, cardLayout, cardShape } = attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -128,7 +134,13 @@ registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				{currentShape}
-				<div className={WRAPPER_CLASSES}>
+				<div
+					className={`${WRAPPER_CLASSES}${
+						cardLayout === "small"
+							? " flex-row flex-auto h-full justify-center"
+							: ""
+					}`}
+				>
 					<InnerBlocks.Content />
 				</div>
 			</div>

@@ -395,13 +395,12 @@ export const TEMPLATE_SMALL = [
 	[
 		"core/group",
 		{
-			className: "flex-row flex-auto h-full justify-center",
-			style: { spacing: { blockGap: "0rem" } },
 			layout: {
 				type: "flex",
-				orientation: "horizontal",
+				orientation: "vertical",
 				justifyContent: "center",
 			},
+			style: { spacing: { blockGap: "0rem" } },
 		},
 		[
 			["core/heading", { level: 3, content: "boost" }],
