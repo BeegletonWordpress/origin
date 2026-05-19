@@ -260,7 +260,7 @@ registerBlockType(metadata.name, {
 
 		return (
 			<div {...blockProps}>
-				<div className="service-block__top flex gap-12 justify-center items-stretch mb-8">
+				<div className="service-block__top flex gap-12 justify-center items-center mb-8">
 					<div className="service-block__text flex-1">
 						{/* <RichText.Content
 							tagName="h2"
@@ -308,8 +308,8 @@ registerBlockType(metadata.name, {
 						xmlns="http://www.w3.org/2000/svg"
 						data-name="Lager 2"
 						viewBox="0 0 121.7 112.2"
-						fill="#bbc7e7"
-						class="h-full flex-1 min-w-[150px]"
+						fill="#3b3632"
+						class="h-full flex-1 min-w-[150px] max-h-[350px]"
 					>
 						<path
 							d="m95.8 62.4-.2-.2h.1l.3-.1h.1l.7.3 1 .8zM45.2 62l1.4-.3v.2l-3.3 1c-.4-.3 1.7-.8 1.9-.9m-2.5 2v-.2q1-.1 1.8-.4l2.2-.6v.4l-2 .5-1.8.3zM57 74.7q-.2-.2 0-.2 1.7-.1 3.2-.6l3.8-1.1 2.8-.5q-3.2 1.1-6.5 1.8-.9.3-1.9.4zm-6.2.5q0-.2.3-.2l3-1 5.6-1.4 7.7-2.2 5.8-1.5 5.5-1.6 4-1.1h1.1l-3.2.9-4.3 1.3-9 2.3-7.6 2.2-4.3 1.1-3.8 1-.6.2zm37-10.2h-.7q2.1-.8 4.2-1.2l1-.3-1 .5zM19 66l-2.3-3.6-2-3.5-1.2-1.7q-.6-.7-.2-1.3 2.2-2.1 4.5-4c.4-.3 1-1 1.5-.6l2.3 1.8q1 .5 1.7 1.4l1.3 1.5q1 1 2 1.7l.6.6v.1l-.2.8-1-1-2-1.8-1.4-1.6-3.6-3q-2.4 1.7-4.3 3.7l-.9.9q.5 1 1.2 1.8 1.1 1.6 2 3.4 1.3 1.8 2.2 3.7.9 1.2 1.1 2.4-.5-1-1.2-1.7Zm-.4-15-.8-1q-.6-.2-.5-.8l.8-.7c.6-.6.5-1.5.5-2.2v-1l-.5-.9q-.6-1-1.6-1.7-.7-.2-1.4-.1-1.2 0-2.3.4c.5 1.1 1.8 1.4 2.7 2q1.8 1.5 2 3.8-.4-1.2-1.3-2.2-.7-.9-1.7-1.4l-1.5-.9c-.4-.4-1.2-1.2-.8-1.8l.1-.1 2.3-.5c1 0 2-.2 2.6.5q.9.6 1.4 1.7.7.7.7 1.7c0 1.6.1 2.8-1.3 3.7.1.3 1.3 1.5.6 1.7zM12 55.2 10.6 54l-.8-.5q-.8-.6-1.8-.8-1.3 0-2.4-.3-1.5-.5-2-2l-.5-1q-.2-1.6.7-2.7c.8-1 1.6-1 2.8-1 1.2.1.8 1.3 0 1.7l-1.2.6q.2-.3.6-.5.6-.4.8-1l-1.6.1q-1.2.7-1.4 2.2 0 .6.4 1.2.6 1.3 2 1.8c.9.3 1.8 0 2.7.4l2 1.5q1 1 2 1.4.1-.1.4 0 0 .4-.2.4-.6-.1-1-.4Z"
@@ -935,12 +935,7 @@ registerBlockType(metadata.name, {
 							</svg>
 							<div class="relative z-10 flex p-14 flex-row h-full justify-start">
 								<div style="display:flex;flex-direction:column;justify-content:space-evenly">
-									<h3
-										class="wp-block-heading mb-3"
-										style={{ color: "var(--handdrawn-stroke-color)" }}
-									>
-										boost
-									</h3>
+									<h3 class="wp-block-heading mb-3">boost</h3>
 
 									<ul class="list-disc list-inside">
 										<li class="has-medium-font-size">
