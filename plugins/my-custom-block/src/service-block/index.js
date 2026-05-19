@@ -196,7 +196,7 @@ registerBlockType(metadata.name, {
 
 					{illustrationSvg && (
 						<div
-							className="h-full flex-1 min-w-[150px] flex"
+							className="h-full flex-1 min-w-[150px] flex justify-center"
 							dangerouslySetInnerHTML={{ __html: illustrationSvg }}
 						/>
 					)}
