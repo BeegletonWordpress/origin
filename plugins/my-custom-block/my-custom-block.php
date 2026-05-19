@@ -68,13 +68,13 @@ add_action( 'init', 'create_block_my_custom_block_block_init' );
 add_action('wp_enqueue_scripts', function() {
   wp_add_inline_style('global-styles', '
     :root {
-      --wp--preset--spacing--20: clamp(0.444rem, 0.68vw, 0.556rem);
-      --wp--preset--spacing--30: clamp(0.555rem, 0.85vw, 0.694rem);
-      --wp--preset--spacing--40: clamp(0.75rem, 1.15vw, 0.938rem);
-      --wp--preset--spacing--50: clamp(1rem, 1.85vw, 1.5rem);
-      --wp--preset--spacing--60: clamp(1.25rem, 2.77vw, 2.25rem);
-      --wp--preset--spacing--70: clamp(1.75rem, 4.15vw, 3.375rem);
-      --wp--preset--spacing--80: clamp(2.5rem, 6.25vw, 5.063rem);
+        --wp--preset--spacing--20: clamp(0.568rem, 0.68vw, 0.568rem);
+        --wp--preset--spacing--30: clamp(0.71rem, 0.85vw, 0.71rem);
+        --wp--preset--spacing--40: clamp(0.96rem, 1.15vw, 0.96rem);
+        --wp--preset--spacing--50: clamp(1.28rem, 1.85vw, 1.5rem);
+        --wp--preset--spacing--60: clamp(1.6rem, 2.77vw, 2.25rem);
+        --wp--preset--spacing--70: clamp(2.24rem, 4.15vw, 3.375rem);
+        --wp--preset--spacing--80: clamp(3.2rem, 6.25vw, 5.063rem);
     }
   ');
 }, 20);
