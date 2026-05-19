@@ -8,7 +8,7 @@
 	"attributes": {
 		"title": {
 			"type": "string",
-			"default": "Webbutveckling"
+			"default": "Titel"
 		},
 		"description": {
 			"type": "string",
@@ -21,29 +21,12 @@
 		"illustrationSvg": {
 			"type": "string",
 			"default": ""
-		},
-		"cards": {
-			"type": "array",
-			"default": [
-				{
-					"icon": "code",
-					"title": "Utveckling",
-					"items": [
-						"Ny hemsida / Lanseringssidor",
-						"Vidareutveckling av befintlig webbplats",
-						"E-handel"
-					]
-				},
-				{
-					"icon": "settings",
-					"title": "Optimering",
-					"items": [
-						"SEO-grund och teknisk optimering",
-						"Support och löpande utveckling",
-						"Integrationer och formulär"
-					]
-				}
-			]
+		}
+	},
+	"supports": {
+		"spacing": {
+			"padding": true,
+			"margin": true
 		}
 	}
 }
