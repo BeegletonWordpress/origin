@@ -1,0 +1,49 @@
+{
+	"apiVersion": 3,
+	"name": "create-block/service-block",
+	"title": "Service Block",
+	"editorScript": "file:./index.js",
+	"style": ["file:./index.css", "file:./style-index.css"],
+	"editorStyle": "file:./editor.css",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Webbutveckling"
+		},
+		"description": {
+			"type": "string",
+			"default": "Beskrivning av tjänsten..."
+		},
+		"themeColor": {
+			"type": "string",
+			"default": "#2B4EFF"
+		},
+		"image": {
+			"type": "object",
+			"default": {}
+		},
+		"cards": {
+			"type": "array",
+			"default": [
+				{
+					"icon": "code",
+					"title": "Utveckling",
+					"items": [
+						"Ny hemsida / Lanseringssidor",
+						"Vidareutveckling av befintlig webbplats",
+						"E-handel"
+					]
+				},
+				{
+					"icon": "settings",
+					"title": "Optimering",
+					"items": [
+						"SEO-grund och teknisk optimering",
+						"Support och löpande utveckling",
+						"Integrationer och formulär"
+					]
+				}
+			]
+		}
+	}
+}
