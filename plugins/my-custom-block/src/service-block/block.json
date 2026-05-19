@@ -16,11 +16,11 @@
 		},
 		"themeColor": {
 			"type": "string",
-			"default": "#2B4EFF"
+			"default": "#bbc7e7"
 		},
-		"image": {
-			"type": "object",
-			"default": {}
+		"illustrationSvg": {
+			"type": "string",
+			"default": ""
 		},
 		"cards": {
 			"type": "array",
