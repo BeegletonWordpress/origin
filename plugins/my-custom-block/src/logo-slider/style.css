@@ -4,15 +4,15 @@
 }
 
 .logo-slider-track {
-    width: max-content;
-    animation: logo-scroll linear infinite;
-    /* Help Safari and other browsers optimise this animation */
-    will-change: transform;
-    contain: layout; /* limit layout thrashing during animation */
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    /* Ensure hardware acceleration for transforms */
-    transform: translateZ(0);
+	width: max-content;
+	animation: logo-scroll linear infinite;
+	/* Help Safari and other browsers optimise this animation */
+	will-change: transform;
+	contain: layout; /* limit layout thrashing during animation */
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	/* Ensure hardware acceleration for transforms */
+	transform: translateZ(0);
 }
 
 .logo-slider-track.paused {
@@ -20,24 +20,24 @@
 }
 
 @keyframes logo-scroll {
-    from {
-        transform: translate3d(0, 0, 0);
-    }
-    to {
-        transform: translate3d(-50%, 0, 0);
-    }
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(-50%, 0, 0);
+	}
 }
 
 .logo-slider-track .block-editor-block-list__block,
 .logo-slider-track > * {
-    flex-shrink: 0;
+	flex-shrink: 0;
 }
 
 /* Ensure logo images render consistently across browsers */
 .logo-slider-track img {
-    display: block; /* avoid inline image whitespace issues */
-    max-height: 60px; /* reasonable default if Tailwind classes fail */
-    height: auto;
-    width: auto;
-    -webkit-font-smoothing: antialiased;
+	display: block; /* avoid inline image whitespace issues */
+	max-height: 60px; /* reasonable default if Tailwind classes fail */
+	height: auto;
+	width: auto;
+	-webkit-font-smoothing: antialiased;
 }
