@@ -119,14 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				if (Number.isFinite(newItemWidth) && newItemWidth > 0) {
 					const newDuration = (newItemWidth / speed) * 2;
 					if (Number.isFinite(newDuration) && newDuration > 0) {
-						track.style.animationDuration = `${newDuration}s`;
-
-						// Restart animation from the beginning
-						track.style.animation = "none";
-						// Force reflow to trigger animation restart
-						// eslint-disable-next-line no-unused-expressions
-						void track.offsetWidth;
-						track.style.animation = "logo-scroll linear infinite";
+						// Restart animation with recalculated duration
+						track.style.animation = `${newDuration}s linear 0s infinite normal none running logo-scroll`;
 					}
 				}
 			}, RESIZE_DEBOUNCE_MS);
