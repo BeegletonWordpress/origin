@@ -16,7 +16,7 @@
 }
 
 .logo-slider-track.paused {
-	animation-play-state: paused;
+	animation-play-state: paused !important;
 }
 
 @keyframes logo-scroll {
