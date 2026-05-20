@@ -20,7 +20,14 @@ const CARDS_TEMPLATE = [
 
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { themeColor, illustrationSvg, title, description } = attributes;
+		const {
+			themeColor,
+			illustrationSvg,
+			title,
+			description,
+			leftColumnText,
+			rightColumnText,
+		} = attributes;
 
 		const blockProps = useBlockProps({
 			className: "service-block w-full",
@@ -130,6 +137,23 @@ registerBlockType(metadata.name, {
 						</div>
 					</div>
 
+					<div className="flex gap-6 mb-6">
+						<RichText
+							tagName="p"
+							className="flex-1"
+							value={leftColumnText}
+							onChange={(val) => setAttributes({ leftColumnText: val })}
+							placeholder={__("Left column text…")}
+						/>
+						<RichText
+							tagName="p"
+							className="flex-1"
+							value={rightColumnText}
+							onChange={(val) => setAttributes({ rightColumnText: val })}
+							placeholder={__("Right column text…")}
+						/>
+					</div>
+
 					{/* Cards row */}
 					<div className="flex justify-between gap-6 flex-col md:flex-row">
 						<InnerBlocks
@@ -144,7 +168,14 @@ registerBlockType(metadata.name, {
 	},
 
 	save: ({ attributes }) => {
-		const { themeColor, illustrationSvg, title, description } = attributes;
+		const {
+			themeColor,
+			illustrationSvg,
+			title,
+			description,
+			leftColumnText,
+			rightColumnText,
+		} = attributes;
 
 		const blockProps = useBlockProps.save({
 			className: "service-block w-full",
@@ -201,6 +232,25 @@ registerBlockType(metadata.name, {
 						/>
 					)}
 				</div>
+
+				{(leftColumnText || rightColumnText) && (
+					<div className="flex gap-6 mb-6">
+						{leftColumnText && (
+							<RichText.Content
+								tagName="p"
+								className="flex-1"
+								value={leftColumnText}
+							/>
+						)}
+						{rightColumnText && (
+							<RichText.Content
+								tagName="p"
+								className="flex-1"
+								value={rightColumnText}
+							/>
+						)}
+					</div>
+				)}
 
 				{/* Cards row */}
 				<div className="flex justify-between gap-6 flex-col md:flex-row">

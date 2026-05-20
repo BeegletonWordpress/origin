@@ -21,6 +21,14 @@
 		"illustrationSvg": {
 			"type": "string",
 			"default": ""
+		},
+		"leftColumnText": {
+			"type": "string",
+			"default": ""
+		},
+		"rightColumnText": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"supports": {
