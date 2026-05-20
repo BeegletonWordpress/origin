@@ -50,7 +50,7 @@ registerBlockType(metadata.name, {
 	edit: () => {
 		const blockProps = useBlockProps({
 			className:
-				"wp-block-create-block-my-handdrawn-card relative flex flex-col w-full md:w-fit h-full flex-1 has-accent-2-background-color has-background",
+				"wp-block-create-block-my-handdrawn-card relative flex flex-col w-full max-w-[650px] m-auto md:w-fit h-full flex-1 has-accent-2-background-color has-background",
 		});
 
 		return (
