@@ -81,9 +81,9 @@ add_action('wp_enqueue_scripts', function() {
 
 function register_customer_case_post_type() {
     $labels = [
-        'name' => 'Customer Cases',
-        'singular_name' => 'Customer Case',
-        'menu_name' => 'Customer Cases',
+        'name' => 'Kundcase',
+        'singular_name' => 'Kundcase',
+        'menu_name' => 'Kundcase',
         'add_new' => 'Add New',
         'add_new_item' => 'Add New Customer Case',
         'edit_item' => 'Edit Customer Case',
