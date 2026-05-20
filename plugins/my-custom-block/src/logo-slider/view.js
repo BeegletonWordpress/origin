@@ -6,10 +6,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 	const sliders = document.querySelectorAll(".logo-slider-container");
 
-	const resizeObserver = new ResizeObserver((entries) => {
-		console.log("ResizeObserver triggered for logo slider:", entries);
-	});
-
 	sliders.forEach((container) => {
 		const track = container.querySelector(".logo-slider-track");
 		if (!track) {
@@ -31,8 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			return;
 		}
 
+		let resizeTimeout = null;
+		const RESIZE_DEBOUNCE_MS = 300;
+
 		items.forEach((item) => {
-			resizeObserver.observe(item);
 			track.appendChild(item.cloneNode(true));
 		});
 
@@ -99,5 +97,29 @@ document.addEventListener("DOMContentLoaded", () => {
 				track.classList.remove("paused");
 			});
 		}
+
+		// Add ResizeObserver for post-load resize handling
+		const resizeObserver = new ResizeObserver(() => {
+			console.debug("logo-slider: resize detected.");
+			// Debounce: ignore rapid resize events
+			if (resizeTimeout) {
+				clearTimeout(resizeTimeout);
+			}
+
+			resizeTimeout = setTimeout(() => {
+				// Pause animation briefly when resize is detected
+				track.classList.add("paused");
+
+				// Resume after a brief pause
+				setTimeout(() => {
+					track.classList.remove("paused");
+				}, 100);
+			}, RESIZE_DEBOUNCE_MS);
+		});
+
+		// Observe all original items (not clones) for post-load resize
+		items.forEach((item) => {
+			resizeObserver.observe(item);
+		});
 	});
 });
