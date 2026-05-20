@@ -158,7 +158,6 @@ registerBlockType(metadata.name, {
 					<div className="flex justify-between gap-6 flex-col md:flex-row">
 						<InnerBlocks
 							template={CARDS_TEMPLATE}
-							templateLock="all"
 							allowedBlocks={["create-block/service-card"]}
 						/>
 					</div>
