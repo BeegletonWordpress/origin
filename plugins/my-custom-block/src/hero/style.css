@@ -41,8 +41,8 @@
 	background-repeat: no-repeat;
 	background-position: center center;
 
-	box-decoration-break: clone;
 	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
 
 	padding: 0.15em 0.25em 0.15em 0.75em;
 	z-index: 1;
@@ -51,6 +51,12 @@
 	animation: fadeInUp 0.6s ease forwards;
 	animation-delay: 0.3s;
 	opacity: 0; /* Start hidden for animation */
+}
+
+@supports (font: -apple-system-body) {
+	.wp-block-create-block-hero .hero-title {
+		padding: 0.15em 0.25em 0.15em 1em !important;
+	}
 }
 
 /* Right column containing images (absolutely positioned for overlap) */
