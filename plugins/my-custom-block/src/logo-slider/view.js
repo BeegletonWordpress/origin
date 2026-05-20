@@ -110,6 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
 				// Pause animation briefly when resize is detected
 				track.classList.add("paused");
 
+				// Recalculate itemWidth here
+				let newItemWidth = 0;
+				for (let i = 0; i < originalItemCount; i++) {
+					const w =
+						items[i].offsetWidth || items[i].getBoundingClientRect().width || 0;
+					newItemWidth += w + gap;
+				}
+				if (Number.isFinite(newItemWidth) && newItemWidth > 0) {
+					const newDuration = (newItemWidth / speed) * 2;
+					if (Number.isFinite(newDuration) && newDuration > 0) {
+						track.style.animationDuration = `${newDuration}s`;
+					}
+				}
+
 				// Resume after a brief pause
 				setTimeout(() => {
 					track.classList.remove("paused");
