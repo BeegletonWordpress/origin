@@ -191,6 +191,38 @@ function save_customer_case_metabox( $post_id ) {
 }
 add_action( 'save_post_customer_case', 'save_customer_case_metabox' );
 
+function add_aria_current_to_cpt_archive( $block_content, $block ) {
+    error_log( 'navigation-link found, url: ' . ( $block['attrs']['url'] ?? 'no url' ) );
+    error_log( 'is_post_type_archive: ' . ( is_post_type_archive( 'customer_case' ) ? 'true' : 'false' ) );
+    error_log( 'archive link: ' . get_post_type_archive_link( 'customer_case' ) );
+    
+    if ( $block['blockName'] !== 'core/navigation-link' ) {
+        return $block_content;
+    }
+
+    if ( is_post_type_archive( 'customer_case' ) ) {
+        $archive_link = get_post_type_archive_link( 'customer_case' );
+        $block_url = $block['attrs']['url'] ?? '';
+
+        // Normalise both URLs: make relative, strip trailing slash
+        $archive_path = rtrim( parse_url( $archive_link, PHP_URL_PATH ), '/' );
+        $block_path   = rtrim( parse_url( $block_url, PHP_URL_PATH ), '/' );
+
+        if ( $block_path && $block_path === $archive_path ) {
+            error_log( 'Match found — adding aria-current' );
+            $block_content = str_replace(
+                '<a ',
+                '<a aria-current="page" ',
+                $block_content
+            );
+        }
+    }
+
+    return $block_content;
+}
+add_filter( 'render_block', 'add_aria_current_to_cpt_archive', 10, 2 );
+    
+
 /**
  * Enqueue Lenis smooth scroll.
  */
