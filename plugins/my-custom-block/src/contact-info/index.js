@@ -24,8 +24,7 @@ registerBlockType(metadata.name, {
 		};
 
 		const blockProps = useBlockProps({
-			className:
-				"contact-info flex flex-col md:flex-row w-full gap-4 md:items-stretch max-w-fit",
+			className: "contact-info flex w-full gap-4 max-w-none",
 		});
 
 		return (
@@ -58,7 +57,7 @@ registerBlockType(metadata.name, {
 
 				<div {...blockProps}>
 					{/* Icon/Image Column - Fixed width 60px, square aspect */}
-					<div className="w-full md:w-15 flex items-center">
+					<div className="w-full md:w-15 flex flex-0 items-center">
 						{imageUrl ? (
 							<div className="w-15 aspect-square">
 								<img
@@ -110,14 +109,13 @@ registerBlockType(metadata.name, {
 		const { imageUrl, imageAlt, header, paragraph } = attributes;
 
 		const blockProps = useBlockProps.save({
-			className:
-				"contact-info flex flex-col md:flex-row w-full gap-4 md:items-stretch max-w-fit",
+			className: "contact-info flex w-full gap-4 max-w-none",
 		});
 
 		return (
 			<div {...blockProps}>
 				{/* Icon/Image Column */}
-				<div className="w-full md:w-15 flex items-center">
+				<div className="w-full md:w-15 flex flex-0 items-center">
 					{imageUrl && (
 						<div className="w-15 aspect-square">
 							<img
