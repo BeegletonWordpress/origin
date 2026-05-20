@@ -32,18 +32,55 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		} );
 
 		// Calculate total width of original items
-		const trackStyle = getComputedStyle( track );
-		const gap = parseFloat( trackStyle.gap ) || 8;
+    const trackStyle = getComputedStyle( track );
+    // Some Safari builds may return "normal" for gap or an empty string.
+    // Fall back to a sensible value when parsing fails.
+    let gap = 8; // default fallback in pixels
+    try {
+      const rawGap = trackStyle.gap;
+      const parsed = parseFloat( rawGap );
+      if ( !Number.isNaN( parsed ) ) {
+        gap = parsed;
+      } else {
+        // Try to infer from CSS custom properties or common Tailwind spacing
+        // If track has a computed column-gap (older Safari), try that too
+        const colGap = trackStyle.columnGap;
+        const parsedCol = parseFloat( colGap );
+        if ( !Number.isNaN( parsedCol ) ) {
+          gap = parsedCol;
+        }
+      }
+    } catch ( e ) {
+      // Keep fallback gap value
+      // eslint-disable-next-line no-console
+      console.warn( 'logo-slider: failed to parse gap, using fallback', e );
+    }
 
 		const originalItemCount = items.length;
-		let itemWidth = 0;
-		for ( let i = 0; i < originalItemCount; i++ ) {
-			itemWidth += ( items[ i ].offsetWidth || 0 ) + gap;
-		}
+    let itemWidth = 0;
+    for ( let i = 0; i < originalItemCount; i++ ) {
+      // offsetWidth can be 0 if element is not laid out yet; try boundingClientRect as fallback
+      const w = items[ i ].offsetWidth || items[ i ].getBoundingClientRect().width || 0;
+      itemWidth += w + gap;
+    }
 
-		// Duration based on moving original set width
-		const duration = ( itemWidth / speed ) * 2;
-		track.style.animationDuration = `${ duration }s`;
+    // Guard against invalid calculations
+    if ( !Number.isFinite( itemWidth ) || itemWidth <= 0 ) {
+      // eslint-disable-next-line no-console
+      console.warn( 'logo-slider: computed invalid itemWidth, aborting animation setup', itemWidth );
+      track.style.animation = 'none';
+      return;
+    }
+
+    // Duration based on moving original set width. Multiply by 2 to cover cloned set.
+    const duration = ( itemWidth / speed ) * 2;
+    if ( Number.isFinite( duration ) && duration > 0 ) {
+      track.style.animationDuration = `${ duration }s`;
+    } else {
+      // eslint-disable-next-line no-console
+      console.warn( 'logo-slider: invalid duration calculated', duration );
+      track.style.animation = 'none';
+    }
 
 		if ( pauseOnHover ) {
 			container.addEventListener( 'mouseenter', () => {
