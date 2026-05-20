@@ -107,27 +107,28 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 
 			resizeTimeout = setTimeout(() => {
-				// Pause animation briefly when resize is detected
-				track.classList.add("paused");
-
-				// Recalculate itemWidth here
+				// Recalculate itemWidth with current child dimensions
 				let newItemWidth = 0;
 				for (let i = 0; i < originalItemCount; i++) {
 					const w =
 						items[i].offsetWidth || items[i].getBoundingClientRect().width || 0;
 					newItemWidth += w + gap;
 				}
+
+				// Only restart animation if new itemWidth is valid
 				if (Number.isFinite(newItemWidth) && newItemWidth > 0) {
 					const newDuration = (newItemWidth / speed) * 2;
 					if (Number.isFinite(newDuration) && newDuration > 0) {
 						track.style.animationDuration = `${newDuration}s`;
+
+						// Restart animation from the beginning
+						track.style.animation = "none";
+						// Force reflow to trigger animation restart
+						// eslint-disable-next-line no-unused-expressions
+						void track.offsetWidth;
+						track.style.animation = "logo-scroll linear infinite";
 					}
 				}
-
-				// Resume after a brief pause
-				setTimeout(() => {
-					track.classList.remove("paused");
-				}, 100);
 			}, RESIZE_DEBOUNCE_MS);
 		});
 
