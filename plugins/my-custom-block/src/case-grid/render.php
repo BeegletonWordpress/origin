@@ -6,6 +6,8 @@
 $args = array(
 	'post_type'      => 'customer_case',
 	'posts_per_page' => $attributes['postsPerPage'] ?? 3,
+	'orderby' => 'menu_order',
+	'order' => 'ASC'
 );
 
 $query = new WP_Query($args);

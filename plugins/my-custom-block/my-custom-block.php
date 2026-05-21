@@ -114,6 +114,7 @@ function register_customer_case_post_type() {
             'thumbnail',
             'excerpt',
             'custom-fields',
+            'page-attributes'
         ],
     ];
 
