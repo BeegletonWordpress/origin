@@ -11,8 +11,8 @@ h4,
 h5,
 h6,
 p {
-	text-wrap: balance;
-	text-wrap: pretty;
+	text-wrap: balance !important;
+	text-wrap: pretty !important;
 }
 
 @media (max-width: 600px) {
