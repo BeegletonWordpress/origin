@@ -11,7 +11,7 @@ h4,
 h5,
 h6,
 p {
-	text-wrap: balance !important;
+	text-wrap: auto !important;
 	text-wrap: pretty !important;
 }
 
