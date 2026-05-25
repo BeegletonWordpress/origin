@@ -11,7 +11,7 @@ h4,
 h5,
 h6,
 p {
-	text-wrap: auto !important;
+	text-wrap: auto !important; /* Fallback for browser that don't support 'pretty' */
 	text-wrap: pretty !important;
 }
 
