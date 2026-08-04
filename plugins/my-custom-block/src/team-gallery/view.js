@@ -1,353 +1,238 @@
-import { store, getContext } from "@wordpress/interactivity";
+import { getContext, store } from "@wordpress/interactivity";
 
-const MOBILE_BREAKPOINT = 768; // px
-let resizeTimeout; // For debouncing resize events
-let storedContext = null; // Store context reference from init
-let storedActions = null; // Store actions reference from init
-let storedState = null; // Store state reference from init
+const MOBILE_BREAKPOINT = 768;
+const TRANSITION_DURATION = 180;
+
+let resizeTimeout;
 
 /**
- * Perform API fetch and animation for breakpoint changes
- * Uses stored context/state/actions to avoid scope issues with global resize events
+ * Wait until the browser has rendered pending DOM changes.
+ *
+ * @return {Promise<void>}
  */
-async function performBreakpointFetch(context, state) {
-	const grid = document.querySelector("[data-team-gallery-grid]");
-	const wrapper = document.querySelector(".team-gallery");
-
-	if (!grid || !wrapper) {
-		console.error("Grid or wrapper element not found");
-		return;
-	}
-
-	if (!state || !state.posts) {
-		console.error("State object is invalid or posts property not found");
-		return;
-	}
-
-	console.log("Performing breakpoint fetch...");
-	state.isLoading = true;
-
-	try {
-		// Get order/orderby from wrapper dataset
-		const order = wrapper.dataset.order?.toLowerCase() || "asc";
-		const orderBy = wrapper.dataset.orderby || "date";
-
-		const offset = (context.currentPage - 1) * context.postsPerPage;
-		let url = `/wp-json/wp/v2/posts?per_page=${context.postsPerPage}&offset=${offset}&_embed=1`;
-
-		if (context.selectedCategory) {
-			url += `&categories=${context.selectedCategory}`;
-		}
-
-		if (orderBy && order) {
-			url += `&orderby=${orderBy}&order=${order}`;
-		}
-
-		console.log("Fetching posts from:", url);
-		const response = await fetch(url);
-		const data = await response.json();
-		const newPosts = data.map((post) => ({
-			id: post.id,
-			title: post.title.rendered,
-			role: post.meta?.team_member_role || "",
-			featuredImage:
-				post._embedded?.["wp:featuredmedia"]?.[0]?.media_details?.sizes
-					?.medium_large?.source_url ||
-				post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-				"",
-		}));
-
-		// Animation direction for breakpoint changes is always "forward"
-		const animationDirection = "forward";
-
-		// Slide out current cards
-		grid.style.transition = "transform 280ms ease, opacity 280ms ease";
-		grid.style.transform =
-			animationDirection === "forward" ? "translateX(-100%)" : "translateX(100%)";
-		grid.style.opacity = "0";
-
-		await new Promise((resolve) => setTimeout(resolve, 280));
-
-		// Swap content while off-screen
-		state.posts = newPosts;
-		state.isLoading = false;
-
-		// Position on the opposite side, hidden, no transition
-		grid.style.transition = "none";
-		grid.style.transform =
-			animationDirection === "forward" ? "translateX(100%)" : "translateX(-100%)";
-		grid.style.opacity = "0";
-
-		// Wait for Interactivity API to flush DOM, then slide in
-		await new Promise((resolve) =>
-			requestAnimationFrame(() => requestAnimationFrame(resolve)),
-		);
-		grid.style.transition = "transform 280ms ease, opacity 280ms ease";
-		grid.style.transform = "translateX(0)";
-		grid.style.opacity = "1";
-
-		await new Promise((resolve) => setTimeout(resolve, 280));
-
-		// Clean up inline styles
-		grid.style.transition = "";
-		grid.style.transform = "";
-		grid.style.opacity = "";
-	} catch (error) {
-		console.error("Failed to fetch team members on breakpoint change:", error);
-		// Reset grid state if something went wrong mid-animation
-		grid.style.transition = "";
-		grid.style.transform = "";
-		grid.style.opacity = "";
-		state.isLoading = false;
-	}
+function waitForRender() {
+	return new Promise((resolve) => {
+		requestAnimationFrame(() => {
+			requestAnimationFrame(resolve);
+		});
+	});
 }
 
-console.log("Defining team-gallery store with responsive pagination...");
+/**
+ * Wait for a specified duration.
+ *
+ * @param {number} duration Duration in milliseconds.
+ * @return {Promise<void>}
+ */
+function wait(duration) {
+	return new Promise((resolve) => {
+		window.setTimeout(resolve, duration);
+	});
+}
+
+/**
+ * Return the team members for the current page.
+ *
+ * @param {Object} context Block context.
+ * @param {Array}  posts   All team-member posts.
+ * @return {Array}
+ */
+function getVisiblePosts(context, posts) {
+	const start = (context.currentPage - 1) * context.postsPerPage;
+	const end = start + context.postsPerPage;
+
+	return posts.slice(start, end);
+}
+
+/**
+ * Find the grid that belongs to the current gallery.
+ *
+ * This is still based on the closest initialized gallery. It avoids querying
+ * an unrelated element elsewhere in the document where possible.
+ *
+ * @param {HTMLElement|null} element Current interactive element.
+ * @return {HTMLElement|null}
+ */
+function getGrid(element) {
+	const wrapper = element?.closest?.(".team-gallery");
+
+	return wrapper?.querySelector("[data-team-gallery-grid]") ?? null;
+}
 
 const { state, actions } = store("team-gallery", {
 	state: {
 		get isFirstPage() {
 			const context = getContext();
+
 			return context.currentPage === 1;
 		},
+
 		get isLastPage() {
 			const context = getContext();
+
 			return context.currentPage >= context.maxPages;
 		},
 	},
+
 	actions: {
 		async nextPage() {
 			const context = getContext();
-			if (context.currentPage < context.maxPages) {
-				context.currentPage++;
-				await actions.fetchPosts("forward");
-			}
-		},
-		async prevPage() {
-			const context = getContext();
-			if (context.currentPage > 1) {
-				context.currentPage--;
-				await actions.fetchPosts("back");
-			}
-		},
-		async handleBreakpointCheck() {
-			console.log("Checking breakpoint...");
-			const context = getContext();
-			console.log("Current context:", context);
 
-			if (!storedContext && !storedActions) {
-				// Store context and actions references for use in updateBreakpoint
-				storedContext = getContext();
-				storedActions = actions;
-				console.log("Stored context and actions for breakpoint handling.");
-			}
-
-			const wasMobile = context.isMobile;
-			const isMobileNow = window.innerWidth < MOBILE_BREAKPOINT;
-
-			console.log(
-				`Checking breakpoint: was mobile: ${wasMobile}, is mobile now: ${isMobileNow}`,
-			);
-
-			// Only act if breakpoint actually changed
-			if (wasMobile === isMobileNow) {
-				console.log("Breakpoint unchanged, no action taken.");
-				// Mark as initialized even if breakpoint unchanged
-				context.isInitialized = true;
+			if (
+				state.isLoading ||
+				context.currentPage >= context.maxPages
+			) {
 				return;
 			}
 
-			context.isMobile = isMobileNow;
+			context.currentPage += 1;
 
-			// Switch between mobile and desktop posts per page
-			const newPostsPerPage = isMobileNow
-				? context.mobilePostsPerPage
-				: context.desktopPostsPerPage;
+			await actions.changePage("forward");
+		},
 
-			// Calculate new max pages based on total posts and new posts per page
-			const newMaxPages = Math.ceil(context.totalPosts / newPostsPerPage);
+		async prevPage() {
+			const context = getContext();
 
-			// Reset to page 1 on breakpoint change
-			const newCurrentPage = 1;
+			if (
+				state.isLoading ||
+				context.currentPage <= 1
+			) {
+				return;
+			}
 
-			console.log(
-				`Breakpoint changed to ${isMobileNow ? "mobile" : "desktop"}. ` +
-					`Window width: ${window.innerWidth}px. ` +
-					`Posts per page: ${context.postsPerPage} → ${newPostsPerPage}. ` +
-					`Max pages: ${context.maxPages} → ${newMaxPages}. ` +
-					`Current page: ${context.currentPage} → ${newCurrentPage}`,
+			context.currentPage -= 1;
+
+			await actions.changePage("back");
+		},
+
+		/**
+		 * Change the visible members without making a network request.
+		 *
+		 * @param {"forward"|"back"} direction Animation direction.
+		 */
+		async changePage(direction = "forward") {
+			const context = getContext();
+
+			if (state.isLoading) {
+				return;
+			}
+
+			const grid = document.querySelector(
+				"[data-team-gallery-grid]",
 			);
 
-			// Update context values
-			context.postsPerPage = newPostsPerPage;
-			context.maxPages = newMaxPages;
-			context.currentPage = newCurrentPage;
-
-			// Fetch posts with new pagination
-			await actions.fetchPosts("current");
-
-			// Mark as initialized after fetch completes
-			context.isInitialized = true;
-		},
-		async fetchPosts(direction = "forward") {
-			const context = getContext();
-			const grid = document.querySelector("[data-team-gallery-grid]");
-			const wrapper = document.querySelector(".team-gallery");
-
-			console.log("Wrapper:", wrapper);
-			console.log("Wrapper dataset:", wrapper?.dataset);
-
-			context.order = wrapper.dataset.order?.toLowerCase() || "asc";
-			context.orderBy = wrapper.dataset.orderby || "date";
+			if (!grid) {
+				state.posts = getVisiblePosts(
+					context,
+					state.allPosts ?? [],
+				);
+				return;
+			}
 
 			state.isLoading = true;
 
 			try {
-				const offset = (context.currentPage - 1) * context.postsPerPage;
-				let url = `/wp-json/wp/v2/posts?per_page=${context.postsPerPage}&offset=${offset}&_embed=1`;
+				grid.style.transition =
+					`transform ${TRANSITION_DURATION}ms ease, ` +
+					`opacity ${TRANSITION_DURATION}ms ease`;
 
-				if (context.selectedCategory) {
-					url += `&categories=${context.selectedCategory}`;
-				}
-
-				if (context.orderBy && context.order) {
-					url += `&orderby=${context.orderBy}&order=${context.order}`;
-				}
-
-				console.log("Fetching posts from:", url);
-				const response = await fetch(url);
-				const data = await response.json();
-				const newPosts = data.map((post) => ({
-					id: post.id,
-					title: post.title.rendered,
-					role: post.meta?.team_member_role || "",
-					featuredImage:
-						post._embedded?.["wp:featuredmedia"]?.[0]?.media_details?.sizes
-							?.medium_large?.source_url ||
-						post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-						"",
-				}));
-
-				// Determine animation direction based on context
-				// When direction is "current" (from breakpoint change), use smooth transition
-				const animationDirection =
-					direction === "current" ? "forward" : direction;
-
-				// Slide out current cards
-				grid.style.transition = "transform 280ms ease, opacity 280ms ease";
 				grid.style.transform =
-					animationDirection === "forward"
-						? "translateX(-100%)"
-						: "translateX(100%)";
+					direction === "forward"
+						? "translateX(-40px)"
+						: "translateX(40px)";
+
 				grid.style.opacity = "0";
 
-				await new Promise((resolve) => setTimeout(resolve, 280));
+				await wait(TRANSITION_DURATION);
 
-				// Swap content while off-screen
-				state.posts = newPosts;
-				state.isLoading = false;
+				state.posts = getVisiblePosts(
+					context,
+					state.allPosts ?? [],
+				);
 
-				// Position on the opposite side, hidden, no transition
 				grid.style.transition = "none";
 				grid.style.transform =
-					animationDirection === "forward"
-						? "translateX(100%)"
-						: "translateX(-100%)";
-				grid.style.opacity = "0";
+					direction === "forward"
+						? "translateX(40px)"
+						: "translateX(-40px)";
 
-				// Wait for Interactivity API to flush DOM, then slide in
-				await new Promise((resolve) =>
-					requestAnimationFrame(() => requestAnimationFrame(resolve)),
-				);
-				grid.style.transition = "transform 280ms ease, opacity 280ms ease";
+				await waitForRender();
+
+				grid.style.transition =
+					`transform ${TRANSITION_DURATION}ms ease, ` +
+					`opacity ${TRANSITION_DURATION}ms ease`;
+
 				grid.style.transform = "translateX(0)";
 				grid.style.opacity = "1";
 
-				await new Promise((resolve) => setTimeout(resolve, 280));
+				await wait(TRANSITION_DURATION);
+			} finally {
+				grid.style.transition = "";
+				grid.style.transform = "";
+				grid.style.opacity = "";
 
-				// Clean up inline styles
-				grid.style.transition = "";
-				grid.style.transform = "";
-				grid.style.opacity = "";
-			} catch (error) {
-				console.error("Failed to fetch team members:", error);
-				// Reset grid state if something went wrong mid-animation
-				grid.style.transition = "";
-				grid.style.transform = "";
-				grid.style.opacity = "";
 				state.isLoading = false;
 			}
 		},
-	},
-	callbacks: {
-		initResponsivePagination() {
-			console.log("Initial responsive pagination running...");
 
-			// Store context, state and actions references for use in updateBreakpoint
-			storedContext = getContext();
-			storedState = state;
-			storedActions = actions;
+		/**
+		 * Configure pagination for the current browser width.
+		 *
+		 * @param {boolean} animate Whether to animate the changed content.
+		 */
+		async updateResponsivePagination(animate = false) {
+			const context = getContext();
+			const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
 
-			// Check breakpoint immediately on init
-			actions.handleBreakpointCheck();
-		},
-		updateBreakpoint() {
-			console.log("Resize event detected, checking breakpoint...");
+			const newPostsPerPage = isMobile
+				? context.mobilePostsPerPage
+				: context.desktopPostsPerPage;
 
-			// Use stored context to perform breakpoint check
-			if (!storedContext || !storedActions || !storedState) {
-				console.warn("Context, state, or actions not yet initialized");
+			const breakpointChanged =
+				context.isMobile !== isMobile ||
+				context.postsPerPage !== newPostsPerPage;
+
+			context.isMobile = isMobile;
+
+			if (!breakpointChanged) {
+				context.isInitialized = true;
 				return;
 			}
 
-			// Debounce the breakpoint check
-			clearTimeout(resizeTimeout);
-			resizeTimeout = setTimeout(async () => {
-				const wasMobile = storedContext.isMobile;
-				const isMobileNow = window.innerWidth < MOBILE_BREAKPOINT;
+			context.postsPerPage = newPostsPerPage;
+			context.maxPages = Math.max(
+				1,
+				Math.ceil(
+					context.totalPosts / newPostsPerPage,
+				),
+			);
 
-				console.log(
-					`Checking breakpoint: was mobile: ${wasMobile}, is mobile now: ${isMobileNow}`,
+			context.currentPage = 1;
+
+			if (animate && context.isInitialized) {
+				await actions.changePage("forward");
+			} else {
+				state.posts = getVisiblePosts(
+					context,
+					state.allPosts ?? [],
 				);
+			}
 
-				// Only act if breakpoint actually changed
-				if (wasMobile === isMobileNow) {
-					console.log("Breakpoint unchanged, no action taken.");
-					return;
-				}
+			context.isInitialized = true;
+		},
+	},
 
-				storedContext.isMobile = isMobileNow;
+	callbacks: {
+		async initResponsivePagination() {
+			await actions.updateResponsivePagination(false);
+		},
 
-				// Switch between mobile and desktop posts per page
-				const newPostsPerPage = isMobileNow
-					? storedContext.mobilePostsPerPage
-					: storedContext.desktopPostsPerPage;
+		updateBreakpoint() {
+			window.clearTimeout(resizeTimeout);
 
-				// Calculate new max pages based on total posts and new posts per page
-				const newMaxPages = Math.ceil(storedContext.totalPosts / newPostsPerPage);
-
-				// Reset to page 1 on breakpoint change
-				const newCurrentPage = 1;
-
-				console.log(
-					`Breakpoint changed to ${isMobileNow ? "mobile" : "desktop"}. ` +
-						`Window width: ${window.innerWidth}px. ` +
-						`Posts per page: ${storedContext.postsPerPage} → ${newPostsPerPage}. ` +
-						`Max pages: ${storedContext.maxPages} → ${newMaxPages}. ` +
-						`Current page: ${storedContext.currentPage} → ${newCurrentPage}`,
-				);
-
-				// Update context values
-				storedContext.postsPerPage = newPostsPerPage;
-				storedContext.maxPages = newMaxPages;
-				storedContext.currentPage = newCurrentPage;
-
-				// Fetch posts with new pagination using the extracted function
-				await performBreakpointFetch(storedContext, storedState);
-
-				// Mark as initialized after fetch completes
-				storedContext.isInitialized = true;
-			}, 300);
+			resizeTimeout = window.setTimeout(() => {
+				actions.updateResponsivePagination(true);
+			}, 200);
 		},
 	},
 });
