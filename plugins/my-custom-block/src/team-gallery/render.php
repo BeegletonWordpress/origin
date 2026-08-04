@@ -11,23 +11,25 @@ $svg_color = $attributes['svgColor'] ?? '';
 // Initial query - use desktop posts per page for initial server render
 // This ensures a good initial load with more content visible
 $args = array(
-	'post_type'      => 'post',
-	'posts_per_page' => $posts_per_page,
-	'cat'            => $selected_category,
-    'orderby'        => $attributes['orderBy'] ?? 'date',
-	'order'          => strtoupper($attributes['order'] ?? 'ASC'),
+	'post_type'              => 'post',
+	'posts_per_page'         => -1,
+	'cat'                    => $selected_category,
+	'orderby'                => $attributes['orderBy'] ?? 'date',
+	'order'                  => strtoupper($attributes['order'] ?? 'ASC'),
+	'no_found_rows'          => true,
+	'update_post_term_cache' => false,
 );
 
 $query = new WP_Query($args);
-$total_posts = $query->found_posts;
-$max_pages = ceil($total_posts / $posts_per_page);
+$total_posts = $query->post_count;
+$max_pages = (int) ceil($total_posts / max(1, $posts_per_page));
 
 // Prepare initial posts for the state
-$initial_posts = [];
+$all_posts = [];
 if ($query->have_posts()) {
     while ($query->have_posts()) {
         $query->the_post();
-        $initial_posts[] = [
+        $all_posts[] = [
             'id' => get_the_ID(),
             'title' => get_the_title(),
             'role' => get_post_meta(get_the_ID(), 'team_member_role', true),
@@ -37,11 +39,21 @@ if ($query->have_posts()) {
     wp_reset_postdata();
 }
 
+$visible_posts = array_slice(
+	$all_posts,
+	0,
+	max(1, (int) $posts_per_page)
+);
+
 // Set the state on the server
-wp_interactivity_state( 'team-gallery', [
-    'posts' => $initial_posts,
-    'isLoading' => false,
-] );
+wp_interactivity_state(
+	'team-gallery',
+	array(
+		'allPosts'  => $all_posts,
+		'posts'     => $visible_posts,
+		'isLoading' => false,
+	)
+);
 
 // Setup the context for local tracking
 // Include both desktop and mobile posts per page for client-side switching
@@ -62,8 +74,6 @@ $context = [
     <?php echo get_block_wrapper_attributes(['id' => 'team-gallery', 'class' => 'team-gallery-wrapper team-gallery flex flex-col items-center w-full']); ?>
     data-wp-interactive="team-gallery"
     data-wp-context='<?php echo wp_json_encode($context); ?>'
-    data-order="<?php echo esc_attr(strtoupper($attributes['order'] ?? 'ASC')); ?>"
-    data-orderby="<?php echo esc_attr($attributes['orderBy'] ?? 'date'); ?>"
     data-wp-init="callbacks.initResponsivePagination"
     data-wp-on-window--resize="callbacks.updateBreakpoint"
 >
