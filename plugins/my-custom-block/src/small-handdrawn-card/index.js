@@ -120,7 +120,7 @@ registerBlockType(metadata.name, {
 							label="Offset Y (rem)"
 							value={offsetY}
 							onChange={(value) => setAttributes({ offsetY: value })}
-							min={-5}
+							min={-20}
 							max={5}
 							step={0.1}
 							help="Move the card up (negative) or down (positive)"
