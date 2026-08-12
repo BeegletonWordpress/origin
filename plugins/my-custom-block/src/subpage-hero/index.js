@@ -65,6 +65,7 @@ registerBlockType(metadata.name, {
 			svgColor,
 			theme,
 			reverseLayout,
+			contentWidth,			
 		} = attributes;
 
 		const activeTheme = THEMES[theme] || THEMES.default;
@@ -123,6 +124,17 @@ registerBlockType(metadata.name, {
 							checked={reverseLayout}
 							onChange={(value) => setAttributes({ reverseLayout: value })}
 						/>
+						<SelectControl
+							label="Content Width"
+							value={contentWidth}
+							options={[
+								{ label: "40%", value: 40 },
+								{ label: "50%", value: 50 },
+							]}
+							onChange={(value) =>
+								setAttributes({ contentWidth: Number(value) })
+							}
+						/>						
 					</PanelBody>
 					<PanelColorSettings
 						title="SVG Color"
@@ -141,7 +153,10 @@ registerBlockType(metadata.name, {
 							reverseLayout ? "md:flex-row-reverse" : ""
 						}`}
 					>
-						<div className="w-full md:w-[40%] relative">
+						<div className={`w-full relative 
+							${ contentWidth === 50 ? "md:w-[50%]" : "md:w-[40%]"
+							}`}
+							>
 							<div
 								className={`md:relative ${
 									reverseLayout ? "md:ml-auto" : "md:mr-auto"
@@ -252,6 +267,7 @@ registerBlockType(metadata.name, {
 			svgColor,
 			theme,
 			reverseLayout,
+			contentWidth,			
 		} = attributes;
 		const activeTheme = THEMES[theme] || THEMES.default;
 
@@ -284,7 +300,7 @@ registerBlockType(metadata.name, {
 						reverseLayout ? "md:flex-row-reverse" : ""
 					}`}
 				>
-					<div className="w-full md:w-[40%] relative">
+					<div className={`w-full relative ${ contentWidth === 50 ? "md:w-[50%]" : "md:w-[40%]" }`}>
 						<div
 							className={`md:relative z-9 ${
 								reverseLayout ? "md:ml-auto" : "md:mr-auto"
