@@ -3,8 +3,17 @@ import {
 	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
+	InspectorControls,
 } from '@wordpress/block-editor';
 import metadata from './block.json';
+
+import {
+	PanelBody,
+	RangeControl,
+	ToggleControl,
+} from '@wordpress/components';
+
+import { cloneElement } from '@wordpress/element';
 
 const BACKGROUND_SVG = (
 	<svg
@@ -91,7 +100,15 @@ const TEMPLATE = [
 ];
 
 registerBlockType( metadata.name, {
-	edit: function Edit() {
+	edit: function Edit({ attributes, setAttributes }) {
+
+		const {
+			svgOffsetX = 0,
+			svgOffsetY = 0,
+			svgRotation = 0,
+			svgFlipX = false,
+			svgFlipY = false,
+		} = attributes;
 		const blockProps = useBlockProps( {
 			className: 'relative overflow-hidden',
 		} );
@@ -105,22 +122,118 @@ registerBlockType( metadata.name, {
 				template: TEMPLATE,
 			}
 		);
+		const svgTransform = `
+			translate(${svgOffsetX}rem, ${svgOffsetY}rem)
+			rotate(${svgRotation}deg)
+			scale(
+				${svgFlipX ? -1 : 1},
+				${svgFlipY ? -1 : 1}
+			)
+		`;
 
+		const styledSvg = cloneElement(BACKGROUND_SVG, {
+			style: {
+				...(BACKGROUND_SVG.props.style || {}),
+				transform: svgTransform,
+				transformOrigin: 'center',
+			},
+		});
 		return (
-			<div { ...blockProps }>
-				{ BACKGROUND_SVG }
-				<div { ...innerBlocksProps } />
-			</div>
+			<>
+				<InspectorControls>
+					<PanelBody title="SVG Position" initialOpen={true}>
+						<RangeControl
+							label="Horizontal position"
+							value={svgOffsetX}
+							onChange={(value) =>
+								setAttributes({ svgOffsetX: value })
+							}
+							min={-50}
+							max={50}
+							step={0.1}
+						/>
+
+						<RangeControl
+							label="Vertical position"
+							value={svgOffsetY}
+							onChange={(value) =>
+								setAttributes({ svgOffsetY: value })
+							}
+							min={-50}
+							max={50}
+							step={0.1}
+						/>
+					</PanelBody>
+
+					<PanelBody title="SVG Direction" initialOpen={false}>
+						<RangeControl
+							label="Rotation"
+							value={svgRotation}
+							onChange={(value) =>
+								setAttributes({ svgRotation: value })
+							}
+							min={-180}
+							max={180}
+							step={1}
+						/>
+
+						<ToggleControl
+							label="Flip horizontally"
+							checked={svgFlipX}
+							onChange={(value) =>
+								setAttributes({ svgFlipX: value })
+							}
+						/>
+
+						<ToggleControl
+							label="Flip vertically"
+							checked={svgFlipY}
+							onChange={(value) =>
+								setAttributes({ svgFlipY: value })
+							}
+						/>
+					</PanelBody>
+				</InspectorControls>
+
+				<div {...blockProps}>
+					{styledSvg}
+					<div {...innerBlocksProps} />
+				</div>
+			</>
 		);
 	},
-	save: function save() {
+	save: function save({ attributes }) {
+		const {
+			svgOffsetX = 0,
+			svgOffsetY = 0,
+			svgRotation = 0,
+			svgFlipX = false,
+			svgFlipY = false,
+		} = attributes;
+	
 		const blockProps = useBlockProps.save( {
 			className: 'relative overflow-hidden',
 		} );
 
+		const svgTransform = `
+			translate(${svgOffsetX}rem, ${svgOffsetY}rem)
+			rotate(${svgRotation}deg)
+			scale(
+				${svgFlipX ? -1 : 1},
+				${svgFlipY ? -1 : 1}
+			)
+		`;
+
+		const styledSvg = cloneElement(BACKGROUND_SVG, {
+			style: {
+				...(BACKGROUND_SVG.props.style || {}),
+				transform: svgTransform,
+				transformOrigin: 'center',
+			},
+		});	
 		return (
 			<div { ...blockProps }>
-				{ BACKGROUND_SVG }
+				{ styledSvg }
 				<div className="relative z-10 has-global-padding is-layout-constrained wp-block-my-custom-block-handdrawn-container-is-layout-constrained">
 					<InnerBlocks.Content />
 				</div>

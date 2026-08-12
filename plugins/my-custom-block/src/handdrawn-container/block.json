@@ -33,6 +33,26 @@
 		},
 		"svgColor": {
 			"type": "string"
+		},
+		"svgOffsetX": {
+			"type": "number",
+			"default": 0
+		},
+		"svgOffsetY": {
+			"type": "number",
+			"default": 0
+		},
+		"svgRotation": {
+			"type": "number",
+			"default": 0
+		},
+		"svgFlipX": {
+			"type": "boolean",
+			"default": false
+		},
+		"svgFlipY": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "my-custom-block",
