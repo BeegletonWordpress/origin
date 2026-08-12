@@ -23,3 +23,8 @@
 .wp-block-create-block-my-small-handdrawn-card-row .wp-block-create-block-my-small-handdrawn-card p {
 	padding: 0 23px;
 }
+@media (max-width: 391px) {
+ .wp-block-create-block-my-small-handdrawn-card > div {
+    min-height: 146px;
+ }
+}

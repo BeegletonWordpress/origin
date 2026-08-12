@@ -61,7 +61,11 @@
 		"reverseLayout": {
 			"type": "boolean",
 			"default": false
-		}
+		},
+		"contentWidth": {
+			"type": "number",
+			"default": 40
+		}		
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
