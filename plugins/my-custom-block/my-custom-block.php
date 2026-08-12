@@ -120,6 +120,38 @@ function register_customer_case_post_type() {
 
     register_post_type('customer_case', $args);
 
+	$taxonomy_labels = [
+		'name'              => 'Case Categories',
+		'singular_name'     => 'Case Category',
+		'search_items'      => 'Search Case Categories',
+		'all_items'         => 'All Case Categories',
+		'parent_item'       => 'Parent Case Category',
+		'parent_item_colon' => 'Parent Case Category:',
+		'edit_item'         => 'Edit Case Category',
+		'update_item'       => 'Update Case Category',
+		'add_new_item'      => 'Add New Case Category',
+		'new_item_name'     => 'New Case Category Name',
+		'menu_name'         => 'Case Categories',
+	];    
+
+	register_taxonomy(
+		'customer_case_category',
+		['customer_case'],
+		[
+			'labels'            => $taxonomy_labels,
+			'hierarchical'      => true,
+			'public'            => true,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'show_in_rest'      => true,
+		    'rest_base'         => 'case-categories',            
+			'query_var'         => true,
+			'rewrite'           => [
+				'slug' => 'case-category',
+			],
+		]
+	);
+
     register_post_meta( 'customer_case', 'hero_tagline', [
         'show_in_rest' => true,
         'single'       => true,

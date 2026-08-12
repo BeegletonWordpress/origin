@@ -3,12 +3,28 @@
  * Render function for the Case Grid block.
  */
 
+$selected_categories =
+	isset($attributes['selectedCategories']) &&
+	is_array($attributes['selectedCategories'])
+		? array_map('intval', $attributes['selectedCategories'])
+		: [];
+
 $args = array(
 	'post_type'      => 'customer_case',
 	'posts_per_page' => $attributes['postsPerPage'] ?? 3,
 	'orderby' => 'menu_order',
 	'order' => 'ASC'
 );
+
+if (!empty($selected_categories)) {
+	$args['tax_query'] = [
+		[
+			'taxonomy' => 'customer_case_category',
+			'field'    => 'term_id',
+			'terms'    => $selected_categories,
+		],
+	];
+}
 
 $query = new WP_Query($args);
 
@@ -43,7 +59,7 @@ if ($query->have_posts()) : ?>
 
 					<h3 class="text-xl font-bold mb-3 uppercase tracking-tight">
 						<?php the_title(); ?>
-					</h3>
+					</h3> 
 					
 					<div class="mb-6 grow leading-relaxed">
 						<?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
