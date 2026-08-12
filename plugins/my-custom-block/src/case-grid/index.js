@@ -11,6 +11,7 @@ import {
 	Placeholder,
 	Spinner,
 	ToggleControl,
+	CheckboxControl,
 } from "@wordpress/components";
 import { useSelect } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
@@ -18,7 +19,7 @@ import metadata from "./block.json";
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { postsPerPage, backgroundColor, style, showButton } = attributes;
+		const { postsPerPage, backgroundColor, style, showButton, selectedCategories = [] } = attributes;
 
 		const textColor = style?.color?.text;
 
@@ -41,15 +42,28 @@ registerBlockType(metadata.name, {
 					: [],
 			},
 		);
-
+		const categories = useSelect(
+			(select) =>
+				select(coreStore).getEntityRecords("taxonomy", "customer_case_category", {
+					per_page: -1,
+					hide_empty: false,
+					orderby: "name",
+					order: "asc",
+				}),
+			[],
+		);
 		// Fetch posts using the REST API
 		const { posts, hasResolved } = useSelect(
 			(select) => {
 				const query = {
 					per_page: postsPerPage,
 					_embed: true, // Critical for getting featured images
+					orderby: "menu_order",
+					order: "asc",
 				};
-
+				if (selectedCategories.length > 0) {
+					query.categories = selectedCategories;
+				}
 				return {
 					posts: select(coreStore).getEntityRecords(
 						"postType",
@@ -62,9 +76,15 @@ registerBlockType(metadata.name, {
 					),
 				};
 			},
-			[postsPerPage],
+			[postsPerPage, selectedCategories.join(",")],
 		);
+		const toggleCategory = (categoryId, checked) => {
+			const nextCategories = checked
+				? [...selectedCategories, categoryId]
+				: selectedCategories.filter((id) => id !== categoryId);
 
+			setAttributes({ selectedCategories: nextCategories });
+		};
 		return (
 			<div {...blockProps}>
 				<InspectorControls>
@@ -81,6 +101,27 @@ registerBlockType(metadata.name, {
 							onChange={(val) => setAttributes({ showButton: val })}
 						/>
 					</PanelBody>
+					<PanelBody title="Categories" initialOpen={true}>
+						<p>
+							Välj vilka kategorier som ska visas. 
+							Om inga är markerade visas alla inlägg.
+						</p>
+
+						{categories ? (
+							categories.map((category) => (
+								<CheckboxControl
+									key={category.id}
+									label={category.name}
+									checked={selectedCategories.includes(category.id)}
+									onChange={(checked) =>
+										toggleCategory(category.id, checked)
+									}
+								/>
+							))
+						) : (
+							<Spinner />
+						)}
+					</PanelBody>					
 				</InspectorControls>
 
 				{!hasResolved ? (

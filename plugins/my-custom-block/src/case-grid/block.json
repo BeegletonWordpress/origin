@@ -15,7 +15,14 @@
 		"showButton": {
 			"type": "boolean",
 			"default": true
-		}
+		},
+		"selectedCategories": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "number"
+			}
+		}		
 	},
 	"supports": {
 		"align": ["wide", "full"],
