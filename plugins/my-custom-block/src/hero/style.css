@@ -1,8 +1,9 @@
 .wp-block-create-block-hero {
 	padding-left: 2rem;
 	position: relative;
-	min-height: 771px;
+	min-height: 100svh;
 	height: fit-content;
+	width: 100%;
 	display: flex;
 	align-items: stretch;
 	flex: 1;
@@ -20,12 +21,14 @@
 
 /* Left column containing text */
 .wp-block-create-block-hero .hero-left-col {
-	flex-basis: 70% !important;
-	max-width: 70% !important;
+	flex-basis: 52% !important;
+	max-width: 52% !important;
 	z-index: 10;
 	position: relative;
 	padding: 2rem 0 !important;
 	height: fit-content;
+
+	overflow: visible;
 }
 
 /* Ensure the heading remains inline for multi-line highlight */
@@ -51,6 +54,16 @@
 	animation: fadeInUp 0.6s ease forwards;
 	animation-delay: 0.3s;
 	opacity: 0; /* Start hidden for animation */
+
+	position: relative; 
+	z-index: 20;
+
+	display: inline !important;
+
+	width: max-content;
+	max-width: none;
+
+	overflow: visible;	
 }
 
 @supports (font: -apple-system-body) {
@@ -65,7 +78,7 @@
 	top: 50%;
 	right: 0;
 	transform: translateY(-50%);
-	width: 50% !important;
+	width: 48% !important;
 	z-index: 1;
 	margin: 0 !important;
 	padding: 0 !important;
@@ -82,7 +95,7 @@
 	gap: 1rem !important; /* Restored gap */
 	margin: 0 !important;
 	max-height: 616px;
-	padding: 2em 0;
+	padding: 0 0 2em 0;
 	height: 100%;
 }
 
@@ -101,6 +114,9 @@
 	animation-delay: 0.9s;
 	opacity: 0; /* Start hidden for animation */
 }
+.wp-block-create-block-hero .hero-description {
+	max-width: 46rem;
+}
 
 .wp-block-create-block-hero .hero-description,
 .wp-block-create-block-hero .wp-block-create-block-my-handdrawn-button {
@@ -109,10 +125,17 @@
 	opacity: 0; /* Start hidden for animation */
 }
 
-.wp-block-my-custom-block-animation-arrow {
+.wp-block-create-block-hero
+	.wp-block-my-custom-block-animation-arrow {
+	position: absolute;
+	left: 46%;
+	bottom: 8rem;
+	transform: translateX(-50%);
+	z-index: 20;
+
 	animation: fadeInSide 0.6s ease forwards;
 	animation-delay: 1.5s;
-	opacity: 0; /* Start hidden for animation */
+	opacity: 0;
 }
 
 .wp-block-create-block-hero .hero-image-grid figure {

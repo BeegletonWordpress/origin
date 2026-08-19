@@ -49,7 +49,7 @@ const TEMPLATE = [
 							placeholder: "Hero description text...",
 							content:
 								"This is a description of the hero section. You can customize this text as you like.",
-							className: "hero-description md:w-[70%]",
+							className: "hero-description",
 						},
 					],
 					[
@@ -101,6 +101,12 @@ const TEMPLATE = [
 			],
 		],
 	],
+	[
+		"my-custom-block/animation-arrow",
+		{
+			className: "hero-animation-arrow",
+		},
+	],	
 ];
 
 registerBlockType(metadata.name, {
