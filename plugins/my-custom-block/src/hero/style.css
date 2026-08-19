@@ -268,7 +268,7 @@
 
 @media (max-width: 480px) {
 	.wp-block-create-block-hero .hero-left-col {
-		padding: 1.25rem !important;
+		padding: 0rem !important;
 	}
 
 	.wp-block-create-block-hero .hero-image-grid {
