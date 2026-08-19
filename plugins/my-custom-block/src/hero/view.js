@@ -1,14 +1,19 @@
-document.addEventListener( 'DOMContentLoaded', () => {
-	if ( ! window.lenis ) {
-		console.log( 'Lenis not initialized, skipping hero parallax' );
+document.addEventListener("DOMContentLoaded", () => {
+	const desktopQuery = window.matchMedia("(min-width: 1024px)");
+
+	if (!desktopQuery.matches) {
 		return;
 	}
 
-	window.lenis.on( 'scroll', () => {
-		const scroll = window.lenis.animatedScroll;
-		document.querySelectorAll( '.hero-left-col' ).forEach( ( el ) => {
-			el.style.transform = `translateY(${ scroll * -0.5 }px)`;
-		} );
+	if (!window.lenis) {
+		return;
+	}
 
-	} );
-} );
+	window.lenis.on("scroll", () => {
+		const scroll = window.lenis.animatedScroll;
+
+		document.querySelectorAll(".hero-left-col").forEach((el) => {
+			el.style.transform = `translateY(${scroll * -0.5}px)`;
+		});
+	});
+});
