@@ -354,7 +354,7 @@ function hero_parallax_frontend_scripts() {
         'hero-parallax-frontend',
         plugin_dir_url( __FILE__ ) . 'build/hero/view.js',
         [],
-        '1.0.0',
+        '1.0.1',
         true
     );
 }
