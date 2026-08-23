@@ -414,6 +414,37 @@ function register_customer_case_archive_template() {
 }
 add_action( 'init', 'register_customer_case_archive_template', 20 );
 
+
+/** 
+ * Add CPT for Medarbetare
+*/
+function beegleton_register_medarbetare_post_type() {
+	register_post_type(
+		'medarbetare',
+		array(
+			'labels' => array(
+				'name'          => 'Medarbetare',
+				'singular_name' => 'Medarbetare',
+				'add_new_item'  => 'Lägg till medarbetare',
+				'edit_item'     => 'Redigera medarbetare',
+			),
+			'public'       => true,
+			'show_in_rest' => true,
+			'menu_icon'    => 'dashicons-groups',
+			'supports'     => array(
+				'title',
+				'thumbnail',
+			),
+			'has_archive'  => false,
+			'rewrite'      => array(
+				'slug' => 'medarbetare',
+			),
+		)
+	);
+}
+
+add_action( 'init', 'beegleton_register_medarbetare_post_type' );
+
 /**
  * Enqueue customer case hero script for single customer case pages.
  */
