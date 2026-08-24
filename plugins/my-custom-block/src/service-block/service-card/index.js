@@ -1,5 +1,5 @@
 import { registerBlockType } from "@wordpress/blocks";
-import { InnerBlocks, useBlockProps } from "@wordpress/block-editor";
+import { InnerBlocks, useBlockProps, InspectorControls, PanelColorSettings, } from "@wordpress/block-editor";
 import metadata from "./block.json";
 
 import "./editor.css";
@@ -47,34 +47,55 @@ const CARD_TEMPLATE = [
 ];
 
 registerBlockType(metadata.name, {
-	edit: () => {
+	edit: ({ attributes, setAttributes }) => {
+		const { strokeColor } = attributes;
+
 		const blockProps = useBlockProps({
 			className:
-				"wp-block-create-block-my-handdrawn-card relative flex flex-col w-full max-w-[650px] m-auto md:w-fit h-full flex-1 has-accent-2-background-color has-background",
+				"wp-block-create-block-my-handdrawn-card relative flex flex-col w-full max-w-[650px] m-auto md:w-fit h-full flex-1",
+			style: { "--handdrawn-stroke-color": strokeColor },
 		});
 
 		return (
-			<div {...blockProps}>
-				{CARD_BORDER_SVG}
-				<div className="relative z-10 flex p-14 flex-row h-full justify-start">
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "column",
-							justifyContent: "space-evenly",
-						}}
-					>
-						<InnerBlocks template={CARD_TEMPLATE} />
+			<>
+				<InspectorControls>
+					<PanelColorSettings
+						title="Border Color"
+						colorSettings={[
+							{
+								value: strokeColor,
+								onChange: (color) =>
+									setAttributes({ strokeColor: color || metadata.attributes.strokeColor.default }),
+								label: "Hand-drawn border color",
+							},
+						]}
+					/>
+				</InspectorControls>
+				<div {...blockProps}>
+					{CARD_BORDER_SVG}
+					<div className="relative z-10 flex p-14 flex-row h-full justify-start">
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "space-evenly",
+							}}
+						>
+							<InnerBlocks template={CARD_TEMPLATE} />
+						</div>
 					</div>
 				</div>
-			</div>
+			</>
 		);
 	},
 
-	save: () => {
+	save: ({ attributes }) => {
+		const { strokeColor } = attributes;
+
 		const blockProps = useBlockProps.save({
 			className:
-				"wp-block-create-block-my-handdrawn-card relative flex flex-col w-full max-w-[650px] m-auto md:w-fit h-full flex-1 has-accent-2-background-color has-background",
+				"wp-block-create-block-my-handdrawn-card relative flex flex-col w-full max-w-[650px] m-auto md:w-fit h-full flex-1",
+			style: { "--handdrawn-stroke-color": strokeColor },
 		});
 
 		return (
