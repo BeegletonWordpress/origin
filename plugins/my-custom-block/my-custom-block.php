@@ -445,6 +445,27 @@ function beegleton_register_medarbetare_post_type() {
 
 add_action( 'init', 'beegleton_register_medarbetare_post_type' );
 
+
+function beegleton_register_medarbetare_meta() {
+	$string_fields = [ 'employe_role', 'employe_phone', 'employe_mail' ];
+	foreach ( $string_fields as $field ) {
+		register_post_meta( 'medarbetare', $field, [
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string', 
+		] );
+	}
+
+	$image_fields = [ 'employe_image', 'employe_hover_image' ];
+	foreach ( $image_fields as $field ) {
+		register_post_meta( 'medarbetare', $field, [
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'integer', // attachment ID
+		] );
+	}
+}
+add_action( 'init', 'beegleton_register_medarbetare_meta' );
 /**
  * Enqueue customer case hero script for single customer case pages.
  */
