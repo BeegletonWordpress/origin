@@ -7,6 +7,12 @@
 	"editorStyle": "file:./editor.css",
 	"style": "file:./style.css",
 	"supports": {
-		"html": false
-	}
+		"html": false	
+	},
+	"attributes": {
+		"strokeColor": {
+			"type": "string",
+			"default": "#bbc7e7"
+		}
+	}	
 }
