@@ -16,9 +16,6 @@
 			"type": "number",
 			"default": 1
 		},
-		"selectedCategory": {
-			"type": "number"
-		},
 		"currentIndex": {
 			"type": "number",
 			"default": 0

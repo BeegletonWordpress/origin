@@ -9,13 +9,10 @@ import {
 	QueryControls,
 	Placeholder,
 	Spinner,
-	TextControl,
 	SelectControl,
 } from "@wordpress/components";
 import { useSelect } from "@wordpress/data";
-import { store as coreStore, useEntityProp } from "@wordpress/core-data";
-import { registerPlugin } from "@wordpress/plugins";
-import { PluginDocumentSettingPanel } from "@wordpress/editor";
+import { store as coreStore } from "@wordpress/core-data";
 import metadata from "./block.json";
 
 /**
@@ -208,43 +205,40 @@ const BackgroundSVG = ({ color }) => (
 );
 
 /**
- * Sidebar Panel for Team Member Role
+ * Resolves an ACF image field (attachment ID) to a media object and
+ * renders the member photo. Kept as its own component so useSelect
+ * follows the Rules of Hooks when rendering a list of members.
+ *
+ * @param root0
+ * @param root0.imageId Attachment ID from the ACF "employe_image" field.
+ * @param root0.alt     Alt text for the image.
  */
-const TeamMemberRolePanel = () => {
-	const [meta, setMeta] = useEntityProp("postType", "post", "meta");
+const MemberImage = ({ imageId, alt }) => {
+	const media = useSelect(
+		(select) => (imageId ? select(coreStore).getMedia(imageId) : null),
+		[imageId]
+	);
 
-	// We only want to show this if we are editing a post
-	if (!meta) {
+	if (!media?.source_url) {
 		return null;
 	}
 
 	return (
-		<PluginDocumentSettingPanel
-			name="team-member-settings"
-			title="Team Member Settings"
-			className="team-member-settings"
-		>
-			<TextControl
-				label="Role / Job Title"
-				value={meta.team_member_role || ""}
-				onChange={(value) => setMeta({ ...meta, team_member_role: value })}
-				help="Enter the role for this team member (e.g., Senior Developer)"
+		<div className="mb-6 aspect-square w-full overflow-hidden">
+			<img
+				src={media.source_url}
+				alt={alt}
+				className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 			/>
-		</PluginDocumentSettingPanel>
+		</div>
 	);
 };
-
-registerPlugin("team-member-settings-panel", {
-	render: TeamMemberRolePanel,
-	icon: "admin-users",
-});
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
 		const {
 			postsPerPage,
 			mobilePostsPerPage,
-			selectedCategory,
 			currentIndex,
 			svgColor,
 			order,
@@ -255,7 +249,7 @@ registerBlockType(metadata.name, {
 			className: "team-gallery flex flex-col items-center",
 		});
 
-		// Fetch total count of posts to handle pagination
+		// Fetch total count of staff members to handle pagination
 		const { posts, hasResolved, totalPosts } = useSelect(
 			(select) => {
 				const query = {
@@ -266,43 +260,25 @@ registerBlockType(metadata.name, {
 					order: order,
 				};
 
-				if (selectedCategory) {
-					query.categories = [selectedCategory];
-				}
-
-				console.log("Querying posts with:", query);
-
-				const countQuery = {
-					categories: selectedCategory ? [selectedCategory] : undefined,
-				};
-
 				return {
-					posts: select(coreStore).getEntityRecords("postType", "post", query),
+					posts: select(coreStore).getEntityRecords(
+						"postType",
+						"medarbetare",
+						query,
+					),
 					totalPosts: select(coreStore).getEntityRecordsTotalItems(
 						"postType",
-						"post",
-						countQuery,
+						"medarbetare",
+						{},
 					),
 					hasResolved: select(coreStore).hasFinishedResolution(
 						"getEntityRecords",
-						["postType", "post", query],
+						["postType", "medarbetare", query],
 					),
 				};
 			},
-			[postsPerPage, selectedCategory, currentIndex, order, orderBy],
+			[postsPerPage, currentIndex, order, orderBy],
 		);
-
-		// Fetch categories for Inspector
-		const categories = useSelect((select) => {
-			return select(coreStore).getEntityRecords("taxonomy", "category", {
-				per_page: -1,
-			});
-		}, []);
-
-		const formattedCategories = categories?.map((cat) => ({
-			id: cat.id,
-			name: cat.name,
-		}));
 
 		const maxPages = Math.ceil((totalPosts || 0) / postsPerPage);
 
@@ -343,24 +319,12 @@ registerBlockType(metadata.name, {
 					</PanelBody>
 
 					<PanelBody title="Desktop Grid">
-						{categories ? (
-							<QueryControls
-								numberOfItems={postsPerPage}
-								onNumberOfItemsChange={(val) =>
-									setAttributes({ postsPerPage: val, currentIndex: 0 })
-								}
-								selectedCategoryId={selectedCategory}
-								categoriesList={formattedCategories}
-								onCategoryChange={(val) =>
-									setAttributes({
-										selectedCategory: val ? parseInt(val, 10) : undefined,
-										currentIndex: 0,
-									})
-								}
-							/>
-						) : (
-							<Spinner />
-						)}
+						<QueryControls
+							numberOfItems={postsPerPage}
+							onNumberOfItemsChange={(val) =>
+								setAttributes({ postsPerPage: val, currentIndex: 0 })
+							}
+						/>
 					</PanelBody>
 
 					<PanelBody title="Mobile Grid">
@@ -390,35 +354,23 @@ registerBlockType(metadata.name, {
 					<div className="w-full flex flex-col items-center relative overflow-visible">
 						<BackgroundSVG color={svgColor} />
 						<div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full mb-12 pointer-events-none z-1 relative">
-							{posts.map((post) => {
-								const featuredImage =
-									post._embedded?.["wp:featuredmedia"]?.[0]?.media_details
-										?.sizes?.medium_large?.source_url ||
-									post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
-
-								return (
-									<article
-										key={post.id}
-										className="flex flex-col h-full text-center"
-									>
-										{featuredImage && (
-											<div className="mb-6 aspect-square w-full overflow-hidden">
-												<img
-													src={featuredImage}
-													alt=""
-													className="w-full h-full object-cover"
-												/>
-											</div>
-										)}
-										<h3 className="text-2xl! font-bold mb-0 uppercase tracking-tight">
-											{post.title?.rendered || "(No Title)"}
-										</h3>
-										<p className="text-lg leading-normal!">
-											{post.meta.team_member_role || "(No Role)"}
-										</p>
-									</article>
-								);
-							})}
+							{posts.map((post) => (
+								<article
+									key={post.id}
+									className="flex flex-col h-full text-center"
+								>
+									<MemberImage
+										imageId={post.acf?.employe_image}
+										alt={post.title?.rendered || ""}
+									/>
+									<h3 className="text-2xl! font-bold mb-0 uppercase tracking-tight">
+										{post.title?.rendered || "(No Title)"}
+									</h3>
+									<p className="text-lg leading-normal!">
+										{post.acf?.employe_role || "(No Role)"}
+									</p>
+								</article>
+							))}
 						</div>
 
 						{/* Gallery Controls */}

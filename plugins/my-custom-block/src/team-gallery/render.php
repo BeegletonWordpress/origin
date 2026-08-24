@@ -5,15 +5,13 @@
 
 $posts_per_page = $attributes['postsPerPage'] ?? 4;
 $mobile_posts_per_page = $attributes['mobilePostsPerPage'] ?? 1;
-$selected_category = $attributes['selectedCategory'] ?? '';
 $svg_color = $attributes['svgColor'] ?? '';
 
 // Initial query - use desktop posts per page for initial server render
 // This ensures a good initial load with more content visible
 $args = array(
-	'post_type'              => 'post',
+	'post_type'              => 'medarbetare',
 	'posts_per_page'         => -1,
-	'cat'                    => $selected_category,
 	'orderby'                => $attributes['orderBy'] ?? 'date',
 	'order'                  => strtoupper($attributes['order'] ?? 'ASC'),
 	'no_found_rows'          => true,
@@ -29,11 +27,17 @@ $all_posts = [];
 if ($query->have_posts()) {
     while ($query->have_posts()) {
         $query->the_post();
+
+        // ACF image field returns an attachment ID (Return Format: Image ID)
+        $image_id = get_field('employe_image', get_the_ID());
+
         $all_posts[] = [
             'id' => get_the_ID(),
             'title' => get_the_title(),
-            'role' => get_post_meta(get_the_ID(), 'team_member_role', true),
-            'featuredImage' => get_the_post_thumbnail_url(get_the_ID(), 'medium_large'),
+            'role' => get_field('employe_role', get_the_ID()),
+            'featuredImage' => $image_id
+                ? wp_get_attachment_image_url($image_id, 'medium_large')
+                : '',
         ];
     }
     wp_reset_postdata();
@@ -63,7 +67,6 @@ $context = [
     'postsPerPage'         => (int) $posts_per_page, // Current value (changes with breakpoint)
     'totalPosts'           => (int) $total_posts, // Total posts from query (used to calculate maxPages)
     'maxPages'             => (int) $max_pages, // Current value (changes with breakpoint)
-    'selectedCategory'     => $selected_category ? (int) $selected_category : null,
     'currentPage'          => 1,
     'isMobile'             => false, // Will be set by client-side matchMedia listener
     'isInitialized'        => false, // Flag to prevent showing wrong posts on mobile load
