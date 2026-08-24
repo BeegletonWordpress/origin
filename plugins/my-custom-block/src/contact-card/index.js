@@ -25,6 +25,7 @@ import {
 	CONTACT_CARD_BORDER_3_BACK,
 	CONTACT_CARD_BORDER_3_FRONT,
 } from "../constants";
+import { useEffect } from "@wordpress/element";
 
 import "./style.css";
 
@@ -88,12 +89,34 @@ registerBlockType(metadata.name, {
 			className: "w-[320px] h-[500px] mb-12!",
 		});
 
+		// Pull staff members from the "medarbetare" CPT (ACF fields come back
+		// under the `acf` key since ACF's REST integration is enabled).
 		const staffMembers = useSelect((select) => {
-			return select(coreStore).getEntityRecords("postType", "post", {
+			return select(coreStore).getEntityRecords("postType", "medarbetare", {
 				per_page: -1,
 				_embed: true,
 			});
 		}, []);
+
+		const selectedStaff = staffMembers?.find((s) => s.id === staffMemberId);
+
+		// ACF image fields return attachment IDs, so we resolve them to full
+		// media objects ({ id, url }) via core-data.
+		const resolvedNormalImage = useSelect(
+			(select) => {
+				const id = selectedStaff?.acf?.employe_image;
+				return id ? select(coreStore).getMedia(id) : null;
+			},
+			[selectedStaff]
+		);
+
+		const resolvedHoverImage = useSelect(
+			(select) => {
+				const id = selectedStaff?.acf?.employe_hover_image;
+				return id ? select(coreStore).getMedia(id) : null;
+			},
+			[selectedStaff]
+		);
 
 		const staffOptions = [
 			{ label: "Manual Entry", value: 0 },
@@ -111,11 +134,38 @@ registerBlockType(metadata.name, {
 				if (staff) {
 					setAttributes({
 						name: staff.title.rendered,
-						role: staff.meta?.team_member_role || "",
+						role: staff.acf?.employe_role || "",
+						phone: staff.acf?.employe_phone || "",
+						email: staff.acf?.employe_mail || "",
 					});
 				}
 			}
 		};
+
+		// Once the resolved media objects load, push them into attributes so
+		// they get baked into save(). Runs whenever the selected staff member's
+		// image changes (including switching between staff members).
+		useEffect(() => {
+			if (staffMemberId !== 0 && resolvedNormalImage) {
+				setAttributes({
+					imageNormal: {
+						id: resolvedNormalImage.id,
+						url: resolvedNormalImage.source_url,
+					},
+				});
+			}
+		}, [resolvedNormalImage]);
+
+		useEffect(() => {
+			if (staffMemberId !== 0 && resolvedHoverImage) {
+				setAttributes({
+					imageHover: {
+						id: resolvedHoverImage.id,
+						url: resolvedHoverImage.source_url,
+					},
+				});
+			}
+		}, [resolvedHoverImage]);
 
 		const currentShape = SHAPES[cardShape] || SHAPES.shape1;
 
