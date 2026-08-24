@@ -64,7 +64,7 @@ registerBlockType(metadata.name, {
 							justifyContent: "space-evenly",
 						}}
 					>
-						<InnerBlocks template={CARD_TEMPLATE} templateLock="all" />
+						<InnerBlocks template={CARD_TEMPLATE} />
 					</div>
 				</div>
 			</div>
