@@ -57,6 +57,11 @@ function create_block_my_custom_block_block_init() {
     register_block_type( __DIR__ . '/build/service-block' );
     register_block_type( __DIR__ . '/build/service-block/service-card' );
 
+    register_block_type( __DIR__ . '/build/scroll-sections' );
+    register_block_type( __DIR__ . '/build/scroll-sections/scroll-section' );
+
+    register_block_type( __DIR__ . '/build/label' );
+
     register_post_meta('post', 'team_member_role', [
         'show_in_rest' => true,
         'single' => true,

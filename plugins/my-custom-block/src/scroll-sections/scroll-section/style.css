@@ -1,0 +1,17 @@
+/* Hide the hand-drawn divider above the first section, since there's
+   nothing above it to divide from. Applies in both the editor and the
+   front end. */
+.scroll-section:first-child .scroll-section-divider {
+	display: none !important;
+}
+
+/* The first section starts flush — no top padding. Every section only
+   uses top padding for spacing (never bottom), so the first section
+   ends up with no vertical padding at all. */
+.scroll-section:first-child {
+	padding-top: 0 !important; 
+}  
+
+.scroll-section-divider {
+   opacity: 0.8 !important;
+}

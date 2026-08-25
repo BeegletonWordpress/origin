@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/label",
+	"version": "0.1.0",
+	"title": "Label",
+	"category": "theme",
+	"icon": "tag",
+	"description": "A small text label with an editable hand-drawn dashed border and colors.",
+	"attributes": {
+		"text": {
+			"type": "string",
+			"source": "html",
+			"selector": ".label-text",
+			"default": ""
+		},
+		"svgColor": {
+			"type": "string",
+			"default": "#3B3632"
+		},
+		"textColor": {
+			"type": "string",
+			"default": "#3B3632"
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js"
+}

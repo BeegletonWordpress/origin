@@ -7,6 +7,6 @@ const outputPath = process.env.PLUGIN_PATH;
 const outputFlag = outputPath ? `--output-path=${outputPath}` : "";
 
 execSync(
-  `wp-scripts ${command} --experimental-modules ${outputFlag}`,
+  `wp-scripts ${command} --experimental-modules --blocks-manifest ${outputFlag}`,
   { stdio: "inherit" }
 );

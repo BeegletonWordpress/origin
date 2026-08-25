@@ -280,6 +280,40 @@ export const BEE_SHAPE = (
 	</svg>
 );
 
+export const SCROLL_SECTION_DIVIDER = (
+	<svg
+		viewBox="0 0 1389.48 114.68"
+		xmlns="http://www.w3.org/2000/svg"
+		preserveAspectRatio="none"
+		className="w-full h-full block"
+		style={{ stroke: "var(--handdrawn-stroke-color, #3b3632)" }}
+	>
+		<path
+			d="M.22,58.89c409.43-17.94,819.55-20,1229.13-6.16-376.42-28.84-754.24,12.48-1129.26,56.92-3.39.4-4.45-4.45-1.2-5.5,64.93-20.81,133.44-29.35,201.35-37.03C661.8,26.29,1025.62,5.54,1389.47,5"
+			fill="none"
+			strokeMiterlimit="10"
+			strokeWidth="10"
+			vectorEffect="non-scaling-stroke"
+		/>
+	</svg>
+);
+export const LABEL_SHAPE = (
+	<svg
+		viewBox="0 0 755.5 238.4"
+		xmlns="http://www.w3.org/2000/svg"
+		preserveAspectRatio="none"
+		className="absolute inset-0 w-full h-full pointer-events-none"
+		style={{ stroke: "var(--label-color, #3b3632)" }}
+	>
+		<path
+			d="M.2,18.9C409.6,1,332.5,11.3,742.1,25.2c-31.9,123.5-5.8,125.2-9.3,198.2-27.6,22.9,10.9-.6,14.2-1.6,64.9-20.8-804.8,9.3-736.9,1.6C-2,134.8,17.1,51.4,27.5,1"
+			fill="none"
+			strokeWidth="10"
+			strokeMiterlimit="10"
+		/>
+	</svg>
+);
+
 export const TEST_BREADCRUMB_SHAPE = (
 	<nav class="breadcrumbs">
 		<a href="/">{BEE_SHAPE}</a>

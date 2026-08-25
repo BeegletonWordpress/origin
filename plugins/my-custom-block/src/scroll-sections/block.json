@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/scroll-sections",
+	"version": "0.1.0",
+	"title": "Scroll Sections",
+	"category": "theme",
+	"icon": "align-pull-left",
+	"description": "A sticky image on the left that swaps as the visitor scrolls through a list of content sections on the right.",
+	"attributes": {},
+	"supports": {
+		"align": ["wide", "full"],
+		"html": false,
+		"interactivity": true,
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"viewScriptModule": "file:./view.js"
+}
