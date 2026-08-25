@@ -22,11 +22,16 @@
 			"items": {
 				"type": "number"
 			}
-		}		
+		},
+		"isCarousel": {
+			"type": "boolean",
+			"default": false
+		}
 	},
 	"supports": {
 		"align": ["wide", "full"],
 		"html": false,
+		"interactivity": true,
 		"spacing": {
 			"margin": true,
 			"padding": true
@@ -38,6 +43,7 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
+	"viewScriptModule": "file:./view.js",
 	"style": "file:./style.css",
 	"render": "file:./render.php"
 }
