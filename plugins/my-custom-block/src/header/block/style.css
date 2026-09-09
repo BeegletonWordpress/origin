@@ -157,19 +157,19 @@
 		color: #3b3632 !important;
 	}
 
-	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner,
-	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::before,
-	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::after {
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner,
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::before,
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::after {
 		background-color: var(--page-theme-text, inherit) !important;
 	}
 }
 @media only screen and (max-width: 768px) {
 	.wp-block-create-block-my-header-block.is-scrolled
-		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner,
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner,
 	.wp-block-create-block-my-header-block.is-scrolled
-		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::before,
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::before,
 	.wp-block-create-block-my-header-block.is-scrolled
-		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::after {
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::after {
 		background-color: #3b3632 !important;
 	}
 }
