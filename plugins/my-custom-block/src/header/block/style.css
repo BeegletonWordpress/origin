@@ -160,7 +160,7 @@
 	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner,
 	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::before,
 	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::after {
-		background-color: var(--page-theme-text, inherit) !important;
+		background-color: var(--page-theme-text, #3b3632) !important;
 	}
 }
 @media only screen and (max-width: 768px) {
