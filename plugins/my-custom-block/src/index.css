@@ -133,6 +133,14 @@ a,
 	display: block;
 }
 
+:root {
+	--page-theme-bg: var(--wp--preset--color--accent-1);
+	--page-theme-text: #3b3632;
+	--page-theme-svg: #fdf0db;
+	--page-theme-is-dark: 0;
+	--page-theme-is-light: 1;
+}
+
 @media screen and (max-width: 768px) {
 	/* .has-global-padding {
 		padding-left: 1rem !important;

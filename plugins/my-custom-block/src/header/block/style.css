@@ -12,6 +12,13 @@
 	color: var(--page-theme-text, inherit) !important;
 }
 
+/* NEW: Mega Menu flyout always sits on a light background,
+   so force its text color regardless of header theme */
+.wp-block-create-block-my-header-block .mega-sub-menu a,
+.wp-block-create-block-my-header-block .mega-menu-flyout .mega-sub-menu {
+	color: #3b3632 !important;
+}
+
 .wp-block-create-block-my-header-block a[aria-current="page"] {
 	text-decoration: underline;
 	text-decoration-color: var(
@@ -25,7 +32,7 @@
 	height: 70px;
 	background: #fdf0db !important;
 	color: #3b3632 !important;
-	padding: 10px !important;
+	/* padding: 10px !important; */
 }
 
 /* Unified Logo Container */
@@ -91,4 +98,78 @@
 /* Keep the Navigation pushed to the right */
 .is-scrolled .header-navigation {
 	margin-left: auto !important;
+}
+/* ============================================
+   Mobile Logo Sizing — same size scrolled or not
+   ============================================ */
+@media (max-width: 768px) {
+	.header-logo-container {
+		width: 160px;   /* smaller overall size on mobile — adjust to taste */
+		height: 40px;
+	}
+
+	/* Override the scrolled-state size bump so it matches the default */
+	.is-scrolled .header-logo-container {
+		width: 160px;
+		height: 40px;
+	}
+
+	.is-scrolled .logo-scrolled {
+		height: 40px;      /* same as default logo size, not the desktop 40px-as-shrink value */
+		width: auto;
+	}
+
+	/* Keep dark/light logos and scrolled logo consistent in size on mobile too */
+	.is-scrolled .header-logo-container .logo-dark,
+	.is-scrolled .header-logo-container .logo-light {
+		width: 100%;
+		height: auto;
+		max-height: 100%;
+	}
+	
+}
+@media only screen and (max-width: 768px) {
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle.mega-menu-open + #mega-menu-max_mega_menu_1 {
+		height: calc(100dvh - var(--header-height, 80px));
+		max-height: calc(100dvh - var(--header-height, 80px));
+		overflow-y: scroll;
+		overflow-x: hidden;
+		-webkit-overflow-scrolling: touch;
+		padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+		margin-bottom: 0 !important;
+		padding-inline: calc(var(--spacing) * 8);
+		padding-top: 24px;
+		background-color: var(
+			--page-theme-bg,
+			var(--wp--preset--color--accent-1)
+		) !important;
+		transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* Keep the menu panel in sync with the header once it's scrolled */
+	.wp-block-create-block-my-header-block.is-scrolled
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle.mega-menu-open + #mega-menu-max_mega_menu_1 {
+		background-color: #fdf0db !important;
+	}
+
+	.wp-block-create-block-my-header-block.is-scrolled
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-item > a {
+		color: #3b3632 !important;
+	}
+
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner,
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::before,
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::after {
+		background-color: var(--page-theme-text, inherit) !important;
+	}
+}
+@media only screen and (max-width: 768px) {
+	.wp-block-create-block-my-header-block.is-scrolled
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner,
+	.wp-block-create-block-my-header-block.is-scrolled
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::before,
+	.wp-block-create-block-my-header-block.is-scrolled
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::after {
+		background-color: #3b3632 !important;
+	}
 }
