@@ -11,6 +11,7 @@ import {
 import { PanelBody, Button } from "@wordpress/components";
 import { SCROLL_SECTION_DIVIDER } from "../../constants";
 import metadata from "./block.json";
+import "./style.css";
 
 const ALLOWED_BLOCKS = [
 	"core/heading",
@@ -34,7 +35,7 @@ registerBlockType(metadata.name, {
 		});
 
 		const innerBlocksProps = useInnerBlocksProps(
-			{ className: "flex flex-col gap-4" },
+			{ className: "flex flex-col is-layout-flow" },
 			{
 				allowedBlocks: ALLOWED_BLOCKS,
 				template: TEMPLATE,
@@ -135,7 +136,7 @@ registerBlockType(metadata.name, {
 		});
 
 		return (
-			<div {...blockProps} data-scroll-image={image?.url || ""}>
+			<div {...blockProps}>
 				<div
 					className="scroll-section-divider w-full h-3 mb-10"
 					aria-hidden="true"
@@ -150,7 +151,9 @@ registerBlockType(metadata.name, {
 						className="float-left w-14 h-14 mr-4 mb-2 rounded object-cover md:hidden"
 					/>
 				)}
-				<InnerBlocks.Content />
+				<div className="flex flex-col is-layout-flow">
+					<InnerBlocks.Content />
+				</div>
 			</div>
 		);
 	},

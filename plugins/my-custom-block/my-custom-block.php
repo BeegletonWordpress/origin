@@ -12,6 +12,8 @@
  *
  * @package CreateBlock
  */
+require_once plugin_dir_path( __FILE__ ) . 'includes/case-editor.php';
+
 function create_block_my_custom_block_block_init() {
     register_block_type( __DIR__ . '/build/breadcrumb' );
 
