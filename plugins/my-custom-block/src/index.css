@@ -36,6 +36,13 @@ p {
 	background-color: #3b3632;
 }
 
+@media only screen and (max-width: 768px) {
+	::-webkit-scrollbar {
+		width: 0;
+		background-color: transparent;
+	}
+}
+
 ::-webkit-scrollbar-track {
 	background: transparent;
 }
