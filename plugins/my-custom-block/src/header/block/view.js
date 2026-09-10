@@ -75,7 +75,7 @@ function restructureMegaMenuRows() {
 		}
 
 		// Move the actual <img> (not its <li>/<ul> wrappers) to the front of the link
-		const iconEl = row.querySelector( '.widget_media_image img' );
+		const iconEl = row.querySelector( '.widget_media_image img, .widget_media_image svg' );
 		if ( iconEl ) {
 			link.insertBefore( iconEl, link.firstChild );
 		}

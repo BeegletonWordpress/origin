@@ -594,3 +594,78 @@ function beegleton_get_svg_dimensions( $svg_path ) {
 		'height' => isset( $attributes->height ) ? (float) $attributes->height : 100,
 	];
 }
+
+/**
+ * Provide real dimensions for SVGs so core's image_downsize()
+ * doesn't hit undefined array key warnings.
+ */
+add_filter( 'image_downsize', 'beegleton_svg_image_downsize', 10, 3 );
+function beegleton_svg_image_downsize( $downsize, $id, $size ) {
+	if ( get_post_mime_type( $id ) !== 'image/svg+xml' ) {
+		return $downsize;
+	}
+
+	$path = get_attached_file( $id );
+	if ( ! $path || ! file_exists( $path ) ) {
+		return $downsize;
+	}
+
+	$dimensions = beegleton_get_svg_dimensions( $path );
+	$url = wp_get_attachment_url( $id );
+
+	return [ $url, $dimensions['width'], $dimensions['height'], false ];
+}
+
+
+/**
+ * Give SVG attachments width/height metadata, since core assumes
+ * every image has this (used internally for srcset calculation).
+ */
+add_filter( 'wp_get_attachment_metadata', 'beegleton_svg_attachment_metadata', 10, 2 );
+function beegleton_svg_attachment_metadata( $data, $attachment_id ) {
+	if ( get_post_mime_type( $attachment_id ) !== 'image/svg+xml' ) {
+		return $data;
+	}
+
+	if ( ! is_array( $data ) ) {
+		$data = [];
+	}
+
+	if ( ! isset( $data['width'], $data['height'] ) ) {
+		$path = get_attached_file( $attachment_id );
+		if ( $path && file_exists( $path ) ) {
+			$dimensions     = beegleton_get_svg_dimensions( $path );
+			$data['width']  = $dimensions['width'];
+			$data['height'] = $dimensions['height'];
+		}
+	}
+
+	return $data;
+}
+
+
+add_filter( 'wp_get_attachment_image', 'beegleton_inline_svg_attachment_image', 10, 5 );
+function beegleton_inline_svg_attachment_image( $html, $attachment_id, $size, $icon, $attr ) {
+	if ( get_post_mime_type( $attachment_id ) !== 'image/svg+xml' ) {
+		return $html;
+	}
+
+	$path = get_attached_file( $attachment_id );
+	if ( ! $path || ! file_exists( $path ) ) {
+		return $html;
+	}
+
+	$svg = file_get_contents( $path );
+
+	// Force every fill to currentColor so CSS can recolor it.
+	$svg = preg_replace( '/fill="[^"]*"/i', 'fill="currentColor"', $svg );
+
+	// Carry over the class the widget wanted, plus your own hook class.
+	$classes = isset( $attr['class'] ) ? $attr['class'] : '';
+	$svg = preg_replace( '/<svg /', '<svg class="mega-menu-inline-icon ' . esc_attr( $classes ) . '" ', $svg, 1 );
+
+	// Strip hardcoded width/height so your CSS controls sizing instead.
+	$svg = preg_replace( '/\s(width|height)="[^"]*"/i', '', $svg );
+
+	return $svg;
+}
