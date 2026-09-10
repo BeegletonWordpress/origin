@@ -185,4 +185,10 @@
 		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::after {
 		background-color: #3b3632 !important;
 	}
+	body.mega-menu-max_mega_menu_1-mobile-open {
+		position: fixed;
+		left: 0;
+		right: 0;
+		overflow: hidden;
+	}
 }
