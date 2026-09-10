@@ -16,7 +16,11 @@
    so force its text color regardless of header theme */
 .wp-block-create-block-my-header-block .mega-sub-menu a,
 .wp-block-create-block-my-header-block .mega-menu-flyout .mega-sub-menu {
-	color: #3b3632 !important;
+	color: #3b3632 !important; 
+}
+.mega-menu > li.mega-menu-item > .mega-sub-menu {
+	-webkit-clip-path: url(#beegleton-submenu-clip);
+	clip-path: url(#beegleton-submenu-clip);
 }
 
 .wp-block-create-block-my-header-block a[aria-current="page"] {
@@ -155,11 +159,14 @@
 	.wp-block-create-block-my-header-block.is-scrolled
 		#mega-menu-wrap-max_mega_menu_1 .mega-menu-item > a {
 		color: #3b3632 !important;
-	}
+	} 
 
 	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner,
 	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::before,
-	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::after {
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::after,
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner,
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::before,
+	#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::after {
 		background-color: var(--page-theme-text, #3b3632) !important;
 	}
 }
@@ -169,7 +176,13 @@
 	.wp-block-create-block-my-header-block.is-scrolled
 		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::before,
 	.wp-block-create-block-my-header-block.is-scrolled
-		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::after {
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-0 .mega-toggle-animated-inner::after,
+	.wp-block-create-block-my-header-block.is-scrolled
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner,
+	.wp-block-create-block-my-header-block.is-scrolled
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::before,
+	.wp-block-create-block-my-header-block.is-scrolled
+		#mega-menu-wrap-max_mega_menu_1 .mega-menu-toggle .mega-toggle-block-1 .mega-toggle-animated-inner::after {
 		background-color: #3b3632 !important;
 	}
 }
