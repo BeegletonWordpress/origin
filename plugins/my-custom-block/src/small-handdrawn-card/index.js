@@ -102,7 +102,7 @@ registerBlockType(metadata.name, {
 							label="Height (%)"
 							value={cardHeight}
 							onChange={(value) => setAttributes({ cardHeight: value })}
-							min={50}
+							min={0}
 							max={200}
 							step={5}
 							help="Scale the card height relative to content (100% = default)"
