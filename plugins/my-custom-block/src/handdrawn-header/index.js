@@ -7,9 +7,7 @@ import {
 	PanelColorSettings,
 } from "@wordpress/block-editor";
 import { PanelBody, RangeControl, SelectControl } from "@wordpress/components";
-import metadata from "./block.json";
-import "../index.css";
-import "./style.css";
+import metadata from "./block.json";import "./style.css";
 
 export const OldUnderlineSVG = ({ spacing, color }) => (
 	<svg

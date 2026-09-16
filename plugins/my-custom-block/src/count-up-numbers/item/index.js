@@ -5,9 +5,7 @@ import {
 	TextControl,
 	__experimentalNumberControl as NumberControl,
 } from "@wordpress/components";
-import metadata from "./block.json";
-import "../../index.css";
-import "./style.css";
+import metadata from "./block.json";import "./style.css";
 import "./editor.css";
 
 registerBlockType(metadata.name, {

@@ -16,10 +16,11 @@
 /* The single customer-case template's post-content area renders with
    is-layout-flow (no constrained layout set), so it isn't width-capped
    by theme.json's content size. Cap each top-level content block, the
-   same way is-layout-constrained does, but narrower: blocks/patterns
-   get 1000px, plain headings and paragraphs get a tighter 750px. */
+   same way is-layout-constrained does — using the same global content
+   size variable the theme itself uses, so it stays in sync if that's
+   ever changed — with plain headings/paragraphs getting a tighter cap. */
 .case-content .entry-content.is-layout-flow > * {
-    max-width: 1000px;
+    max-width: var(--wp--style--global--content-size);
     margin-left: auto;
     margin-right: auto;
 }
@@ -34,9 +35,20 @@
     max-width: 750px;
 }
 
-.case-content .entry-content.is-layout-flow > .alignwide,
+.case-content .entry-content.is-layout-flow > .alignwide {
+    max-width: none;
+}
+
+/* max-width alone isn't enough for true edge-to-edge: entry-content has
+   its own left/right padding (not the sitewide has-global-padding one WP
+   already knows how to negate), so an alignfull child needs to cancel
+   that same padding with a matching negative margin to actually reach
+   the edges — e.g. the hero block, now that it lives inside post_content
+   instead of outside it. */
 .case-content .entry-content.is-layout-flow > .alignfull {
     max-width: none;
+    margin-left: calc(-1 * var(--wp--preset--spacing--40));
+    margin-right: calc(-1 * var(--wp--preset--spacing--40));
 }
 
 /* Same preflight problem inside the Media & Text block: its content

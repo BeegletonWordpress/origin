@@ -4,9 +4,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import metadata from './block.json';
-import '../../index.css';
-import './style.css';
+import metadata from './block.json';import './style.css';
 import './editor.css';
 
 const ALLOWED_BLOCKS = [ 'create-block/my-count-up-numbers-item' ];

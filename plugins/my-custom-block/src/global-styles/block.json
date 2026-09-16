@@ -1,0 +1,11 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/global-styles",
+	"version": "0.1.0",
+	"title": "Global Styles (internal — not a real block)",
+	"category": "theme",
+	"description": "Not a registered block. Exists only so the build pipeline compiles one canonical copy of src/index.css, enqueued directly by my-custom-block.php on both the frontend and the block editor. See includes/case-editor.php / my-custom-block.php for the enqueue.",
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js"
+}
