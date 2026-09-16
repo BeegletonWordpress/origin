@@ -481,11 +481,14 @@ function customer_case_hero_frontend_scripts() {
         return;
     }
 
+    $view_script_path = __DIR__ . '/build/customer-case-hero/view.js';
+    $style_path        = __DIR__ . '/build/customer-case-hero/style-index.css';
+
     wp_enqueue_script(
         'customer-case-hero-frontend',
         plugin_dir_url( __FILE__ ) . 'build/customer-case-hero/view.js',
         [],
-        '1.0.0',
+        file_exists( $view_script_path ) ? filemtime( $view_script_path ) : '1.0.0',
         true
     );
 
@@ -493,7 +496,7 @@ function customer_case_hero_frontend_scripts() {
         'customer-case-hero-style',
         plugin_dir_url( __FILE__ ) . 'build/customer-case-hero/style-index.css',
         [],
-        '1.0.0'
+        file_exists( $style_path ) ? filemtime( $style_path ) : '1.0.0'
     );
 }
 add_action( 'wp_enqueue_scripts', 'customer_case_hero_frontend_scripts' );
