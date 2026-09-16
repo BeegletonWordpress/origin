@@ -488,6 +488,13 @@ function customer_case_hero_frontend_scripts() {
         '1.0.0',
         true
     );
+
+    wp_enqueue_style(
+        'customer-case-hero-style',
+        plugin_dir_url( __FILE__ ) . 'build/customer-case-hero/style-index.css',
+        [],
+        '1.0.0'
+    );
 }
 add_action( 'wp_enqueue_scripts', 'customer_case_hero_frontend_scripts' );
 
