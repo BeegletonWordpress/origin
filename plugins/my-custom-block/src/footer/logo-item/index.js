@@ -5,9 +5,7 @@ import {
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { PanelBody, TextControl } from '@wordpress/components';
-import metadata from './block.json';
-import '../../index.css';
-import './style.css';
+import metadata from './block.json';import './style.css';
 import './editor.css';
 
 const LOGO_CLASSES =

@@ -17,6 +17,18 @@ import { useSelect } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
 import metadata from "./block.json";
 
+// Mirrors render.php's wp_trim_words( get_the_excerpt(), 20, '...' ) so the
+// editor preview shows the same truncated excerpt as the live page, instead
+// of the untruncated raw REST excerpt.
+const trimWords = (html, numWords = 20, more = "...") => {
+	const text = (html ?? "").replace(/<[^>]*>/g, "");
+	const words = text.trim().split(/\s+/).filter(Boolean);
+	if (words.length <= numWords) {
+		return words.join(" ");
+	}
+	return words.slice(0, numWords).join(" ") + more;
+};
+
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
 		const { postsPerPage, backgroundColor, style, showButton, selectedCategories = [], isCarousel } = attributes;
@@ -58,8 +70,8 @@ registerBlockType(metadata.name, {
 				const query = {
 					per_page: postsPerPage,
 					_embed: true, // Critical for getting featured images
-					orderby: "menu_order",
-					order: "asc",
+					orderby: "date",
+					order: "desc",
 				};
 				if (selectedCategories.length > 0) {
 					query["case-categories"] = selectedCategories;
@@ -172,12 +184,9 @@ registerBlockType(metadata.name, {
 											{post.title?.rendered || "(No Title)"}
 										</h3>
 
-										<div
-											className="mb-6 grow leading-relaxed line-clamp-3 min-h-[5rem]"
-											dangerouslySetInnerHTML={{
-												__html: post.excerpt?.rendered,
-											}}
-										/>
+										<div className="mb-6 grow leading-relaxed line-clamp-3 min-h-[5rem]">
+											{trimWords(post.excerpt?.rendered)}
+										</div>
 									</article>
 								);
 							})}

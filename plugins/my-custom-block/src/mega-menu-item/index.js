@@ -5,9 +5,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import metadata from './block.json';
-import '../index.css';
-import './style.css';
+import metadata from './block.json';import './style.css';
 import './editor.css';
 
 const TRIGGER_CLASSES = 'group relative py-6 cursor-pointer inline-block';

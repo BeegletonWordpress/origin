@@ -11,6 +11,7 @@
 /plugins/my-custom-block/*
 !/plugins/my-custom-block/scripts
 !/plugins/my-custom-block/src
+!/plugins/my-custom-block/includes
 
 .DS_Store
 debug.log

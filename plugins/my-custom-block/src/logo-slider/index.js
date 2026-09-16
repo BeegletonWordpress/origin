@@ -6,9 +6,7 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl, RangeControl } from '@wordpress/components';
-import metadata from './block.json';
-import '../index.css';
-import './style.css';
+import metadata from './block.json';import './style.css';
 import './editor.css';
 
 const BLOCK_CLASSES = 'logo-slider-track flex gap-15 py-15 items-center';

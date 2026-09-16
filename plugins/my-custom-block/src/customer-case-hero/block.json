@@ -24,31 +24,12 @@
 		}
 	},
 	"attributes": {
-		"tagline": {
-			"type": "string",
-			"default": ""
-		},
 		"tags": {
 			"type": "array",
 			"default": []
 		},
-		"imageUrl": {
-			"type": "string",
-			"default": "https://beegleton-dev.local/wp-content/uploads/2026/03/Rectangle-4.png"
-		},
-		"imageAlt": {
-			"type": "string",
-			"default": "Customer Case Hero Image"
-		},
-		"imageId": {
-			"type": "number"
-		},
 		"svgColor": {
 			"type": "string"
-		},
-		"theme": {
-			"type": "string",
-			"default": "default"
 		},
 		"reverseLayout": {
 			"type": "boolean",
@@ -58,6 +39,7 @@
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": "file:./style.css",
+	"editorStyle": "file:./editor.css",
 	"viewScript": "file:./view.js",
 	"render": "file:./render.php"
 }

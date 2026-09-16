@@ -149,18 +149,19 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
-						className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:min-h-[65vh] ${
+						className={`flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:min-h-[65vh] md:max-h-187.5 ${
 							reverseLayout ? "md:flex-row-reverse" : ""
 						}`}
 					>
-						<div className={`w-full relative 
+						<div className={`w-full relative
 							${ contentWidth === 50 ? "md:w-[50%]" : "md:w-[40%]"
 							}`}
 							>
 							<div
-								className={`md:relative ${
+								className={`md:relative z-9 ${
 									reverseLayout ? "md:ml-auto" : "md:mr-auto"
 								}`}
+								style={{ isolation: "isolate" }}
 							>
 								<RichText
 									tagName="p"
@@ -222,13 +223,13 @@ registerBlockType(metadata.name, {
 									allowedTypes={["image"]}
 									value={attributes.imageId}
 									render={({ open }) => (
-										<div className="h-full relative group">
+										<div className="subpage-hero-image-wrapper h-full relative group">
 											{imageUrl ? (
 												<>
 													<img
 														src={imageUrl}
 														alt={imageAlt}
-														className="w-full h-full object-cover mt-18 subpage-hero-image max-h-200"
+														className="w-full h-full object-cover subpage-hero-image max-h-200"
 													/>
 													<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50">
 														<Button

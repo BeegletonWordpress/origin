@@ -6,6 +6,7 @@
 
 // Extract attributes
 $tagline = get_post_meta( get_the_ID(), 'hero_tagline', true );
+$body_text = get_post_meta( get_the_ID(), 'hero_body_text', true );
 $tags = $attributes['tags'] ?? [];
 $svg_color = $attributes['svgColor'] ?? '';
 $theme = get_post_meta( get_the_ID(), 'hero_theme', true ) ?: 'default';
@@ -110,7 +111,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 		<div class="w-full h-fit max-h-[40vh] flex flex-col justify-start md:justify-center mt-0 max-w-128.75">
 			<div class="customer-case-hero__excerpt mt-4">
 				<?php
-				echo wp_kses_post( wpautop( get_the_excerpt() ) );
+				echo wp_kses_post( $body_text );
 				?>
 			</div>
 		</div>

@@ -3,8 +3,6 @@ import {
 	useBlockProps,
 	InnerBlocks,
 	RichText,
-	MediaUpload,
-	MediaUploadCheck,
 	InspectorControls,
 	PanelColorSettings,
 } from "@wordpress/block-editor";
@@ -19,7 +17,6 @@ import {
 } from "@wordpress/components";
 import { useEntityProp } from "@wordpress/core-data";
 import { useEffect } from "@wordpress/element";
-import { useSelect } from "@wordpress/data";
 import metadata from "./block.json";
 import "./style.css";
 import "./editor.css";
@@ -78,16 +75,12 @@ const taglineOptions = [
 
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { tags, imageUrl, imageAlt, svgColor, theme, reverseLayout } =
-			attributes;
-
-		const activeTheme = THEMES[theme] || THEMES.default;
+		const { tags, svgColor, reverseLayout } = attributes;
 
 		const [meta, setMeta] = useEntityProp("postType", "customer_case", "meta");
+		const theme = meta?.hero_theme || "default";
 
-		const excerpt = useSelect((select) =>
-			select("core/editor").getEditedPostAttribute("excerpt"),
-		);
+		const activeTheme = THEMES[theme] || THEMES.default;
 
 		useEffect(() => {
 			const canvas =
@@ -106,14 +99,6 @@ registerBlockType(metadata.name, {
 				activeTheme.isDark ? "0" : "1",
 			);
 		}, [theme, svgColor]);
-
-		const onSelectImage = (media) => {
-			setAttributes({
-				imageUrl: media.url,
-				imageId: media.id,
-				imageAlt: media.alt,
-			});
-		};
 
 		const addTag = () => {
 			setAttributes({ tags: [...tags, ""] });
@@ -150,7 +135,7 @@ registerBlockType(metadata.name, {
 								{ label: "Light 1 (Light Yellow/Blue)", value: "light_1" },
 								{ label: "Light 2 (Light Yellow/Yellow)", value: "light_2" },
 							]}
-							onChange={(value) => setAttributes({ theme: value })}
+							onChange={(value) => setMeta({ ...meta, hero_theme: value })}
 						/>
 						<ToggleControl
 							label="Flip Layout (Image on Left)"
@@ -236,7 +221,14 @@ registerBlockType(metadata.name, {
 						</div>
 
 						<div className="w-full h-fit max-h-[40vh] flex flex-col justify-start md:justify-center mt-0 max-w-128.75">
-							<p className="mt-4">{excerpt || "Post excerpt goes here..."}</p>
+							<RichText
+								tagName="div"
+								multiline="p"
+								className="customer-case-hero__excerpt mt-4"
+								value={meta?.hero_body_text || ""}
+								onChange={(value) => setMeta({ ...meta, hero_body_text: value })}
+								placeholder="Write the case summary here…"
+							/>
 						</div>
 					</div>
 				</div>

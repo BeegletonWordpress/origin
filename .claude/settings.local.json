@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash('/Users/viktor/Library/Application Support/Local/lightning-services/php-8.2.27+1/bin/darwin-arm64/bin/php' -d 'mysqli.default_socket=/Users/viktor/Library/Application Support/Local/run/qqccAoSKN/mysql/mysqld.sock' -d 'pdo_mysql.default_socket=/Users/viktor/Library/Application Support/Local/run/qqccAoSKN/mysql/mysqld.sock' /private/tmp/claude-502/-Users-viktor-Documents-GitHub-origin-plugins-my-custom-block/d9db32e5-66b1-42df-9367-2483a9d93d84/scratchpad/test-render.php)",
+      "Bash(echo \"exit code: $?\")"
+    ]
+  }
+}

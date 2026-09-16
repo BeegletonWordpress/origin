@@ -18,9 +18,7 @@ import {
 import { link } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
 import metadata from './block.json';
-import { HAND_DRAWN_BUTTON_SHAPE, HAND_DRAWN_RING_SHAPE } from '../constants';
-import '../index.css';
-import './style.css';
+import { HAND_DRAWN_BUTTON_SHAPE, HAND_DRAWN_RING_SHAPE } from '../constants';import './style.css';
 import './editor.css';
 
 registerBlockType( metadata.name, {
