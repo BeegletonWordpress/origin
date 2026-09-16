@@ -43,8 +43,8 @@ if ($is_carousel) :
 	$args = array(
 		'post_type'      => 'customer_case',
 		'posts_per_page' => -1,
-		'orderby'        => 'menu_order',
-		'order'          => 'ASC',
+		'orderby'        => 'date',
+		'order'          => 'DESC',
 		'no_found_rows'  => true,
 	);
 
@@ -197,8 +197,8 @@ else :
 	$args = array(
 		'post_type'      => 'customer_case',
 		'posts_per_page' => $posts_per_page,
-		'orderby'        => 'menu_order',
-		'order'          => 'ASC',
+		'orderby'        => 'date',
+		'order'          => 'DESC',
 	);
 
 	if (!empty($tax_query)) {
