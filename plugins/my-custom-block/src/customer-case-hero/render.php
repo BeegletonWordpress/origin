@@ -7,7 +7,8 @@
 // Extract attributes
 $tagline = get_post_meta( get_the_ID(), 'hero_tagline', true );
 $body_text = get_post_meta( get_the_ID(), 'hero_body_text', true );
-$tags = get_post_meta( get_the_ID(), 'case_tags', true ) ?: [];
+$tag_terms = wp_get_post_terms( get_the_ID(), 'customer_case_category', [ 'fields' => 'names' ] );
+$tags = is_wp_error( $tag_terms ) ? [] : $tag_terms;
 $svg_color = $attributes['svgColor'] ?? '';
 $theme = get_post_meta( get_the_ID(), 'hero_theme', true ) ?: 'default';
 $reverse_layout = $attributes['reverseLayout'] ?? false;

@@ -12,8 +12,9 @@
  *
  * @package CreateBlock
  */
-//require_once plugin_dir_path( __FILE__ ) . 'includes/case-editor.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/service-tagline-settings.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/block-pattern-settings.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/case-editor.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/case-tagline-settings.php';
 
 function create_block_my_custom_block_block_init() {
     register_block_type( __DIR__ . '/build/breadcrumb' );
@@ -187,17 +188,6 @@ function register_customer_case_post_type() {
         'show_in_rest' => true,
         'single'       => true,
         'type'         => 'string',
-    ] );
-
-    register_post_meta( 'customer_case', 'case_tags', [
-        'show_in_rest' => [
-            'schema' => [
-                'type'  => 'array',
-                'items' => [ 'type' => 'string' ],
-            ],
-        ],
-        'single'       => true,
-        'type'         => 'array',
     ] );
 
     register_post_meta( 'customer_case', 'hero_body_text', [
