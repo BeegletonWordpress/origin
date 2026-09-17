@@ -24,9 +24,20 @@
 		}
 	},
 	"attributes": {
-		"tags": {
-			"type": "array",
-			"default": []
+		"tagline": {
+			"type": "string",
+			"default": ""
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": "https://beegleton-dev.local/wp-content/uploads/2026/03/Rectangle-4.png"
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": "Customer Case Hero Image"
+		},
+		"imageId": {
+			"type": "number"
 		},
 		"svgColor": {
 			"type": "string"

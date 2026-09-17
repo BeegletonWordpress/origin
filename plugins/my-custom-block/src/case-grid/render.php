@@ -59,10 +59,14 @@ if ($is_carousel) :
 		while ($query->have_posts()) {
 			$query->the_post();
 
+			$hero_tagline = get_post_meta(get_the_ID(), 'hero_tagline', true);
+
 			$all_posts[] = [
 				'id'            => get_the_ID(),
 				'title'         => get_the_title(),
-				'excerpt'       => wp_trim_words(get_the_excerpt(), 20, '...'),
+				'heading'       => $hero_tagline ?: get_the_title(),
+				'companyName'   => $hero_tagline ? get_the_title() : '',
+				'tags'          => get_post_meta(get_the_ID(), 'case_tags', true) ?: [],
 				'featuredImage' => has_post_thumbnail()
 					? get_the_post_thumbnail_url(get_the_ID(), 'medium_large')
 					: '',
@@ -131,14 +135,31 @@ if ($is_carousel) :
 										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 									/>
 								</div>
+								<p
+									class="text-sm opacity-60 mb-1"
+									data-wp-bind--hidden="!context.case.companyName"
+									data-wp-text="context.case.companyName"
+									hidden
+								></p>
 								<h3
 									class="text-xl font-bold mb-3 uppercase tracking-tight line-clamp-2 min-h-[3.5rem]"
-									data-wp-text="context.case.title"
+									data-wp-text="context.case.heading"
 								></h3>
 								<div
-									class="mb-6 grow leading-relaxed line-clamp-3 min-h-[5rem]"
-									data-wp-text="context.case.excerpt"
-								></div>
+									class="flex flex-wrap gap-2 mb-6"
+									data-wp-bind--hidden="!context.case.tags.length"
+									hidden
+								>
+									<template
+										data-wp-each--tag="context.case.tags"
+										data-wp-key="context.tag"
+									>
+										<span
+											class="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
+											data-wp-text="context.tag"
+										></span>
+									</template>
+								</div>
 							</article>
 						</a>
 					</template>
@@ -221,13 +242,28 @@ else :
 							</div>
 						<?php endif; ?>
 
+						<?php
+						$hero_tagline = get_post_meta(get_the_ID(), 'hero_tagline', true);
+						$case_tags    = get_post_meta(get_the_ID(), 'case_tags', true) ?: [];
+						?>
+
+						<?php if ($hero_tagline) : ?>
+							<p class="text-sm opacity-60 mb-1"><?php the_title(); ?></p>
+						<?php endif; ?>
+
 						<h3 class="text-xl font-bold mb-3 uppercase tracking-tight line-clamp-2 min-h-[3.5rem]">
-							<?php the_title(); ?>
+							<?php echo $hero_tagline ? esc_html($hero_tagline) : get_the_title(); ?>
 						</h3>
 
-						<div class="mb-6 grow leading-relaxed line-clamp-3 min-h-[5rem]">
-							<?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
-						</div>
+						<?php if (!empty($case_tags)) : ?>
+							<div class="flex flex-wrap gap-2 mb-6">
+								<?php foreach ($case_tags as $tag) : ?>
+									<span class="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]">
+										<?php echo esc_html($tag); ?>
+									</span>
+								<?php endforeach; ?>
+							</div>
+						<?php endif; ?>
 					</article>
 				</a>
 				<?php endwhile; wp_reset_postdata(); ?>
