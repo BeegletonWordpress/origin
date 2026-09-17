@@ -199,8 +199,6 @@ function register_customer_case_post_type() {
         'single'       => true,
         'type'         => 'array',
     ] );
-}
-add_action('init', 'register_customer_case_post_type');
 
     register_post_meta( 'customer_case', 'hero_body_text', [
         'show_in_rest'      => true,
