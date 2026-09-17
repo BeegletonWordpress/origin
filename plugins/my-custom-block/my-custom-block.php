@@ -73,7 +73,15 @@ function create_block_my_custom_block_block_init() {
 }
 add_action( 'init', 'create_block_my_custom_block_block_init' );
 
-add_action('wp_enqueue_scripts', function() {
+/**
+ * Fluid spacing preset overrides. Registered on both the frontend and the
+ * block editor so `var(--wp--preset--spacing--*)` resolves to the same
+ * fluid values in the editor canvas as it does on the live site — without
+ * this, the editor falls back to the static theme.json defaults and every
+ * block using these presets (which is most of them) renders with different
+ * spacing than the real page.
+ */
+function mcb_output_fluid_spacing_vars() {
   wp_add_inline_style('global-styles', '
     :root {
         --wp--preset--spacing--20: clamp(0.568rem, 0.68vw, 0.568rem);
@@ -85,7 +93,9 @@ add_action('wp_enqueue_scripts', function() {
         --wp--preset--spacing--80: clamp(3.2rem, 6.25vw, 5.063rem);
     }
   ');
-}, 20);
+}
+add_action( 'wp_enqueue_scripts', 'mcb_output_fluid_spacing_vars', 20 );
+add_action( 'enqueue_block_editor_assets', 'mcb_output_fluid_spacing_vars' );
 
 function register_customer_case_post_type() {
     $labels = [
@@ -123,6 +133,13 @@ function register_customer_case_post_type() {
             'excerpt',
             'custom-fields',
             'page-attributes'
+        ],
+        // Auto-insert the hero as the first block of every new case, locked
+        // in place (can't be moved or removed) via its own lock attribute.
+        // template_lock is deliberately left unset — it only restricts the
+        // templated block itself, not the rest of the post's content.
+        'template'            => [
+            [ 'create-block/customer-case-hero', [ 'align' => 'full', 'lock' => [ 'move' => false, 'remove' => false ] ] ],
         ],
     ];
 
@@ -185,63 +202,14 @@ function register_customer_case_post_type() {
 }
 add_action('init', 'register_customer_case_post_type');
 
-function register_customer_case_metaboxes() {
-    add_meta_box(
-        'customer_case_settings',
-        'Customer Case Settings',
-        'render_customer_case_metabox',
-        'customer_case',
-        'side',
-        'high'
-    );
+    register_post_meta( 'customer_case', 'hero_body_text', [
+        'show_in_rest'      => true,
+        'single'            => true,
+        'type'              => 'string',
+        'sanitize_callback' => 'wp_kses_post',
+    ] );
 }
-add_action( 'add_meta_boxes', 'register_customer_case_metaboxes' );
-
-function render_customer_case_metabox( $post ) {
-    $meta = get_post_meta( $post->ID, 'hero_tagline', true );
-    wp_nonce_field( 'customer_case_meta', 'customer_case_nonce' );
-    ?>
-    <label for="hero_tagline">Service Tagline</label>
-    <select name="hero_tagline" id="hero_tagline" style="margin-top:5px;">
-        <option value="">Välj en tjänst...</option>
-        <option value="Marknadsstrategi & Position" <?php selected( $meta, 'Marknadsstrategi & Position' ); ?>>Marknadsstrategi & Position</option>
-        <option value="Identitet & Varumärke" <?php selected( $meta, 'Identitet & Varumärke' ); ?>>Identitet & Varumärke</option>
-        <option value="Workshop & Strategiarbete" <?php selected( $meta, 'Workshop & Strategiarbete' ); ?>>Workshop & Strategiarbete</option>
-        <option value="Webbutveckling & Design" <?php selected( $meta, 'Webbutveckling & Design' ); ?>>Webbutveckling & Design</option>
-        <option value="Designsystem & UX" <?php selected( $meta, 'Designsystem & UX' ); ?>>Designsystem & UX</option>
-        <option value="Content & Filmproduktion" <?php selected( $meta, 'Content & Filmproduktion' ); ?>>Content & Filmproduktion</option>
-        <option value="Performance Marketing" <?php selected( $meta, 'Performance Marketing' ); ?>>Performance Marketing</option>
-        <option value="Mäss- & Eventmaterial" <?php selected( $meta, 'Mäss- & Eventmaterial' ); ?>>Mäss- & Eventmaterial</option>
-        <option value="SEO & GEO Anpassat Innehåll" <?php selected( $meta, 'SEO & GEO Anpassat Innehåll' ); ?>>SEO & GEO Anpassat Innehåll</option>
-    </select>
-    <?php
-    $theme = get_post_meta( $post->ID, 'hero_theme', true );
-    ?>
-    <label for="hero_theme" style="display:block; margin-top:12px;">Hero Theme</label>
-    <select name="hero_theme" id="hero_theme" style="margin-top:5px;">
-        <option value="default" <?php selected( $theme, 'default' ); ?>>Default (Accent 1)</option>
-        <option value="dark_1" <?php selected( $theme, 'dark_1' ); ?>>Dark 1 (Dark Gray/Blue)</option>
-        <option value="dark_2" <?php selected( $theme, 'dark_2' ); ?>>Dark 2 (Dark Gray/Yellow)</option>
-        <option value="light_1" <?php selected( $theme, 'light_1' ); ?>>Light 1 (Light Yellow/Blue)</option>
-        <option value="light_2" <?php selected( $theme, 'light_2' ); ?>>Light 2 (Light Yellow/Yellow)</option>
-    </select>
-    <?php
-}
-
-function save_customer_case_metabox( $post_id ) {
-    if ( ! isset( $_POST['customer_case_nonce'] ) || 
-         ! wp_verify_nonce( $_POST['customer_case_nonce'], 'customer_case_meta' ) ) {
-        return;
-    }
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-    if ( isset( $_POST['hero_tagline'] ) ) {
-        update_post_meta( $post_id, 'hero_tagline', sanitize_text_field( $_POST['hero_tagline'] ) );
-    }
-    if ( isset( $_POST['hero_theme'] ) ) {
-        update_post_meta( $post_id, 'hero_theme', sanitize_text_field( $_POST['hero_theme'] ) );
-    }
-}
-add_action( 'save_post_customer_case', 'save_customer_case_metabox' );
+add_action('init', 'register_customer_case_post_type');
 
 function add_aria_current_to_cpt_archive( $block_content, $block ) {
     error_log( 'navigation-link found, url: ' . ( $block['attrs']['url'] ?? 'no url' ) );
@@ -522,6 +490,30 @@ function breadcrumb_frontend_styles() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'breadcrumb_frontend_styles' );
+
+/**
+ * The global stylesheet (Tailwind base/utilities + shared site-wide rules,
+ * compiled from src/index.css via the non-block src/global-styles build
+ * entry — see src/global-styles/block.json) is the single canonical source
+ * for styling shared across blocks. Enqueue the exact same compiled file on
+ * both the frontend and the block editor so editors see real Tailwind
+ * styling instead of relying on it leaking in incidentally through
+ * whichever unrelated block happens to import it.
+ */
+function mcb_enqueue_global_styles() {
+    $style_path = __DIR__ . '/build/global-styles/index.css';
+    if ( ! file_exists( $style_path ) ) {
+        return;
+    }
+    wp_enqueue_style(
+        'mcb-global-styles',
+        plugin_dir_url( __FILE__ ) . 'build/global-styles/index.css',
+        [],
+        filemtime( $style_path )
+    );
+}
+add_action( 'wp_enqueue_scripts', 'mcb_enqueue_global_styles' );
+add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_global_styles' );
 
 /**
  * Output the SVG clipPath used to shape Max Mega Menu submenus.

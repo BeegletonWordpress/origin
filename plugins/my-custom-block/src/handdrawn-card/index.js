@@ -17,9 +17,7 @@ import {
 	TEMPLATE_BUILD,
 	TEMPLATE_BOOST,
 	TEMPLATE_SMALL,
-} from "./templates";
-import "../index.css";
-import "./style.css";
+} from "./templates";import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES =

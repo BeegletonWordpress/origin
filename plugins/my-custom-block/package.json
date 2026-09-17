@@ -20,7 +20,8 @@
 		"@wordpress/block-editor": "latest",
 		"@wordpress/blocks": "latest",
 		"@wordpress/i18n": "latest",
-		"@wordpress/interactivity": "^6.41.0"
+		"@wordpress/interactivity": "^6.41.0",
+		"@wordpress/server-side-render": "^6.31.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/postcss": "^4.2.1",

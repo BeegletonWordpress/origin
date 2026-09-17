@@ -12,9 +12,7 @@ import {
 } from "@wordpress/components";
 import { cloneElement } from "@wordpress/element";
 import metadata from "./block.json";
-import { HAND_DRAWN_RING_SHAPE_4 } from "../constants";
-import "../index.css";
-import "./style.css";
+import { HAND_DRAWN_RING_SHAPE_4 } from "../constants";import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES = "relative z-10";

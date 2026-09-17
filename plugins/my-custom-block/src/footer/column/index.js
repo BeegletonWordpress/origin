@@ -4,9 +4,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from "@wordpress/block-editor";
-import metadata from "./block.json";
-import "../../index.css";
-import "./style.css";
+import metadata from "./block.json";import "./style.css";
 import "./editor.css";
 
 const BLOCK_CLASSES = "flex flex-col gap-4 flex-0 min-w-48 [&_h2]:text-center";

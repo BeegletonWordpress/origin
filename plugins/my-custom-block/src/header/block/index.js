@@ -9,9 +9,7 @@ import {
 } from '@wordpress/block-editor';
 import { PanelBody, Button } from '@wordpress/components';
 import { addFilter } from '@wordpress/hooks';
-import metadata from './block.json';
-import '../../index.css';
-import './style.css';
+import metadata from './block.json';import './style.css';
 import './editor.css';
 
 addFilter(
