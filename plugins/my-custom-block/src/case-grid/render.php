@@ -60,13 +60,14 @@ if ($is_carousel) :
 			$query->the_post();
 
 			$hero_tagline = get_post_meta(get_the_ID(), 'hero_tagline', true);
+			$tag_terms    = wp_get_post_terms(get_the_ID(), 'customer_case_category', ['fields' => 'names']);
 
 			$all_posts[] = [
 				'id'            => get_the_ID(),
 				'title'         => get_the_title(),
 				'heading'       => $hero_tagline ?: get_the_title(),
 				'companyName'   => $hero_tagline ? get_the_title() : '',
-				'tags'          => get_post_meta(get_the_ID(), 'case_tags', true) ?: [],
+				'tags'          => is_wp_error($tag_terms) ? [] : $tag_terms,
 				'featuredImage' => has_post_thumbnail()
 					? get_the_post_thumbnail_url(get_the_ID(), 'medium_large')
 					: '',
@@ -244,7 +245,8 @@ else :
 
 						<?php
 						$hero_tagline = get_post_meta(get_the_ID(), 'hero_tagline', true);
-						$case_tags    = get_post_meta(get_the_ID(), 'case_tags', true) ?: [];
+						$tag_terms    = wp_get_post_terms(get_the_ID(), 'customer_case_category', ['fields' => 'names']);
+						$case_tags    = is_wp_error($tag_terms) ? [] : $tag_terms;
 						?>
 
 						<?php if ($hero_tagline) : ?>

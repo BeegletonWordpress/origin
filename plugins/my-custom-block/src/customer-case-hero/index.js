@@ -8,14 +8,13 @@ import {
 } from "@wordpress/block-editor";
 import { PostTitle } from "@wordpress/editor";
 import {
-	Button,
 	PanelBody,
-	PanelRow,
-	TextControl,
+	CheckboxControl,
 	SelectControl,
 	ToggleControl,
 } from "@wordpress/components";
-import { useEntityProp } from "@wordpress/core-data";
+import { useEntityProp, store as coreStore } from "@wordpress/core-data";
+import { useSelect } from "@wordpress/data";
 import { useEffect } from "@wordpress/element";
 import metadata from "./block.json";
 import "./style.css";
@@ -54,13 +53,13 @@ const THEMES = {
 	},
 };
 
-// Service Tagline options are admin-managed (Settings > Service Taglines)
+// Service Tagline options are admin-managed (Kundcase > Case Taglines)
 // instead of hardcoded, so new ones can be added without a code change.
-// window.mcbServiceTaglines is localized by
-// mcb_localize_service_taglines_for_editor() in
-// includes/service-tagline-settings.php; the fallback list only matters if
+// window.mcbCaseTaglines is localized by
+// mcb_localize_case_taglines_for_editor() in
+// includes/case-tagline-settings.php; the fallback list only matters if
 // that inline script somehow didn't run (e.g. outside a real editor load).
-const FALLBACK_SERVICE_TAGLINES = [
+const FALLBACK_CASE_TAGLINES = [
 	"Marknadsstrategi & Position",
 	"Identitet & Varumärke",
 	"Workshop & Strategiarbete",
@@ -74,7 +73,7 @@ const FALLBACK_SERVICE_TAGLINES = [
 
 const taglineOptions = [
 	{ label: "Välj en tjänst...", value: "" },
-	...(window.mcbServiceTaglines || FALLBACK_SERVICE_TAGLINES).map(
+	...(window.mcbCaseTaglines || FALLBACK_CASE_TAGLINES).map(
 		(tagline) => ({ label: tagline, value: tagline }),
 	),
 ];
@@ -85,7 +84,28 @@ registerBlockType(metadata.name, {
 
 		const [meta, setMeta] = useEntityProp("postType", "customer_case", "meta");
 		const theme = meta?.hero_theme || "default";
-		const tags = meta?.case_tags || [];
+
+		const [assignedCategoryIds, setAssignedCategoryIds] = useEntityProp(
+			"postType",
+			"customer_case",
+			"case-categories",
+		);
+		const categoryIds = assignedCategoryIds || [];
+
+		const categories = useSelect(
+			(select) =>
+				select(coreStore).getEntityRecords("taxonomy", "customer_case_category", {
+					per_page: -1,
+					hide_empty: false,
+					orderby: "name",
+					order: "asc",
+				}),
+			[],
+		);
+
+		const tags = (categories || []).filter((category) =>
+			categoryIds.includes(category.id),
+		);
 
 		const activeTheme = THEMES[theme] || THEMES.default;
 
@@ -107,20 +127,12 @@ registerBlockType(metadata.name, {
 			);
 		}, [theme, svgColor]);
 
-		const addTag = () => {
-			setMeta({ ...meta, case_tags: [...tags, ""] });
-		};
-
-		const removeTag = (index) => {
-			const newTags = [...tags];
-			newTags.splice(index, 1);
-			setMeta({ ...meta, case_tags: newTags });
-		};
-
-		const updateTag = (index, value) => {
-			const newTags = [...tags];
-			newTags[index] = value;
-			setMeta({ ...meta, case_tags: newTags });
+		const toggleCategory = (categoryId, checked) => {
+			setAssignedCategoryIds(
+				checked
+					? [...categoryIds, categoryId]
+					: categoryIds.filter((id) => id !== categoryId),
+			);
 		};
 
 		const blockProps = useBlockProps({
@@ -161,26 +173,14 @@ registerBlockType(metadata.name, {
 						]}
 					/>
 					<PanelBody title="Tags">
-						{tags.map((tag, index) => (
-							<PanelRow key={index}>
-								<div className="flex gap-2 w-full">
-									<TextControl
-										value={tag}
-										onChange={(value) => updateTag(index, value)}
-										placeholder={`Tag ${index + 1}`}
-										className="flex-1"
-									/>
-									<Button
-										onClick={() => removeTag(index)}
-										icon="no-alt"
-										className="components-tab-button"
-									/>
-								</div>
-							</PanelRow>
+						{(categories || []).map((category) => (
+							<CheckboxControl
+								key={category.id}
+								label={category.name}
+								checked={categoryIds.includes(category.id)}
+								onChange={(checked) => toggleCategory(category.id, checked)}
+							/>
 						))}
-						<Button onClick={addTag} variant="secondary" className="mt-2">
-							Add Tag
-						</Button>
 					</PanelBody>
 					<PanelBody title="Content Settings">
 						<SelectControl
@@ -215,12 +215,12 @@ registerBlockType(metadata.name, {
 							</div>
 							{tags.length > 0 && (
 								<div className="flex flex-wrap gap-2 mt-8 z-10 relative">
-									{tags.map((tag, index) => (
+									{tags.map((category) => (
 										<span
-											key={index}
+											key={category.id}
 											className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
 										>
-											{tag}
+											{category.name}
 										</span>
 									))}
 								</div>

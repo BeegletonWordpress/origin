@@ -190,18 +190,27 @@ registerBlockType(metadata.name, {
 											{post.meta?.hero_tagline || post.title?.rendered || "(No Title)"}
 										</h3>
 
-										{post.meta?.case_tags?.length > 0 && (
-											<div className="flex flex-wrap gap-2 mb-6">
-												{post.meta.case_tags.map((tag, index) => (
-													<span
-														key={index}
-														className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
-													>
-														{tag}
-													</span>
-												))}
-											</div>
-										)}
+										{(() => {
+											const caseTags = (post._embedded?.["wp:term"] ?? [])
+												.flat()
+												.filter(
+													(term) => term.taxonomy === "customer_case_category",
+												);
+											return (
+												caseTags.length > 0 && (
+													<div className="flex flex-wrap gap-2 mb-6">
+														{caseTags.map((term) => (
+															<span
+																key={term.id}
+																className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
+															>
+																{term.name}
+															</span>
+														))}
+													</div>
+												)
+											);
+										})()}
 									</article>
 								);
 							})}
