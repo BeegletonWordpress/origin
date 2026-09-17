@@ -81,12 +81,10 @@ const taglineOptions = [
 
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { imageUrl, imageAlt, svgColor, theme, reverseLayout } =
-			attributes;
-
-		const activeTheme = THEMES[theme] || THEMES.default;
+		const { imageUrl, imageAlt, svgColor, reverseLayout } = attributes;
 
 		const [meta, setMeta] = useEntityProp("postType", "customer_case", "meta");
+		const theme = meta?.hero_theme || "default";
 		const tags = meta?.case_tags || [];
 
 		const activeTheme = THEMES[theme] || THEMES.default;
