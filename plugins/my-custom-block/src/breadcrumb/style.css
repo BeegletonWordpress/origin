@@ -1,5 +1,13 @@
 .rank-math-breadcrumb {
-  max-width: var(--wp--style--global--content-size);
+  /* The nav sits outside <main>, with no padded ancestor, so its own
+     padding (below) is the only horizontal inset it gets — account for
+     that here so its content box lines up with page content's width
+     instead of ending up narrower once that padding is subtracted. */
+  max-width: calc(
+    var(--wp--style--global--content-size) +
+    var(--wp--style--root--padding-left) +
+    var(--wp--style--root--padding-right)
+  );
   margin-left: auto !important;
   margin-right: auto !important;
 }
@@ -7,7 +15,8 @@
 .rank-math-breadcrumb > p{
   display: flex;
   width: 100%;
-  padding-inline: 32px;
+  padding-left: var(--wp--style--root--padding-left);
+  padding-right: var(--wp--style--root--padding-right);
   align-items: center;
   gap: 0.5rem;
   font-size: 0.75rem;

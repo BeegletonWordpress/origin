@@ -6,3 +6,15 @@
 .subpage-hero__content h4 {
     margin-bottom: 1rem; /* fallback default */
 }
+
+/* This block is used two ways. Inside subpage-template, view.js zeroes the
+   post-content root padding and subpage-template/style.css hands the hero
+   its own — that path is fine. Used directly in ordinary page content it is
+   alignfull, so WordPress's `.has-global-padding > .alignfull` negative
+   margins pull it out to the viewport edge and nothing puts a gutter back:
+   its text runs into the screen edge. Supply the site's own root padding so
+   it lines up with normal page content and tracks any future change to it. */
+.wp-block-create-block-subpage-hero.alignfull {
+    padding-left: var(--wp--style--root--padding-left);
+    padding-right: var(--wp--style--root--padding-right);
+}

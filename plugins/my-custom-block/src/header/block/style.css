@@ -1,3 +1,11 @@
+/* The header is alignfull and neither of its ancestors (header.wp-block-
+   template-part, .wp-site-blocks) has horizontal padding, so it has to
+   supply its own gutter. Take it from the site's root padding rather than a
+   fixed value, so it stays aligned with page content if that ever changes.
+   It goes on this full-width wrapper, not on .header-inner-container: that
+   element carries the wide-size max-width, and with border-box sizing,
+   padding there would shrink the header's content narrower than the page
+   content it should line up with. */
 .wp-block-create-block-my-header-block {
 	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	background-color: var(
@@ -5,6 +13,12 @@
 		var(--wp--preset--color--accent-1)
 	) !important;
 	color: var(--page-theme-text, inherit) !important;
+	padding-left: var(--wp--style--root--padding-left);
+	padding-right: var(--wp--style--root--padding-right);
+}
+
+.wp-block-create-block-my-header-block .header-inner-container {
+	padding-inline: 0;
 }
 
 .wp-block-create-block-my-header-block:not(.is-scrolled) a,
@@ -150,7 +164,8 @@
 		-webkit-overflow-scrolling: touch;
 		padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
 		margin-bottom: 0 !important;
-		padding-inline: calc(var(--spacing) * 8);
+		padding-left: var(--wp--style--root--padding-left);
+		padding-right: var(--wp--style--root--padding-right);
 		padding-top: 24px;
 		background-color: var(
 			--page-theme-bg,

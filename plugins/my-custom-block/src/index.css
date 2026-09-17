@@ -168,18 +168,18 @@ p a {
 }
 
 @media screen and (max-width: 768px) {
-	/* .has-global-padding {
-		padding-left: 1rem !important;
-		padding-right: 1rem !important;
-	}
-
-	.entry-content.wp-block-post-content {
-		padding-left: 0 !important;
-		padding-right: 0 !important;
-	} */
-
 	.wp-block-group.is-nowrap.is-layout-flex {
 		flex-wrap: wrap;
+	}
+}
+
+/* WP core stacks Media & Text's image above its text below 600px but only
+   ever gives the text column horizontal padding (padding: 0 8%) — nothing
+   separates it from the image above. Add vertical breathing room to match. */
+@media (max-width: 600px) {
+	.wp-block-media-text.is-stacked-on-mobile > .wp-block-media-text__content {
+		padding-top: var(--wp--preset--spacing--40);
+		padding-bottom: var(--wp--preset--spacing--40);
 	}
 }
 

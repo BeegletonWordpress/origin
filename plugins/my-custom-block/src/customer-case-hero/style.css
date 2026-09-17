@@ -13,6 +13,36 @@
     margin-bottom: 1rem !important;
 }
 
+/* The single-customer_case template (a DB wp_template, not a file in this
+   repo) puts an explicit inline padding-left/right of spacing--40 on its
+   wp:post-content, on top of .case-content's own has-global-padding. That
+   post-content renders is-layout-flow, so WordPress's nested-global-padding
+   cancellation never fires and the two stack — case content sits noticeably
+   further in than a Page or Post, especially on mobile. Zero the inner one
+   (!important: the template's value is an inline style) so .case-content's
+   root padding is the only horizontal inset, matching Pages and Posts. */
+.case-content .entry-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Same double-padding problem one level deeper: any block set to
+   "constrained" layout inside the case body (Group, Media & Text's
+   content column, Columns, etc.) gets its own has-global-padding class
+   and root padding. WordPress's own has-global-padding > has-global-
+   padding cancellation only fires for a DIRECT parent/child pair, but the
+   actual direct parent here is .entry-content (is-layout-flow, left
+   unpadded on purpose so the hero can bleed edge-to-edge) — that breaks
+   the chain, so nothing above ever cancels it. .case-content already
+   supplies the one root gutter for the whole case; zero horizontal
+   padding on every has-global-padding element nested inside it, however
+   deep (needs !important: some of these carry their own inline padding
+   style, which otherwise beats WordPress's own equivalent rule too). */
+.case-content .entry-content .has-global-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 /* The single customer-case template's post-content area renders with
    is-layout-flow (no constrained layout set), so it isn't width-capped
    by theme.json's content size. Cap each top-level content block, the
@@ -45,16 +75,12 @@
     font-size: var(--wp--preset--font-size--large);
 }
 
-/* max-width alone isn't enough for true edge-to-edge: entry-content has
-   its own left/right padding (not the sitewide has-global-padding one WP
-   already knows how to negate), so an alignfull child needs to cancel
-   that same padding with a matching negative margin to actually reach
-   the edges — e.g. the hero block, now that it lives inside post_content
-   instead of outside it. */
+/* alignfull children still need max-width:none to escape the content-size
+   cap set by the `> *` rule above. They no longer need a negative margin
+   here — the padding they used to cancel is zeroed above, so they already
+   reach .case-content's own edge (which keeps its normal root padding). */
 .case-content .entry-content.is-layout-flow > .alignfull {
     max-width: none;
-    margin-left: calc(-1 * var(--wp--preset--spacing--40));
-    margin-right: calc(-1 * var(--wp--preset--spacing--40));
 }
 
 /* Same preflight problem inside the Media & Text block: its content
