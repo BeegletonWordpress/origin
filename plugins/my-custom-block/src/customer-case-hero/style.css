@@ -39,6 +39,12 @@
     max-width: none;
 }
 
+/* :where() keeps this rule's specificity down to a plain h2 selector, so an
+   editor's own has-*-font-size class or inline size still wins over it. */
+:where(.case-content .entry-content) h2 {
+    font-size: var(--wp--preset--font-size--large);
+}
+
 /* max-width alone isn't enough for true edge-to-edge: entry-content has
    its own left/right padding (not the sitewide has-global-padding one WP
    already knows how to negate), so an alignfull child needs to cancel

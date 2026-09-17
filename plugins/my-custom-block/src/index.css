@@ -103,6 +103,20 @@ p a {
 	text-decoration-line: underline;
 }
 
+/* Default heading sizes for single Post content. The Post Title block
+   renders as an h1 in the template header, outside .entry-content, so it
+   needs its own selector rather than being caught by the content-area one.
+   The ancestor scoping is wrapped in :where() so these rules carry no more
+   specificity than a single class — an editor's own has-*-font-size class
+   or inline size still wins over this default. */
+:where(body.single-post) .wp-block-post-title {
+	font-size: var(--wp--preset--font-size--x-large);
+}
+
+:where(body.single-post .entry-content) h2 {
+	font-size: var(--wp--preset--font-size--large);
+}
+
 .fluentform .check-personal-data p {
 	margin-top: 10px;
 }
