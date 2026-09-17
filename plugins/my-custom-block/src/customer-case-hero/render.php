@@ -6,7 +6,7 @@
 
 // Extract attributes
 $tagline = get_post_meta( get_the_ID(), 'hero_tagline', true );
-$tags = $attributes['tags'] ?? [];
+$tags = get_post_meta( get_the_ID(), 'case_tags', true ) ?: [];
 $svg_color = $attributes['svgColor'] ?? '';
 $theme = get_post_meta( get_the_ID(), 'hero_theme', true ) ?: 'default';
 $reverse_layout = $attributes['reverseLayout'] ?? false;

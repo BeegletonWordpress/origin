@@ -57,33 +57,40 @@ const THEMES = {
 	},
 };
 
+// Service Tagline options are admin-managed (Settings > Service Taglines)
+// instead of hardcoded, so new ones can be added without a code change.
+// window.mcbServiceTaglines is localized by
+// mcb_localize_service_taglines_for_editor() in
+// includes/service-tagline-settings.php; the fallback list only matters if
+// that inline script somehow didn't run (e.g. outside a real editor load).
+const FALLBACK_SERVICE_TAGLINES = [
+	"Marknadsstrategi & Position",
+	"Identitet & Varumärke",
+	"Workshop & Strategiarbete",
+	"Webbutveckling & Design",
+	"Designsystem & UX",
+	"Content & Filmproduktion",
+	"Performance Marketing",
+	"Mäss- & Eventmaterial",
+	"SEO & GEO Anpassat Innehåll",
+];
+
 const taglineOptions = [
 	{ label: "Välj en tjänst...", value: "" },
-	{
-		label: "Marknadsstrategi & Position",
-		value: "Marknadsstrategi & Position",
-	},
-	{ label: "Identitet & Varumärke", value: "Identitet & Varumärke" },
-	{ label: "Workshop & Strategiarbete", value: "Workshop & Strategiarbete" },
-	{ label: "Webbutveckling & Design", value: "Webbutveckling & Design" },
-	{ label: "Designsystem & UX", value: "Designsystem & UX" },
-	{ label: "Content & Filmproduktion", value: "Content & Filmproduktion" },
-	{ label: "Performance Marketing", value: "Performance Marketing" },
-	{ label: "Mäss- & Eventmaterial", value: "Mäss- & Eventmaterial" },
-	{
-		label: "SEO & GEO Anpassat Innehåll",
-		value: "SEO & GEO Anpassat Innehåll",
-	},
+	...(window.mcbServiceTaglines || FALLBACK_SERVICE_TAGLINES).map(
+		(tagline) => ({ label: tagline, value: tagline }),
+	),
 ];
 
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
-		const { tags, imageUrl, imageAlt, svgColor, theme, reverseLayout } =
+		const { imageUrl, imageAlt, svgColor, theme, reverseLayout } =
 			attributes;
 
 		const activeTheme = THEMES[theme] || THEMES.default;
 
 		const [meta, setMeta] = useEntityProp("postType", "customer_case", "meta");
+		const tags = meta?.case_tags || [];
 
 		const excerpt = useSelect((select) =>
 			select("core/editor").getEditedPostAttribute("excerpt"),
@@ -116,19 +123,19 @@ registerBlockType(metadata.name, {
 		};
 
 		const addTag = () => {
-			setAttributes({ tags: [...tags, ""] });
+			setMeta({ ...meta, case_tags: [...tags, ""] });
 		};
 
 		const removeTag = (index) => {
 			const newTags = [...tags];
 			newTags.splice(index, 1);
-			setAttributes({ tags: newTags });
+			setMeta({ ...meta, case_tags: newTags });
 		};
 
 		const updateTag = (index, value) => {
 			const newTags = [...tags];
 			newTags[index] = value;
-			setAttributes({ tags: newTags });
+			setMeta({ ...meta, case_tags: newTags });
 		};
 
 		const blockProps = useBlockProps({

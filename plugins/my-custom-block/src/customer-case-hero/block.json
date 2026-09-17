@@ -28,10 +28,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"tags": {
-			"type": "array",
-			"default": []
-		},
 		"imageUrl": {
 			"type": "string",
 			"default": "https://beegleton-dev.local/wp-content/uploads/2026/03/Rectangle-4.png"

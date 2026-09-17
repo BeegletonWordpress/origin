@@ -168,16 +168,28 @@ registerBlockType(metadata.name, {
 											</div>
 										)}
 
+										{post.meta?.hero_tagline && (
+											<p className="text-sm opacity-60 mb-1">
+												{post.title?.rendered || "(No Title)"}
+											</p>
+										)}
+
 										<h3 className="text-xl font-bold mb-3 uppercase tracking-tight line-clamp-2 min-h-[3.5rem]">
-											{post.title?.rendered || "(No Title)"}
+											{post.meta?.hero_tagline || post.title?.rendered || "(No Title)"}
 										</h3>
 
-										<div
-											className="mb-6 grow leading-relaxed line-clamp-3 min-h-[5rem]"
-											dangerouslySetInnerHTML={{
-												__html: post.excerpt?.rendered,
-											}}
-										/>
+										{post.meta?.case_tags?.length > 0 && (
+											<div className="flex flex-wrap gap-2 mb-6">
+												{post.meta.case_tags.map((tag, index) => (
+													<span
+														key={index}
+														className="border border-current/50 px-3 py-1 uppercase italic text-[0.75rem]"
+													>
+														{tag}
+													</span>
+												))}
+											</div>
+										)}
 									</article>
 								);
 							})}
