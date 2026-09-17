@@ -10,3 +10,19 @@
 .alt-subpage-hero__content h4 {
     margin-bottom: 1rem; /* fallback default */
 }
+
+/* This block is normally a non-alignfull child of the post-content wrapper,
+   which already applies the site's root padding — the px-8 baked into its
+   saved markup stacks a second 32px gutter on top of it below the md
+   breakpoint (md:px-0 only exists to undo it above). Drop it; the ancestor
+   is the single source of horizontal inset. */
+.wp-block-create-block-alt-subpage-hero > div {
+    padding-inline: 0;
+}
+
+/* Belt and braces: if this block is ever set to alignfull, it escapes that
+   root padding and needs to supply its own, like subpage-hero does. */
+.wp-block-create-block-alt-subpage-hero.alignfull {
+    padding-left: var(--wp--style--root--padding-left);
+    padding-right: var(--wp--style--root--padding-right);
+}
