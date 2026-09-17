@@ -98,6 +98,11 @@ a,
 		text-underline-offset 0.2s ease;
 }
 
+/* Links inside paragraph text should always look clickable */
+p a {
+	text-decoration-line: underline;
+}
+
 .fluentform .check-personal-data p {
 	margin-top: 10px;
 }
