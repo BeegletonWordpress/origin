@@ -1,0 +1,11 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/button-hover-colors",
+	"version": "0.1.0",
+	"title": "Button Hover Colors (internal — not a real block)",
+	"category": "design",
+	"description": "Not a registered block. Exists only so the build pipeline compiles the editor-only script that adds Hover Background Color / Hover Text Color controls to the standard core/button block, enqueued directly by my-custom-block.php in the block editor. See my-custom-block.php for the enqueue.",
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js"
+}

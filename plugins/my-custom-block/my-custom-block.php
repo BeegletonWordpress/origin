@@ -98,6 +98,7 @@ function mcb_output_fluid_spacing_vars() {
 add_action( 'wp_enqueue_scripts', 'mcb_output_fluid_spacing_vars', 20 );
 add_action( 'enqueue_block_editor_assets', 'mcb_output_fluid_spacing_vars' );
 
+
 function register_customer_case_post_type() {
     $labels = [
         'name' => 'Kundcase',
@@ -502,6 +503,32 @@ function mcb_enqueue_global_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'mcb_enqueue_global_styles' );
 add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_global_styles' );
+
+/**
+ * Editor-only script (compiled from src/button-hover-colors via the
+ * non-block src/button-hover-colors/block.json build entry, same pattern
+ * as src/global-styles above) that adds Hover Background Color / Hover
+ * Text Color controls to the standard core/button block's sidebar. Only
+ * needed in the editor — attribute registration, InspectorControls, and
+ * baking the chosen colors into the saved markup all happen there; the
+ * frontend just reads the resulting CSS custom properties (src/index.css).
+ */
+function mcb_enqueue_button_hover_colors_script() {
+	$script_path = __DIR__ . '/build/button-hover-colors/index.js';
+	$asset_path  = __DIR__ . '/build/button-hover-colors/index.asset.php';
+	if ( ! file_exists( $script_path ) || ! file_exists( $asset_path ) ) {
+		return;
+	}
+	$asset = require $asset_path;
+	wp_enqueue_script(
+		'mcb-button-hover-colors',
+		plugin_dir_url( __FILE__ ) . 'build/button-hover-colors/index.js',
+		$asset['dependencies'],
+		$asset['version'],
+		true
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_button_hover_colors_script' );
 
 /**
  * Output the SVG clipPath used to shape Max Mega Menu submenus.
