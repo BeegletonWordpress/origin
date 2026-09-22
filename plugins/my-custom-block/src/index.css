@@ -236,6 +236,7 @@ p a {
 	border: none;
 	border-radius: 0;
 	padding: 13px 35px;
+	transition: color 0.2s ease;
 }
 
 .wp-block-button.is-style-outline > .wp-block-button__link::before {
@@ -262,8 +263,10 @@ p a {
 }
 
 .wp-block-button:not(.is-style-outline) > .wp-block-button__link {
+	position: relative;
 	border-radius: 0;
 	padding: 13px 35px;
+	transition: color 0.2s ease;
 	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 214 57' preserveAspectRatio='none'%3E%3Cpath d='M5.62509 51.9341C3.76994 51.9041 2.35218 51.1141 2.51809 50.1963C3.8001 42.7635 8.98849 13.0098 11.266 5.02783C11.6129 3.83166 13.6037 2.93642 16.032 2.8988C38.5804 2.54522 147.235 1.19859 207.429 6.78823C209.903 7.01392 211.637 8.12734 211.487 9.37616L206.615 51.5956C206.464 52.8745 204.383 53.8901 201.819 53.9353C175.53 54.3716 29.8175 52.2877 5.62509 51.9341Z' fill='white'/%3E%3C/svg%3E");
 	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 214 57' preserveAspectRatio='none'%3E%3Cpath d='M5.62509 51.9341C3.76994 51.9041 2.35218 51.1141 2.51809 50.1963C3.8001 42.7635 8.98849 13.0098 11.266 5.02783C11.6129 3.83166 13.6037 2.93642 16.032 2.8988C38.5804 2.54522 147.235 1.19859 207.429 6.78823C209.903 7.01392 211.637 8.12734 211.487 9.37616L206.615 51.5956C206.464 52.8745 204.383 53.8901 201.819 53.9353C175.53 54.3716 29.8175 52.2877 5.62509 51.9341Z' fill='white'/%3E%3C/svg%3E");
 	-webkit-mask-size: 100% 100%;
@@ -287,30 +290,34 @@ p a {
    would otherwise always beat a plain (non-important) hover override —
    our selectors are already far more specific than that single class, so
    once both sides are !important, specificity decides and we win. */
-.wp-block-button:not(.is-style-outline).has-mcb-hover > .wp-block-button__link:hover {
-	background-color: var(--mcb-hover-bg, revert) !important;
+/* Left-to-right wipe: a masked ::after overlay, painted with the hover
+   color, clipped to zero width from the left at rest and opened up to full
+   width on hover. clip-path insets interpolate smoothly (unlike
+   mask-image, which can't cross-fade between different images), so this
+   sweeps the color in from the left edge instead of blending in place.
+   Shared shape for both styles — Fill's overlay sits over its existing
+   solid fill; Outline's sits over its existing ring (::before, untouched)
+   and sweeps a full solid blob across it, same end look as a plain fill
+   but via a directional reveal. */
+.wp-block-button.has-mcb-hover > .wp-block-button__link::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background-color: var(--mcb-hover-bg, transparent);
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 214 57' preserveAspectRatio='none'%3E%3Cpath d='M5.62509 51.9341C3.76994 51.9041 2.35218 51.1141 2.51809 50.1963C3.8001 42.7635 8.98849 13.0098 11.266 5.02783C11.6129 3.83166 13.6037 2.93642 16.032 2.8988C38.5804 2.54522 147.235 1.19859 207.429 6.78823C209.903 7.01392 211.637 8.12734 211.487 9.37616L206.615 51.5956C206.464 52.8745 204.383 53.8901 201.819 53.9353C175.53 54.3716 29.8175 52.2877 5.62509 51.9341Z' fill='white'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 214 57' preserveAspectRatio='none'%3E%3Cpath d='M5.62509 51.9341C3.76994 51.9041 2.35218 51.1141 2.51809 50.1963C3.8001 42.7635 8.98849 13.0098 11.266 5.02783C11.6129 3.83166 13.6037 2.93642 16.032 2.8988C38.5804 2.54522 147.235 1.19859 207.429 6.78823C209.903 7.01392 211.637 8.12734 211.487 9.37616L206.615 51.5956C206.464 52.8745 204.383 53.8901 201.819 53.9353C175.53 54.3716 29.8175 52.2877 5.62509 51.9341Z' fill='white'/%3E%3C/svg%3E");
+	-webkit-mask-size: 100% 100%;
+	mask-size: 100% 100%;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	clip-path: inset(0 100% 0 0);
+	transition: clip-path 0.4s ease;
 }
 
-/* Outline hover: expand the ::before's mask from "ring only" to the full
-   blob (same single-layer mask Fill uses), not just recolor the ring — the
-   base rule's mask is two layers combined with exclude/xor to cut a thin
-   band, so overriding only background-color would leave that same
-   imperceptible sliver recoloring. Every mask sub-property must be reset
-   together: if only background-color or only mask-size changed, the two
-   layers would end up identical and exclude would cancel them out to
-   nothing, making the button vanish entirely on hover. */
-.wp-block-button.is-style-outline.has-mcb-hover > .wp-block-button__link:hover::before {
-	background-color: var(--mcb-hover-bg, revert) !important;
-	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 214 57' preserveAspectRatio='none'%3E%3Cpath d='M5.62509 51.9341C3.76994 51.9041 2.35218 51.1141 2.51809 50.1963C3.8001 42.7635 8.98849 13.0098 11.266 5.02783C11.6129 3.83166 13.6037 2.93642 16.032 2.8988C38.5804 2.54522 147.235 1.19859 207.429 6.78823C209.903 7.01392 211.637 8.12734 211.487 9.37616L206.615 51.5956C206.464 52.8745 204.383 53.8901 201.819 53.9353C175.53 54.3716 29.8175 52.2877 5.62509 51.9341Z' fill='white'/%3E%3C/svg%3E") !important;
-	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 214 57' preserveAspectRatio='none'%3E%3Cpath d='M5.62509 51.9341C3.76994 51.9041 2.35218 51.1141 2.51809 50.1963C3.8001 42.7635 8.98849 13.0098 11.266 5.02783C11.6129 3.83166 13.6037 2.93642 16.032 2.8988C38.5804 2.54522 147.235 1.19859 207.429 6.78823C209.903 7.01392 211.637 8.12734 211.487 9.37616L206.615 51.5956C206.464 52.8745 204.383 53.8901 201.819 53.9353C175.53 54.3716 29.8175 52.2877 5.62509 51.9341Z' fill='white'/%3E%3C/svg%3E") !important;
-	-webkit-mask-size: 100% 100% !important;
-	mask-size: 100% 100% !important;
-	-webkit-mask-position: center !important;
-	mask-position: center !important;
-	-webkit-mask-repeat: no-repeat !important;
-	mask-repeat: no-repeat !important;
-	-webkit-mask-composite: source-over !important;
-	mask-composite: add !important;
+.wp-block-button.has-mcb-hover > .wp-block-button__link:hover::after {
+	clip-path: inset(0 0 0 0);
 }
 
 .wp-block-button.has-mcb-hover > .wp-block-button__link:hover {
