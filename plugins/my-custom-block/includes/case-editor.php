@@ -33,7 +33,11 @@ function customer_case_allowed_blocks( $allowed_blocks, $context ) {
 		mcb_get_allowed_blocks_for_post_type( 'customer_case' )
 	);
 }
-add_filter( 'allowed_block_types_all', 'customer_case_allowed_blocks', 10, 2 );
+// Temporarily disabled — the allow-list was hiding whole patterns (any
+// pattern containing a not-yet-allowed block gets hidden entirely) rather
+// than just the blocks in question. Re-enable by uncommenting once the
+// allow-list has been updated, or leave off if no restriction is wanted.
+// add_filter( 'allowed_block_types_all', 'customer_case_allowed_blocks', 10, 2 );
 
 /**
  * Allowed blocks for standard blog Posts — see
