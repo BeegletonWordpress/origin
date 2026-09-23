@@ -9,7 +9,7 @@ $wrapper     = get_block_wrapper_attributes([
 ]);
 ?>
 <div <?php echo $wrapper; ?>>
-    <div class="count-up-number text-7xl flex">
+    <div class="count-up-number text-5xl md:text-7xl flex">
         <span class="count-up-value"><?php echo $number; ?></span>
         <?php if ( $suffix ) : ?>
             <span class="count-up-suffix"><?php echo $suffix; ?></span>

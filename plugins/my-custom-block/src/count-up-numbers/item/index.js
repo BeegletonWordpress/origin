@@ -43,7 +43,7 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 
 				<div {...blockProps}>
-					<div className="count-up-number text-7xl">
+					<div className="count-up-number text-5xl md:text-7xl">
 						{number}
 						{suffix && <span className="count-up-suffix">{suffix}</span>}
 					</div>

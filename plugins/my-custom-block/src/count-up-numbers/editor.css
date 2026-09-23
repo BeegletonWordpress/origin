@@ -1,3 +1,22 @@
 .count-up-number-item {
-	
+
+}
+
+/* Editor-canvas equivalent of the frontend full-bleed fix in style.css —
+   margin-based instead of 100vw, since the editor iframe has no
+   overflow-x reset to safely absorb a 100vw overshoot (same reasoning as
+   src/subpage-hero/editor.css). Selector doubled defensively for extra
+   specificity, though not strictly required this time: core's competing
+   alignfull rule isn't !important, so a plain !important override is
+   expected to win outright without a tie. No :not(.alignfull) exclusion
+   needed either — every existing count-up-numbers instance already uses
+   the default align:"full" (confirmed via DB query), so there's no
+   non-full-width instance for this rule to conflict with. */
+.count-up-numbers.count-up-numbers {
+	max-width: none !important;
+	width: 100% !important;
+	margin-left: calc(var(--wp--style--root--padding-left, 0px) * -1) !important;
+	margin-right: calc(var(--wp--style--root--padding-right, 0px) * -1) !important;
+	padding-left: var(--wp--style--root--padding-left);
+	padding-right: var(--wp--style--root--padding-right);
 }
