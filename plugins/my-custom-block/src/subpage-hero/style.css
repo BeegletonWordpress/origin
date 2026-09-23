@@ -7,14 +7,39 @@
     margin-bottom: 1rem; /* fallback default */
 }
 
-/* This block is used two ways. Inside subpage-template, view.js zeroes the
-   post-content root padding and subpage-template/style.css hands the hero
-   its own — that path is fine. Used directly in ordinary page content it is
-   alignfull, so WordPress's `.has-global-padding > .alignfull` negative
-   margins pull it out to the viewport edge and nothing puts a gutter back:
-   its text runs into the screen edge. Supply the site's own root padding so
-   it lines up with normal page content and tracks any future change to it. */
-.wp-block-create-block-subpage-hero.alignfull {
+/* This block is used two ways — standalone in ordinary page content, and
+   inside Subpage Template — and both are meant to look identical: a
+   full-bleed background regardless of whatever align value (or none) is
+   stored, with the site's normal root padding kept as a gutter for the
+   content. Used to rely on a negative margin equal to the root padding
+   (mirroring WordPress's own `.has-global-padding > .alignfull` rule),
+   but that assumes the parent already has that padding to "cancel out" —
+   false specifically on Subpage Template pages, where view.js
+   (src/subpage-template/view.js) zeroes the post-content's own padding,
+   which made that technique overshoot past the viewport edge. A viewport-
+   width breakout has no such dependency on the parent's padding state, so
+   it works the same in both contexts. Safe here because this site already
+   clips horizontal overflow on html/body (src/index.css) — needed since
+   100vw can be a hair wider than the visible viewport when a scrollbar is
+   present. */
+.subpage-hero {
+    max-width: none !important;
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
     padding-left: var(--wp--style--root--padding-left);
     padding-right: var(--wp--style--root--padding-right);
+}
+
+/* Cap the text+image row to the theme's "wide" width, centered, so it
+   doesn't stretch edge-to-edge on large screens even though the block's
+   own background now always does. Targets the row structurally (the
+   block's only direct child in both edit() and save()) rather than via a
+   new class, so no markup/attribute change is needed. */
+.subpage-hero > div {
+    max-width: var(--wp--style--global--wide-size, 1340px);
+    margin-inline: auto;
 }

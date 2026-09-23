@@ -1,9 +1,3 @@
-.wp-block-create-block-subpage-hero {
-	padding-left: var(--wp--style--root--padding-left) !important;
-	padding-right: var(--wp--style--root--padding-right) !important;
-	max-width: var(--wp--style--global--content-size) !important;
-}
-
 .wp-block-create-block-subpage-template {
 	max-width: none !important;
 	width: 100%;
