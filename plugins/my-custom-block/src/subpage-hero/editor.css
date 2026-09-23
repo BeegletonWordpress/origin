@@ -5,10 +5,30 @@
 	border: 1px dashed #ccc;
 }
 
-/* Mirrors the frontend's content-width cap (src/subpage-hero/style.css) so
-   the editor canvas preview matches — not attempting the full-bleed
-   breakout here, the editor iframe's width dynamics differ enough that
-   it's not worth replicating; the published-page width is what matters. */
+/* Full-bleed background, mirrored from the frontend but with a different
+   technique: the frontend uses a 100vw breakout (src/subpage-hero/
+   style.css) because subpage-template/view.js zeroes the parent's padding
+   on published pages, which a simple negative-margin approach can't
+   survive. That script is a viewScript — it never runs in the editor — so
+   the parent's root padding here is always the theme's normal value,
+   making the simpler technique safe. It also avoids 100vw/-50vw, which
+   the editor iframe has no overflow-x reset to safely absorb. Same
+   negative-root-padding idea WordPress core itself uses for .alignfull
+   (see src/header/block/style.css, src/alt-subpage-hero/style.css), just
+   applied unconditionally instead of gated on the align attribute, since
+   this block's background should always be full width regardless of
+   whatever align value existing instances happen to have. */
+.subpage-hero {
+	max-width: none !important;
+	width: 100% !important;
+	margin-left: calc(var(--wp--style--root--padding-left, 0px) * -1) !important;
+	margin-right: calc(var(--wp--style--root--padding-right, 0px) * -1) !important;
+	padding-left: var(--wp--style--root--padding-left);
+	padding-right: var(--wp--style--root--padding-right);
+}
+
+/* Cap the text+image row to the theme's "wide" width, centered, matching
+   the frontend's content-width cap (src/subpage-hero/style.css). */
 .subpage-hero > div {
 	max-width: var(--wp--style--global--wide-size, 1340px);
 	margin-inline: auto;
