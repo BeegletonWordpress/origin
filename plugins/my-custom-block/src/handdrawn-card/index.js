@@ -79,7 +79,7 @@ registerBlockType(metadata.name, {
 			},
 			{
 				template: currentTemplate,
-				templateLock: "all",
+				templateLock: false,
 			},
 		);
 
