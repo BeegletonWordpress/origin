@@ -4,3 +4,12 @@
 	background-color: #f8f9fa;
 	border: 1px dashed #ccc;
 }
+
+/* Mirrors the frontend's content-width cap (src/subpage-hero/style.css) so
+   the editor canvas preview matches — not attempting the full-bleed
+   breakout here, the editor iframe's width dynamics differ enough that
+   it's not worth replicating; the published-page width is what matters. */
+.subpage-hero > div {
+	max-width: var(--wp--style--global--wide-size, 1340px);
+	margin-inline: auto;
+}
