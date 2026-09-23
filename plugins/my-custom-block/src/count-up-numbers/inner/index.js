@@ -22,7 +22,8 @@ registerBlockType( metadata.name, {
 		} );
 		const innerBlocksProps = useInnerBlocksProps(
 			{
-				className: 'flex justify-evenly w-full gap-8 flex-wrap',
+				className:
+					'flex flex-col md:flex-row md:flex-nowrap justify-evenly items-center md:items-start w-full gap-8 alignwide',
 			},
 			{
 				allowedBlocks: ALLOWED_BLOCKS,
@@ -38,7 +39,7 @@ registerBlockType( metadata.name, {
 		} );
 		return (
 			<div { ...blockProps }>
-				<div className="flex justify-evenly w-full gap-8 flex-wrap">
+				<div className="flex flex-col md:flex-row md:flex-nowrap justify-evenly items-center md:items-start w-full gap-8 alignwide">
 					<InnerBlocks.Content />
 				</div>
 			</div>

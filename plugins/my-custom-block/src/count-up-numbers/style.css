@@ -1,5 +1,28 @@
 .count-up-number-item {
-	
+
 }
 
-/* Hello world */
+/* Full-bleed background regardless of the immediate parent's own width.
+   This block already carries WordPress's native alignfull class, but
+   that only escapes as far as its direct parent's padding edge — if the
+   parent isn't itself full width (e.g. a plain Group block, as on the
+   case pages), alignfull alone only reaches the parent's edges, not the
+   true page edge. Same fix as .subpage-hero (src/subpage-hero/style.css):
+   a viewport-width breakout that doesn't depend on any ancestor's width.
+   Safe here because src/index.css already clips horizontal overflow on
+   html/body, absorbing 100vw's sub-pixel scrollbar overshoot. !important
+   alone is enough to win: core's competing rule (`.has-global-padding >
+   .alignfull { margin-left: calc(...); ... }`) isn't itself !important
+   (confirmed via a live dump of wp_get_global_stylesheet() earlier this
+   session), so there's no specificity tie to guard against here. */
+.count-up-numbers {
+	max-width: none !important;
+	width: 100vw !important;
+	position: relative !important;
+	left: 50% !important;
+	right: 50% !important;
+	margin-left: -50vw !important;
+	margin-right: -50vw !important;
+	padding-left: var(--wp--style--root--padding-left);
+	padding-right: var(--wp--style--root--padding-right);
+}
