@@ -17,8 +17,34 @@
    (see src/header/block/style.css, src/alt-subpage-hero/style.css), just
    applied unconditionally instead of gated on the align attribute, since
    this block's background should always be full width regardless of
-   whatever align value existing instances happen to have. */
-.subpage-hero {
+   whatever align value existing instances happen to have.
+
+   Selector is doubled (.subpage-hero.subpage-hero) to win a specificity
+   tie: core's own global styles include `.is-layout-constrained >
+   :where(...) { margin-left: auto !important; margin-right: auto
+   !important; }` — the :where() contributes zero specificity, so that
+   whole rule is exactly one class' worth, same as a plain `.subpage-hero`
+   selector here. Both sides are !important on the same properties, so
+   without a specificity edge the winner is whichever loads later in the
+   iframe (empirically core's global styles, not this file) — confirmed
+   via a live dump of wp_get_global_stylesheet(). Doubling the class
+   guarantees this rule wins regardless of load order. Only relevant when
+   the hero sits standalone in ordinary (is-layout-constrained) post
+   content — Subpage Template's own InnerBlocks container has no "layout"
+   support, so that class never even appears there.
+
+   :not(.alignfull) matters more: confirmed via DevTools on an existing
+   instance whose stored align is already "full" that WordPress's own
+   native alignfull CSS (`.has-global-padding > .alignfull`, `...
+   is-root-container > .alignfull`) was already producing the exact
+   full-bleed result we want, on its own — and this rule, applying
+   unconditionally on top of it, was fighting that native handling and
+   breaking the result (confirmed by disabling this rule's properties in
+   DevTools, which immediately fixed the layout). So: let core handle
+   instances that already have align:"full" natively, and only force the
+   breakout ourselves for the older instances stored with align:"wide" or
+   no align at all, which have no native alignfull class to rely on. */
+.subpage-hero.subpage-hero:not(.alignfull) {
 	max-width: none !important;
 	width: 100% !important;
 	margin-left: calc(var(--wp--style--root--padding-left, 0px) * -1) !important;
