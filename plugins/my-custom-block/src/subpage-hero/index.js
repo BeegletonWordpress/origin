@@ -3,13 +3,13 @@ import {
 	useBlockProps,
 	InnerBlocks,
 	RichText,
-	MediaUpload,
-	MediaUploadCheck,
+	MediaPlaceholder,
+	MediaReplaceFlow,
+	BlockControls,
 	InspectorControls,
 	PanelColorSettings,
 } from "@wordpress/block-editor";
 import {
-	Button,
 	PanelBody,
 	SelectControl,
 	ToggleControl,
@@ -62,10 +62,11 @@ registerBlockType(metadata.name, {
 			subheader,
 			imageUrl,
 			imageAlt,
+			imageId,
 			svgColor,
 			theme,
 			reverseLayout,
-			contentWidth,			
+			contentWidth,
 		} = attributes;
 
 		const activeTheme = THEMES[theme] || THEMES.default;
@@ -105,6 +106,19 @@ registerBlockType(metadata.name, {
 
 		return (
 			<>
+				{imageUrl && (
+					<BlockControls>
+						<MediaReplaceFlow
+							mediaId={imageId}
+							mediaURL={imageUrl}
+							allowedTypes={["image"]}
+							onSelect={onSelectImage}
+							onReset={() =>
+								setAttributes({ imageUrl: "", imageId: undefined, imageAlt: "" })
+							}
+						/>
+					</BlockControls>
+				)}
 				<InspectorControls>
 					<PanelBody title="Theme Selection">
 						<SelectControl
@@ -217,41 +231,22 @@ registerBlockType(metadata.name, {
 						</div>
 
 						<div className="w-full h-[40vh] mt-0 md:h-auto md:flex-1 md:mt-24">
-							<MediaUploadCheck>
-								<MediaUpload
+							{imageUrl ? (
+								<div className="subpage-hero-image-wrapper h-full">
+									<img
+										src={imageUrl}
+										alt={imageAlt}
+										className="w-full h-full object-cover subpage-hero-image max-h-200"
+									/>
+								</div>
+							) : (
+								<MediaPlaceholder
 									onSelect={onSelectImage}
 									allowedTypes={["image"]}
-									value={attributes.imageId}
-									render={({ open }) => (
-										<div className="subpage-hero-image-wrapper h-full relative group">
-											{imageUrl ? (
-												<>
-													<img
-														src={imageUrl}
-														alt={imageAlt}
-														className="w-full h-full object-cover subpage-hero-image max-h-200"
-													/>
-													<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50">
-														<Button
-															onClick={open}
-															variant="secondary"
-															className="is-primary"
-														>
-															Replace Image
-														</Button>
-													</div>
-												</>
-											) : (
-												<div className="flex items-center justify-center h-full bg-gray-100 border-2 border-dashed border-gray-300 min-h-75">
-													<Button onClick={open} variant="secondary">
-														Select Image
-													</Button>
-												</div>
-											)}
-										</div>
-									)}
+									multiple={false}
+									labels={{ title: "Select Image" }}
 								/>
-							</MediaUploadCheck>
+							)}
 						</div>
 					</div>
 				</div>
