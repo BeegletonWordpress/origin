@@ -46,25 +46,26 @@
 			"type": "boolean",
 			"default": true
 		},
-		"cardWidth": {
+		"ringWidth": {
 			"type": "number",
 			"default": 100
 		},
-		"cardHeight": {
+		"ringHeight": {
 			"type": "number",
 			"default": 100
 		},
-		"offsetX": {
+		"ringOffsetX": {
 			"type": "number",
 			"default": 0
 		},
-		"offsetY": {
+		"ringOffsetY": {
 			"type": "number",
 			"default": 0
 		}
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
+	"render": "file:./render.php",
 	"style": ["file:./index.css", "file:./style-index.css"],
 	"editorStyle": "file:./editor.css"
 }

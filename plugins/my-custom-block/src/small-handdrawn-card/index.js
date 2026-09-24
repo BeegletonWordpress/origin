@@ -4,14 +4,22 @@ import {
 	useInnerBlocksProps,
 	InnerBlocks,
 	InspectorControls,
+	store as blockEditorStore,
 } from "@wordpress/block-editor";
 import {
 	PanelBody,
 	RangeControl,
 	CheckboxControl,
 } from "@wordpress/components";
-import { cloneElement } from "@wordpress/element";
+import { useSelect } from "@wordpress/data";
+import {
+	cloneElement,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "@wordpress/element";
 import metadata from "./block.json";
+import deprecated from "./deprecated";
 import { HAND_DRAWN_RING_SHAPE_4 } from "../constants";import "./style.css";
 import "./editor.css";
 
@@ -29,15 +37,89 @@ const INNER_TEMPLATE = [
 	["core/paragraph", { placeholder: "Add content..." }],
 ];
 
+// Keep in sync with render.php, which builds the same ring on the frontend.
+function ringStyle({ ringWidth, ringHeight, ringOffsetX, ringOffsetY, svgToggle }) {
+	return {
+		transform: `translate(${ringOffsetX ?? 0}rem, ${ringOffsetY ?? 0}rem) scale(${
+			(ringWidth ?? 100) / 100
+		}, ${(ringHeight ?? 100) / 100})`,
+		// Missing means on, matching render.php's `?? true`.
+		display: svgToggle === false ? "none" : "block",
+	};
+}
+
+/**
+ * The frontend (render.php) wraps the card's first Heading block in a
+ * positioned box holding the ring. Inner blocks can't be wrapped in the
+ * editor, so here the ring sits in an absolutely positioned box that is
+ * measured to match that heading exactly — the ring's own CSS is the same
+ * in both, so it lands in the same place.
+ */
+function useHeadingBox(clientId, cardRef) {
+	const headingId = useSelect(
+		(select) =>
+			select(blockEditorStore)
+				.getBlocks(clientId)
+				.find((block) => block.name === "core/heading")?.clientId,
+		[clientId],
+	);
+	const [box, setBox] = useState(null);
+
+	useLayoutEffect(() => {
+		const card = cardRef.current;
+		if (!card || !headingId) {
+			setBox(null);
+			return;
+		}
+		const doc = card.ownerDocument;
+		const win = doc.defaultView;
+		let observed = null;
+		let frame = 0;
+
+		const measure = () => {
+			const heading = doc.getElementById(`block-${headingId}`);
+			if (!heading) {
+				setBox(null);
+				frame = win.requestAnimationFrame(measure);
+				return;
+			}
+			if (observed !== heading) {
+				observed && observer.unobserve(observed);
+				observer.observe(heading);
+				observed = heading;
+			}
+			const c = card.getBoundingClientRect();
+			const h = heading.getBoundingClientRect();
+			setBox({
+				left: h.left - c.left - card.clientLeft,
+				top: h.top - c.top - card.clientTop,
+				width: h.width,
+				height: h.height,
+			});
+		};
+
+		const observer = new win.ResizeObserver(measure);
+		observer.observe(card);
+		measure();
+
+		return () => {
+			win.cancelAnimationFrame(frame);
+			observer.disconnect();
+		};
+	}, [headingId]);
+
+	return box;
+}
+
 registerBlockType(metadata.name, {
-	edit: function Edit({ attributes, setAttributes }) {
+	edit: function Edit({ attributes, setAttributes, clientId }) {
 		const {
 			backgroundColor,
 			style,
-			cardWidth,
-			cardHeight,
-			offsetX,
-			offsetY,
+			ringWidth,
+			ringHeight,
+			ringOffsetX,
+			ringOffsetY,
 			svgToggle,
 		} = attributes;
 
@@ -46,7 +128,9 @@ registerBlockType(metadata.name, {
 			customBgColor = `var(--wp--preset--color--${backgroundColor})`;
 		}
 
+		const cardRef = useRef();
 		const blockProps = useBlockProps({
+			ref: cardRef,
 			className: BLOCK_CLASSES,
 			style: {
 				"--handdrawn-stroke-color":
@@ -59,21 +143,11 @@ registerBlockType(metadata.name, {
 			{ template: INNER_TEMPLATE },
 		);
 
-		// Calculate transform: scale based on percentage and translate based on rem offsets
-		const svgStyle = {
-			transform: `scale(${(cardWidth ?? 100) / 100}, ${
-				(cardHeight ?? 100) / 100
-			}) translate(${offsetX - 2 ?? -2}rem, ${offsetY - 1 ?? -1}rem)`,
-			transformOrigin: "center",
-			display: svgToggle ? "block" : "none",
-		};
+		const headingBox = useHeadingBox(clientId, cardRef);
 
-		// Clone the SVG element constant and merge inline styles so we apply transforms directly to the SVG
-		const styledSvg = cloneElement(HAND_DRAWN_RING_SHAPE_4, {
-			style: {
-				...(HAND_DRAWN_RING_SHAPE_4.props?.style || {}),
-				...svgStyle,
-			},
+		const ring = cloneElement(HAND_DRAWN_RING_SHAPE_4, {
+			className: "small-handdrawn-card__ring",
+			style: ringStyle(attributes),
 		});
 
 		return (
@@ -82,103 +156,67 @@ registerBlockType(metadata.name, {
 					<PanelBody title="SVG Visibility" initialOpen={false}>
 						<CheckboxControl
 							label="Show SVG"
-							checked={svgToggle}
+							checked={svgToggle !== false}
 							onChange={(value) => setAttributes({ svgToggle: value })}
 						/>
 					</PanelBody>
-					<PanelBody title="SVG Size & Position" initialOpen={false}>
+					<PanelBody title="Ring Size & Position" initialOpen={false}>
 						<RangeControl
 							label="Width (%)"
-							value={cardWidth}
-							onChange={(value) => setAttributes({ cardWidth: value })}
+							value={ringWidth}
+							onChange={(value) => setAttributes({ ringWidth: value })}
 							min={50}
 							max={200}
 							step={5}
-							help="Scale the card width relative to content (100% = default)"
+							help="Scale the ring's width around the heading (100% = default)"
 						/>
 						<RangeControl
 							label="Height (%)"
-							value={cardHeight}
-							onChange={(value) => setAttributes({ cardHeight: value })}
-							min={0}
+							value={ringHeight}
+							onChange={(value) => setAttributes({ ringHeight: value })}
+							min={50}
 							max={200}
 							step={5}
-							help="Scale the card height relative to content (100% = default)"
+							help="Scale the ring's height around the heading (100% = default)"
 						/>
 						<RangeControl
 							label="Offset X (rem)"
-							value={offsetX}
-							onChange={(value) => setAttributes({ offsetX: value })}
-							min={-5}
-							max={5}
+							value={ringOffsetX}
+							onChange={(value) => setAttributes({ ringOffsetX: value })}
+							min={-3}
+							max={3}
 							step={0.1}
-							help="Move the card left (negative) or right (positive)"
+							help="Move the ring left (negative) or right (positive)"
 						/>
 						<RangeControl
 							label="Offset Y (rem)"
-							value={offsetY}
-							onChange={(value) => setAttributes({ offsetY: value })}
-							min={-20}
-							max={5}
+							value={ringOffsetY}
+							onChange={(value) => setAttributes({ ringOffsetY: value })}
+							min={-3}
+							max={3}
 							step={0.1}
-							help="Move the card up (negative) or down (positive)"
+							help="Move the ring up (negative) or down (positive)"
 						/>
 					</PanelBody>
 				</InspectorControls>
 
 				<div {...blockProps}>
-					{styledSvg}
+					{headingBox && (
+						<div
+							className="small-handdrawn-card__heading-anchor"
+							style={headingBox}
+							aria-hidden="true"
+						>
+							{ring}
+						</div>
+					)}
 					<div {...innerBlocksProps} />
 				</div>
 			</>
 		);
 	},
-	save: function save({ attributes }) {
-		const {
-			backgroundColor,
-			style,
-			cardWidth,
-			cardHeight,
-			offsetX,
-			offsetY,
-			svgToggle,
-		} = attributes;
-
-		let customBgColor = style?.color?.background;
-		if (backgroundColor) {
-			customBgColor = `var(--wp--preset--color--${backgroundColor})`;
-		}
-
-		const blockProps = useBlockProps.save({
-			className: BLOCK_CLASSES,
-			style: {
-				"--handdrawn-stroke-color":
-					customBgColor || "var(--wp--preset--color--primary, #000)",
-			},
-		});
-
-		const svgStyle = {
-			transform: `scale(${(cardWidth ?? 100) / 100}, ${
-				(cardHeight ?? 100) / 100
-			}) translate(${offsetX - 2 ?? -2}rem, ${offsetY - 1 ?? -1}rem)`,
-			transformOrigin: "center",
-			display: svgToggle ? "block" : "none",
-		};
-
-		const styledSvgSave = cloneElement(HAND_DRAWN_RING_SHAPE_4, {
-			style: {
-				...(HAND_DRAWN_RING_SHAPE_4.props?.style || {}),
-				...svgStyle,
-			},
-		});
-
-		return (
-			<div {...blockProps}>
-				{styledSvgSave}
-				<div className={WRAPPER_CLASSES}>
-					<InnerBlocks.Content />
-				</div>
-			</div>
-		);
-	},
+	// Dynamic block: render.php builds the markup (and the ring around the
+	// first Heading block), so only the inner blocks are saved.
+	save: () => <InnerBlocks.Content />,
+	deprecated,
 });
