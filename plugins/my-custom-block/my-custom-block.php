@@ -98,6 +98,56 @@ function mcb_output_fluid_spacing_vars() {
 add_action( 'wp_enqueue_scripts', 'mcb_output_fluid_spacing_vars', 20 );
 add_action( 'enqueue_block_editor_assets', 'mcb_output_fluid_spacing_vars' );
 
+/**
+ * Site-wide CSS that used to live in the Site Editor's "Additional CSS"
+ * (compiled from src/site-styles via its non-block build entry). On the
+ * frontend it's printed inside the global-styles inline style — the exact
+ * slot that CSS had — so every tie against other stylesheets still
+ * resolves the same way. In the editor, the canvas re-renders global
+ * styles (including Additional CSS) on the client after the theme's editor
+ * styles, which a settings entry can't get behind; ours lands just before
+ * those, and a computed-style comparison showed no difference either way.
+ * See src/site-styles/style.css.
+ */
+function mcb_get_site_styles_css() {
+	$style_path = __DIR__ . '/build/site-styles/style-index.css';
+	return file_exists( $style_path ) ? (string) file_get_contents( $style_path ) : '';
+}
+
+function mcb_output_site_styles() {
+	$css = mcb_get_site_styles_css();
+	if ( '' !== $css ) {
+		wp_add_inline_style( 'global-styles', $css );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'mcb_output_site_styles', 20 );
+
+function mcb_editor_site_styles( $settings ) {
+	$css = mcb_get_site_styles_css();
+	if ( '' === $css || ! isset( $settings['styles'] ) || ! is_array( $settings['styles'] ) ) {
+		return $settings;
+	}
+
+	$entry = [
+		'css'            => $css,
+		'__unstableType' => 'user',
+		'isGlobalStyles' => false,
+	];
+
+	// Insert directly after core's global-styles custom CSS entry and
+	// before the theme's editor styles. Fall back to appending.
+	$position = count( $settings['styles'] );
+	foreach ( $settings['styles'] as $index => $style ) {
+		if ( ( $style['__unstableType'] ?? '' ) === 'user' && ! empty( $style['isGlobalStyles'] ) ) {
+			$position = $index + 1;
+		}
+	}
+	array_splice( $settings['styles'], $position, 0, [ $entry ] );
+
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'mcb_editor_site_styles' );
+
 
 function register_customer_case_post_type() {
     $labels = [
