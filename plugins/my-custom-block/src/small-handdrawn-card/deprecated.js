@@ -8,6 +8,7 @@
 import { InnerBlocks, useBlockProps } from "@wordpress/block-editor";
 import { cloneElement } from "@wordpress/element";
 import { HAND_DRAWN_RING_SHAPE_4 } from "../constants";
+import metadata from "./block.json";
 
 const SUPPORTS = {
 	color: {
@@ -53,10 +54,10 @@ function strokeColor({ backgroundColor, style }) {
 function migrate({ cardWidth, cardHeight, offsetX, offsetY, ...attributes }) {
 	return {
 		svgToggle: true,
-		ringWidth: 100,
-		ringHeight: 100,
-		ringOffsetX: 0,
-		ringOffsetY: 0,
+		ringWidth: metadata.attributes.ringWidth.default,
+		ringHeight: metadata.attributes.ringHeight.default,
+		ringOffsetX: metadata.attributes.ringOffsetX.default,
+		ringOffsetY: metadata.attributes.ringOffsetY.default,
 		...attributes,
 	};
 }
