@@ -23,6 +23,20 @@ if ( header ) {
 		header.style.removeProperty( 'height' );
 	};
 
+	// Rendered height of the unscrolled wordmark, so on mobile the scrolled
+	// symbol can match it exactly (style.css, --logo-h0). offsetHeight
+	// ignores the scroll-driven scale transform.
+	const mainLogos = header.querySelectorAll( '.main-logo' );
+	const measureLogo = () => {
+		const logoHeight = Math.max(
+			0,
+			...Array.from( mainLogos, ( img ) => img.offsetHeight )
+		);
+		if ( logoHeight > 0 ) {
+			header.style.setProperty( '--logo-h0', `${ logoHeight }px` );
+		}
+	};
+
 	const update = () => {
 		const scrollY = window.scrollY;
 		const isScrolled = header.classList.contains( 'is-scrolled' );
@@ -55,12 +69,20 @@ if ( header ) {
 	};
 
 	measureHeight();
+	measureLogo();
 	header.classList.add( 'has-scroll-progress' );
 	update();
+
+	mainLogos.forEach( ( img ) => {
+		if ( ! img.complete ) {
+			img.addEventListener( 'load', measureLogo, { once: true } );
+		}
+	} );
 
 	window.addEventListener( 'scroll', requestUpdate, { passive: true } );
 	window.addEventListener( 'resize', () => {
 		measureHeight();
+		measureLogo();
 		requestUpdate();
 	} );
 }
