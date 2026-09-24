@@ -5,10 +5,11 @@
    prints this INSIDE the global-styles inline style on the frontend —
    exactly where the Additional CSS was — and mcb_editor_site_styles adds
    it to the editor canvas. That keeps every tie against other
-   stylesheets resolving as before; e.g. the mobile
-   overflow-wrap/hyphens rule in src/index.css (loaded later, in
-   mcb-global-styles) must keep beating the p/h rule below. Don't move
-   these rules into src/index.css or any file loaded after global styles.
+   stylesheets resolving as before — e.g. against rules in src/index.css,
+   which loads later (mcb-global-styles). Don't move these rules into
+   src/index.css or any file loaded after global styles. (The p/h
+   word-break/hyphens rule below is now superseded by the universal
+   keep-all rule in src/index.css.)
    It's also deliberately unlayered (no Tailwind import), like it was.
 
    The #wp--skip-link--target > … .wp-elements-<hash> selectors below are
