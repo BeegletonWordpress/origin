@@ -200,6 +200,17 @@ function register_customer_case_post_type() {
 }
 add_action('init', 'register_customer_case_post_type');
 
+/**
+ * Open Posts in the editor with their template shown ("Show template",
+ * rendering mode template-locked), so editing mirrors the published
+ * "Enskilda inlägg" layout. A user who toggles "Show template" off keeps
+ * that as their own preference.
+ */
+function mcb_posts_default_to_template_view() {
+	add_post_type_support( 'post', 'editor', [ 'default-mode' => 'template-locked' ] );
+}
+add_action( 'init', 'mcb_posts_default_to_template_view' );
+
 function add_aria_current_to_cpt_archive( $block_content, $block ) {
     error_log( 'navigation-link found, url: ' . ( $block['attrs']['url'] ?? 'no url' ) );
     error_log( 'is_post_type_archive: ' . ( is_post_type_archive( 'customer_case' ) ? 'true' : 'false' ) );
