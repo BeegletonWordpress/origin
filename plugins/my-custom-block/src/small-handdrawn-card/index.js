@@ -25,7 +25,7 @@ import "./editor.css";
 
 const BLOCK_CLASSES = "relative z-10";
 const WRAPPER_CLASSES =
-	"relative z-10 flex flex-col items-center gap-4 max-w-[360px] min-h-[200px]";
+	"relative z-10 flex flex-col items-center gap-4 max-w-[360px]";
 const INNER_TEMPLATE = [
 	[
 		"core/heading",
@@ -177,7 +177,7 @@ registerBlockType(metadata.name, {
 							min={50}
 							max={200}
 							step={5}
-							help="Scale the ring's width around the heading (100% = default)"
+							help={`Scale the ring's width around the heading (default ${RING_DEFAULTS.ringWidth}%)`}
 						/>
 						<RangeControl
 							label="Height (%)"
@@ -186,7 +186,7 @@ registerBlockType(metadata.name, {
 							min={50}
 							max={200}
 							step={5}
-							help="Scale the ring's height around the heading (100% = default)"
+							help={`Scale the ring's height around the heading (default ${RING_DEFAULTS.ringHeight}%)`}
 						/>
 						<RangeControl
 							label="Offset X (rem)"

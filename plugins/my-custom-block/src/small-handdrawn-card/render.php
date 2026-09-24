@@ -59,4 +59,4 @@ $wrapper_attributes = get_block_wrapper_attributes(
 	]
 );
 ?>
-<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><div class="relative z-10 flex flex-col items-center gap-4 max-w-[360px] min-h-[200px]"><?php echo $inner_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div></div>
+<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>><div class="relative z-10 flex flex-col items-center gap-4 max-w-[360px]"><?php echo $inner_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div></div>
