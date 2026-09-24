@@ -1,10 +1,11 @@
 .rank-math-breadcrumb {
   /* The nav sits outside <main>, with no padded ancestor, so its own
      padding (below) is the only horizontal inset it gets — account for
-     that here so its content box lines up with page content's width
-     instead of ending up narrower once that padding is subtracted. */
+     that here so its content box lines up with the wide-width case
+     content (hero and blocks, see src/content-layout) instead of ending
+     up narrower once that padding is subtracted. */
   max-width: calc(
-    var(--wp--style--global--content-size) +
+    var(--wp--style--global--wide-size) +
     var(--wp--style--root--padding-left) +
     var(--wp--style--root--padding-right)
   );
