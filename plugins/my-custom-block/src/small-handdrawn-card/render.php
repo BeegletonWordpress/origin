@@ -23,8 +23,8 @@ if ( $background_color ) {
 }
 $stroke_color = $custom_bg_color ? $custom_bg_color : 'var(--wp--preset--color--primary, #000)';
 
-$ring_width    = (float) ( $attributes['ringWidth'] ?? 100 );
-$ring_height   = (float) ( $attributes['ringHeight'] ?? 100 );
+$ring_width    = (float) ( $attributes['ringWidth'] ?? 70 );
+$ring_height   = (float) ( $attributes['ringHeight'] ?? 50 );
 $ring_offset_x = (float) ( $attributes['ringOffsetX'] ?? 0 );
 $ring_offset_y = (float) ( $attributes['ringOffsetY'] ?? 0 );
 $show_ring     = $attributes['svgToggle'] ?? true;

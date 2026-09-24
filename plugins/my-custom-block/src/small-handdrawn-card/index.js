@@ -37,12 +37,21 @@ const INNER_TEMPLATE = [
 	["core/paragraph", { placeholder: "Add content..." }],
 ];
 
+const RING_DEFAULTS = {
+	ringWidth: metadata.attributes.ringWidth.default,
+	ringHeight: metadata.attributes.ringHeight.default,
+	ringOffsetX: metadata.attributes.ringOffsetX.default,
+	ringOffsetY: metadata.attributes.ringOffsetY.default,
+};
+
 // Keep in sync with render.php, which builds the same ring on the frontend.
 function ringStyle({ ringWidth, ringHeight, ringOffsetX, ringOffsetY, svgToggle }) {
 	return {
-		transform: `translate(${ringOffsetX ?? 0}rem, ${ringOffsetY ?? 0}rem) scale(${
-			(ringWidth ?? 100) / 100
-		}, ${(ringHeight ?? 100) / 100})`,
+		transform: `translate(${ringOffsetX ?? RING_DEFAULTS.ringOffsetX}rem, ${
+			ringOffsetY ?? RING_DEFAULTS.ringOffsetY
+		}rem) scale(${(ringWidth ?? RING_DEFAULTS.ringWidth) / 100}, ${
+			(ringHeight ?? RING_DEFAULTS.ringHeight) / 100
+		})`,
 		// Missing means on, matching render.php's `?? true`.
 		display: svgToggle === false ? "none" : "block",
 	};
