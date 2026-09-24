@@ -1,0 +1,86 @@
+/* Site-wide CSS moved here from the live site's Site Editor "Additional CSS"
+   (Utseende → Redigerare → Stilar → Additional CSS), kept verbatim.
+
+   Cascade position matters: my-custom-block.php (mcb_output_site_styles)
+   prints this INSIDE the global-styles inline style on the frontend —
+   exactly where the Additional CSS was — and mcb_editor_site_styles adds
+   it to the editor canvas. That keeps every tie against other
+   stylesheets resolving as before; e.g. the mobile
+   overflow-wrap/hyphens rule in src/index.css (loaded later, in
+   mcb-global-styles) must keep beating the p/h rule below. Don't move
+   these rules into src/index.css or any file loaded after global styles.
+   It's also deliberately unlayered (no Tailwind import), like it was.
+
+   The #wp--skip-link--target > … .wp-elements-<hash> selectors below are
+   tied to generated class hashes on specific live pages; they stop
+   matching if those blocks are edited. */
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+.wp-block-create-block-subpage-content > .wp-block-group {
+max-width: unset !important;
+}
+
+.wp-block-create-block-service-block .service-block__text > div {
+margin-bottom: 40px !important;
+}
+
+.wp-block-create-block-service-card {
+max-width: 800px !important;
+}
+@media (max-width: 767px) {
+.wp-block-create-block-hero .hero-right-col {
+top: 0 !important;
+}
+.wp-block-create-block-hero .hero-columns {
+height: max-content !important;
+}
+.wp-block-columns:not(.is-not-stacked-on-mobile)>.wp-block-column {
+flex-basis: unset !important;
+}
+.wp-block-create-block-hero .hero-right-col {
+position: relative !important;
+}
+}
+#wp--skip-link--target > div > div > div.wp-block-create-block-subpage-content.subpage-content.has-contrast-color.has-base-background-color.has-text-color.has-background.has-link-color.wp-elements-d1645b3c8e1671b8e32187dd1fd228c5 > div.wp-block-group.has-global-padding.is-layout-constrained.wp-container-core-group-is-layout-9a37f8d1.wp-block-group-is-layout-constrained > div > div:nth-child(2) > div:nth-child(2) > div > div > ul > li:nth-child(3) {
+display: none !important;
+}
+
+#wp--skip-link--target > div > div > div.wp-block-create-block-subpage-content.subpage-content.has-contrast-color.has-base-background-color.has-text-color.has-background.has-link-color.wp-elements-317b20177d08753d1784e56e660bbbb7 > div.wp-block-group.group-width-full.has-contrast-color.has-base-background-color.has-text-color.has-background.has-link-color.wp-elements-e66cb049989f13fda9c9b07e89819755.has-global-padding.is-layout-constrained.wp-container-core-group-is-layout-00df28ab.wp-block-group-is-layout-constrained > div:nth-child(2) > div.flex.justify-between.gap-6.flex-col.md\:flex-row > div:nth-child(2) > div > div > ul > li:nth-child(3) {
+display: none !important;
+}
+
+#wp--skip-link--target > div > div > div.wp-block-create-block-subpage-content.subpage-content.has-contrast-color.has-base-background-color.has-text-color.has-background.has-link-color.wp-elements-4bb07ff0f8818ef0274761751055d30b > div.wp-block-group.group-width-full.has-accent-5-color.has-contrast-background-color.has-text-color.has-background.has-link-color.wp-elements-dc4460e664cd69b41d48d2561764a025.has-global-padding.is-layout-constrained.wp-container-core-group-is-layout-00df28ab.wp-block-group-is-layout-constrained > div:nth-child(2) > div.flex.gap-6.mb-6 {
+flex-direction: column;
+gap: 22px;
+}
+.wp-block-create-block-my-handdrawn-button.aligncenter {
+display: block;
+}
+.center-contact-card .contact-card {
+margin: auto !important;
+}
+.wp-block-post-date {
+display: none !important;
+}
+h1 {
+	font-size: clamp(30px, 1.684rem + ((1vw - 3.2px) * 2.714), 62px) !important;
+}
+
+h2 {
+	font-size: clamp(18px, 1.185rem + ((1vw - 3.2px) * 1.868), 46px) !important;
+}
+
+h3 {
+	font-size: clamp(16px, 0.915rem + ((1vw - 3.2px) * 1.082), 30px) !important;
+}
