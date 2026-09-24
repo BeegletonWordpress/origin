@@ -7,6 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		return;
 	}
 
+	function getRingTransform(isMobile) {
+		return isMobile
+			? "scale(1, 1.2) translate(-1rem, -0.5rem)"
+			: "scale(1, 1.2) translate(-4rem, -0.5rem)";
+	}
+
 	function renderRingSVG(block) {
 		const placeholder = block.querySelector(".ring-svg-placeholder");
 		if (!placeholder) {
@@ -25,11 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         preserveAspectRatio="none"
         class="absolute inset-0 w-full h-full z-0 translate-x-7 translate-y-4 scale-x-110"
         style="
-            transform: ${
-							isMobile
-								? "scale(1.2, 1.2) translate(-2rem, -0.5rem)"
-								: "scale(1, 1.2) translate(-4rem, -0.5rem)"
-						};
+            transform: ${getRingTransform(isMobile)};
             transform-origin: center;
             color: ${color};
         "
@@ -52,9 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		const svg = document.querySelector(".handdrawn-ring-path")?.closest("svg");
 		if (!svg) return;
 		const isMobile = window.innerWidth < 768;
-		svg.style.transform = isMobile
-			? "scale(1, 1.2) translate(-1rem, -0.5rem)"
-			: "scale(1, 1.2) translate(-4rem, -0.5rem)";
+		svg.style.transform = getRingTransform(isMobile);
 	}
 
 	window.addEventListener("resize", updateSvgTransform);

@@ -7,7 +7,11 @@
    padding there would shrink the header's content narrower than the page
    content it should line up with. */
 .wp-block-create-block-my-header-block {
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	/* Only colors are timed; height and logo transforms are driven by
+	   scroll position (see .has-scroll-progress below), and a transition
+	   on those would make them lag behind the scroll. */
+	transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+		color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	background-color: var(
 		--page-theme-bg,
 		var(--wp--preset--color--accent-1)
@@ -62,6 +66,22 @@
 	/* padding: 10px !important; */
 }
 
+/* ============================================
+   Scroll-linked header/logo morph
+   view.js adds .has-scroll-progress and keeps --header-progress (0 at the
+   top of the page → 1 after 100px of scroll) and --header-h0 (natural
+   header height) up to date. Everything below is interpolated from those,
+   so it follows the scroll 1:1. The .is-scrolled rules above/below stay
+   as the fallback for when view.js hasn't run (e.g. the editor).
+   ============================================ */
+.wp-block-create-block-my-header-block.has-scroll-progress {
+	--logo-shrink: 0.19; /* 235px → 190px */
+	height: calc(
+		var(--header-h0) - (var(--header-h0) - 70px) *
+			var(--header-progress, 0)
+	);
+}
+
 /* Unified Logo Container */
 .header-logo-container {
 	position: relative;
@@ -69,6 +89,15 @@
 	height: 55px; /* Standard header height for logo */
 	display: flex;
 	align-items: center;
+}
+
+/* Fallback shrink when view.js hasn't run. With scroll progress the box
+   keeps its size and the logos scale inside it instead (no reflow). The
+   mobile media query below re-pins this to keep mobile logo size
+   constant regardless of scroll state. */
+.is-scrolled:not(.has-scroll-progress) .header-logo-container {
+	width: 190px;
+	height: 45px;
 }
 
 .header-logo-container img {
@@ -80,36 +109,71 @@
 	height: auto;
 	max-height: 100%;
 	object-fit: contain;
-	transition: opacity 0.3s ease;
+	transform-origin: left center;
 	opacity: 0;
 }
 
-/* Visibility Logic */
+/* The symbol keeps a fixed size in both states (it's invisible until
+   scrolled); width: auto can't be animated, so it only fades/scales. */
+.header-logo-container .logo-scrolled {
+	width: auto;
+	height: 48px; /* Symbol is usually smaller/square */
+}
+
+/* Visibility Logic — fallback when view.js hasn't run (e.g. the editor) */
+.wp-block-create-block-my-header-block:not(.has-scroll-progress) .header-logo-container img {
+	transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 /* 1. Unscrolled Dark Theme */
-.wp-block-create-block-my-header-block:not(.is-scrolled) .logo-dark {
+.wp-block-create-block-my-header-block:not(.is-scrolled):not(.has-scroll-progress) .logo-dark {
 	opacity: var(--page-theme-is-light, 1);
 }
 
 /* 2. Unscrolled Light Theme */
-.wp-block-create-block-my-header-block:not(.is-scrolled) .logo-light {
+.wp-block-create-block-my-header-block:not(.is-scrolled):not(.has-scroll-progress) .logo-light {
 	opacity: var(--page-theme-is-dark, 0);
 }
 
 /* 3. Scrolled State (Always Symbol) */
-.is-scrolled .logo-scrolled {
+.is-scrolled:not(.has-scroll-progress) .logo-scrolled {
 	opacity: 1 !important;
-	height: 40px; /* Symbol is usually smaller/square */
-}
-
-.is-scrolled .header-logo-container .logo-scrolled {
-	width: auto;
 }
 
 /* Hide others when scrolled */
-.is-scrolled .logo-dark,
-.is-scrolled .logo-light {
+.is-scrolled:not(.has-scroll-progress) .logo-dark,
+.is-scrolled:not(.has-scroll-progress) .logo-light {
 	opacity: 0 !important;
+}
+
+/* Visibility Logic — scroll-linked. The wordmark shrinks the whole way
+   and fades out over progress 0.3 → 0.65; the symbol fades in over
+   0.55 → 0.9 while settling from 85% to full size, so the two barely
+   overlap. */
+.has-scroll-progress .logo-dark,
+.has-scroll-progress .logo-light {
+	transform: translateY(-50%)
+		scale(calc(1 - var(--logo-shrink) * var(--header-progress, 0)));
+}
+
+.has-scroll-progress .logo-dark {
+	opacity: calc(
+		var(--page-theme-is-light, 1) *
+			clamp(0, (0.65 - var(--header-progress, 0)) / 0.35, 1)
+	);
+}
+
+.has-scroll-progress .logo-light {
+	opacity: calc(
+		var(--page-theme-is-dark, 0) *
+			clamp(0, (0.65 - var(--header-progress, 0)) / 0.35, 1)
+	);
+}
+
+.has-scroll-progress .logo-scrolled {
+	opacity: clamp(0, (var(--header-progress, 0) - 0.55) / 0.35, 1);
+	transform: translateY(-50%)
+		scale(calc(0.85 + 0.15 * var(--header-progress, 0)));
 }
 
 /* Base Logo Transitions fallback for editor */
@@ -117,15 +181,6 @@
 	transition: opacity 0.3s ease;
 }
 
-/* SCROLLED STATE LOGIC */
-.is-scrolled .header-inner-container {
-	max-width: none !important;
-}
-
-/* Keep the Navigation pushed to the right */
-.is-scrolled .header-navigation {
-	margin-left: auto !important;
-}
 /* ============================================
    Mobile Logo Sizing — same size scrolled or not
    ============================================ */
@@ -135,15 +190,21 @@
 		height: 40px;
 	}
 
+	/* Let the symbol grow a little past the 40px mobile container */
+	.header-logo-container .logo-scrolled {
+		height: 44px;
+		max-height: none;
+	}
+
+	/* No scroll-linked shrink on mobile — only the logo crossfade */
+	.wp-block-create-block-my-header-block.has-scroll-progress {
+		--logo-shrink: 0;
+	}
+
 	/* Override the scrolled-state size bump so it matches the default */
 	.is-scrolled .header-logo-container {
 		width: 160px;
 		height: 40px;
-	}
-
-	.is-scrolled .logo-scrolled {
-		height: 40px;      /* same as default logo size, not the desktop 40px-as-shrink value */
-		width: auto;
 	}
 
 	/* Keep dark/light logos and scrolled logo consistent in size on mobile too */

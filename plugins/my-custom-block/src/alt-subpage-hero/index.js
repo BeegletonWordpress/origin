@@ -71,7 +71,7 @@ registerBlockType(metadata.name, {
 		}, [theme, svgColor]);
 
 		const blockProps = useBlockProps({
-			className: `alt-subpage-hero theme-${theme}`,
+			className: `alt-subpage-hero theme-${theme} flex items-center`,
 			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
 		});
 
@@ -136,14 +136,14 @@ registerBlockType(metadata.name, {
 									value={tagline}
 									onChange={(value) => setAttributes({ tagline: value })}
 									placeholder="Tagline..."
-									className="has-cas-red-ink-font-family text-5xl"
+									className="has-cas-red-ink-font-family text-5xl relative z-10"
 								/>
 								<RichText
 									tagName="h1"
 									value={title}
 									onChange={(value) => setAttributes({ title: value })}
 									placeholder="Hero Title"
-									className="text-pretty whitespace-nowrap"
+									className="text-pretty relative z-10"
 								/>
 								<div
 									className="ring-svg-placeholder"
@@ -159,42 +159,45 @@ registerBlockType(metadata.name, {
 							</div>
 						</div>
 
-						{/* Right Column - Only if showRightColumn is true */}
-						{showRightColumn && (
-							<div className="w-full h-fit mt-0 md:h-auto md:flex-1">
-								<InnerBlocks
-									allowedBlocks={[
-										"core/heading",
+						{/* Always rendered (even when hidden) so toggling this off
+						    never deletes authored content — see save() below. */}
+						<div
+							className={`w-full min-h-[40vh] h-auto mt-0 md:h-auto md:flex-1${
+								showRightColumn ? "" : " hidden"
+							}`}
+						>
+							<InnerBlocks
+								allowedBlocks={[
+									"core/heading",
+									"core/paragraph",
+									"core/list",
+									"core/image",
+									"core/cover",
+									"core/group",
+									"core/button",
+									"core/buttons",
+									"core/spacer",
+									"core/separator",
+									"create-block/my-handdrawn-button",
+									"create-block/contact-info",
+								]}
+								template={[
+									[
 										"core/paragraph",
-										"core/list",
-										"core/image",
-										"core/cover",
-										"core/group",
-										"core/button",
-										"core/buttons",
-										"core/spacer",
-										"core/separator",
+										{
+											placeholder: "Description goes here...",
+										},
+									],
+									[
 										"create-block/my-handdrawn-button",
-										"create-block/contact-info",
-									]}
-									template={[
-										[
-											"core/paragraph",
-											{
-												placeholder: "Description goes here...",
-											},
-										],
-										[
-											"create-block/my-handdrawn-button",
-											{
-												placeholder: "CTA text",
-												className: "mt-4",
-											},
-										],
-									]}
-								/>
-							</div>
-						)}
+										{
+											placeholder: "CTA text",
+											className: "mt-4",
+										},
+									],
+								]}
+							/>
+						</div>
 					</div>
 				</div>
 			</>
@@ -257,7 +260,7 @@ registerBlockType(metadata.name, {
 							<RichText.Content
 								tagName="h1"
 								value={title}
-								className="relative z-10"
+								className="text-pretty relative z-10"
 							/>
 							<div
 								className="ring-svg-placeholder"
@@ -273,12 +276,16 @@ registerBlockType(metadata.name, {
 						</div>
 					</div>
 
-					{/* Right Column - Only if showRightColumn is true */}
-					{showRightColumn && (
-						<div className="w-full h-[40vh] mt-0 md:h-auto md:flex-1">
-							<InnerBlocks.Content />
-						</div>
-					)}
+					{/* Always rendered (even when hidden) so toggling this off
+					    never deletes authored content — WordPress only
+					    serializes inner blocks through this call. */}
+					<div
+						className={`w-full min-h-[40vh] h-auto mt-0 md:h-auto md:flex-1${
+							showRightColumn ? "" : " hidden"
+						}`}
+					>
+						<InnerBlocks.Content />
+					</div>
 				</div>
 			</div>
 		);
