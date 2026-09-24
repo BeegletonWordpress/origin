@@ -1,50 +1,67 @@
-/**
- * Simple throttle function to limit the rate of execution.
- * @param func
- * @param limit
- */
-function throttle( func, limit ) {
-	let inThrottle;
-	return function ( ...args ) {
-		if ( ! inThrottle ) {
-			func.apply( this, args );
-			inThrottle = true;
-			setTimeout( () => ( inThrottle = false ), limit );
-		}
-	};
-}
-
 const header = document.querySelector(
 	'.wp-block-create-block-my-header-block'
 );
 
 if ( header ) {
-	let lastScrollY = window.scrollY;
+	// Scroll distance (px) over which the logo/header morph from their
+	// top-of-page state to the scrolled state. style.css reads the
+	// resulting 0–1 value from --header-progress, so the animation follows
+	// the scroll position instead of playing on a timer.
+	const PROGRESS_RANGE = 100;
+	const reducedMotion = window.matchMedia(
+		'(prefers-reduced-motion: reduce)'
+	);
 
-	const handleScroll = () => {
+	// Natural (unscrolled) header height, which the CSS interpolates
+	// from down to the 70px scrolled height.
+	const measureHeight = () => {
+		header.style.height = 'auto';
+		header.style.setProperty(
+			'--header-h0',
+			`${ header.offsetHeight }px`
+		);
+		header.style.removeProperty( 'height' );
+	};
+
+	const update = () => {
 		const scrollY = window.scrollY;
 		const isScrolled = header.classList.contains( 'is-scrolled' );
+
+		let progress = Math.min( Math.max( scrollY / PROGRESS_RANGE, 0 ), 1 );
+		if ( reducedMotion.matches ) {
+			progress = scrollY > 80 ? 1 : 0;
+		}
+		header.style.setProperty( '--header-progress', progress.toFixed( 3 ) );
 
 		// Use hysteresis with a larger gap to prevent flashing.
 		// Add at 80px, remove at 30px.
 		if ( ! isScrolled && scrollY > 80 ) {
-			requestAnimationFrame( () => {
-				header.classList.add( 'is-scrolled' );
-				// console.log("Header is now scrolled.");
-			} );
+			header.classList.add( 'is-scrolled' );
 		} else if ( isScrolled && scrollY < 30 ) {
-			requestAnimationFrame( () => {
-				header.classList.remove( 'is-scrolled' );
-				// console.log("Header is now at the top.");
-			} );
+			header.classList.remove( 'is-scrolled' );
 		}
-		lastScrollY = scrollY;
 	};
 
-	// Throttle to roughly 60fps (16ms) to keep it smooth but prevent
-	// excessive layout recalculations.
-	window.addEventListener( 'scroll', throttle( handleScroll, 16 ), {
-		passive: true,
+	let ticking = false;
+	const requestUpdate = () => {
+		if ( ticking ) {
+			return;
+		}
+		ticking = true;
+		requestAnimationFrame( () => {
+			ticking = false;
+			update();
+		} );
+	};
+
+	measureHeight();
+	header.classList.add( 'has-scroll-progress' );
+	update();
+
+	window.addEventListener( 'scroll', requestUpdate, { passive: true } );
+	window.addEventListener( 'resize', () => {
+		measureHeight();
+		requestUpdate();
 	} );
 }
 

@@ -24,7 +24,8 @@ registerBlockType(metadata.name, {
 		};
 
 		const blockProps = useBlockProps({
-			className: "contact-info flex w-full gap-4 max-w-none",
+			className:
+				"contact-info grid grid-cols-[3.75rem_1fr] gap-x-4 gap-y-1 items-center w-full max-w-none",
 		});
 
 		return (
@@ -56,18 +57,17 @@ registerBlockType(metadata.name, {
 				</InspectorControls>
 
 				<div {...blockProps}>
-					{/* Icon/Image Column - Fixed width 60px, square aspect */}
-					<div className="w-full md:w-15 flex flex-0 items-center">
+					{/* Icon - beside the heading on mobile (row 1 only), beside
+					    the full heading+value column on desktop (spans both rows) */}
+					<div className="w-15 aspect-square row-span-1 md:row-span-2 self-center">
 						{imageUrl ? (
-							<div className="w-15 aspect-square">
-								<img
-									src={imageUrl}
-									alt={imageAlt}
-									className="w-full h-full object-contain"
-								/>
-							</div>
+							<img
+								src={imageUrl}
+								alt={imageAlt}
+								className="w-full h-full object-contain"
+							/>
 						) : (
-							<div className="w-15 aspect-square bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center">
+							<div className="w-full h-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center">
 								<MediaUploadCheck>
 									<MediaUpload
 										onSelect={onSelectImage}
@@ -84,23 +84,20 @@ registerBlockType(metadata.name, {
 						)}
 					</div>
 
-					{/* Text Column - Takes remaining space, centered vertically */}
-					<div className="w-full md:flex-1 flex flex-col justify-center">
-						<RichText
-							tagName="h3"
-							value={header}
-							onChange={(val) => setAttributes({ header: val })}
-							placeholder="Header..."
-							className="has-cas-red-ink-font-family text-4xl! capitalize! font-bold!"
-						/>
-						<RichText
-							tagName="p"
-							value={paragraph}
-							onChange={(val) => setAttributes({ paragraph: val })}
-							placeholder="Paragraph text..."
-							className="text-base"
-						/>
-					</div>
+					<RichText
+						tagName="h3"
+						value={header}
+						onChange={(val) => setAttributes({ header: val })}
+						placeholder="Header..."
+						className="has-cas-red-ink-font-family text-4xl! capitalize! font-bold! row-start-1 col-start-2"
+					/>
+					<RichText
+						tagName="p"
+						value={paragraph}
+						onChange={(val) => setAttributes({ paragraph: val })}
+						placeholder="Paragraph text..."
+						className="text-base row-start-2 col-span-2 md:col-span-1 md:col-start-2"
+					/>
 				</div>
 			</>
 		);
@@ -109,41 +106,38 @@ registerBlockType(metadata.name, {
 		const { imageUrl, imageAlt, header, paragraph } = attributes;
 
 		const blockProps = useBlockProps.save({
-			className: "contact-info flex w-full gap-4 max-w-none",
+			className:
+				"contact-info grid grid-cols-[3.75rem_1fr] gap-x-4 gap-y-1 items-center w-full max-w-none",
 		});
 
 		return (
 			<div {...blockProps}>
-				{/* Icon/Image Column */}
-				<div className="w-full md:w-15 flex flex-0 items-center">
+				{/* Icon - beside the heading on mobile (row 1 only), beside
+				    the full heading+value column on desktop (spans both rows) */}
+				<div className="w-15 aspect-square row-span-1 md:row-span-2 self-center">
 					{imageUrl && (
-						<div className="w-15 aspect-square">
-							<img
-								src={imageUrl}
-								alt={imageAlt}
-								className="w-full h-full object-contain"
-							/>
-						</div>
+						<img
+							src={imageUrl}
+							alt={imageAlt}
+							className="w-full h-full object-contain"
+						/>
 					)}
 				</div>
 
-				{/* Text Column */}
-				<div className="w-full md:flex-1 flex flex-col justify-center">
-					{header && (
-						<RichText.Content
-							tagName="h3"
-							value={header}
-							className="has-cas-red-ink-font-family capitalize! font-bold! text-4xl!"
-						/>
-					)}
-					{paragraph && (
-						<RichText.Content
-							tagName="p"
-							value={paragraph}
-							className="text-base"
-						/>
-					)}
-				</div>
+				{header && (
+					<RichText.Content
+						tagName="h3"
+						value={header}
+						className="has-cas-red-ink-font-family capitalize! font-bold! text-4xl! row-start-1 col-start-2"
+					/>
+				)}
+				{paragraph && (
+					<RichText.Content
+						tagName="p"
+						value={paragraph}
+						className="text-base row-start-2 col-span-2 md:col-span-1 md:col-start-2"
+					/>
+				)}
 			</div>
 		);
 	},
