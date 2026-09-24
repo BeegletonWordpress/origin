@@ -76,6 +76,7 @@
    ============================================ */
 .wp-block-create-block-my-header-block.has-scroll-progress {
 	--logo-shrink: 0.19; /* 235px → 190px */
+	--symbol-grow: 0.15; /* symbol settles from 85% → 100% */
 	height: calc(
 		var(--header-h0) - (var(--header-h0) - 70px) *
 			var(--header-progress, 0)
@@ -173,7 +174,12 @@
 .has-scroll-progress .logo-scrolled {
 	opacity: clamp(0, (var(--header-progress, 0) - 0.55) / 0.35, 1);
 	transform: translateY(-50%)
-		scale(calc(0.85 + 0.15 * var(--header-progress, 0)));
+		scale(
+			calc(
+				1 - var(--symbol-grow) + var(--symbol-grow) *
+					var(--header-progress, 0)
+			)
+		);
 }
 
 /* Base Logo Transitions fallback for editor */
@@ -190,15 +196,17 @@
 		height: 40px;
 	}
 
-	/* Let the symbol grow a little past the 40px mobile container */
+	/* Scrolled symbol is exactly as tall as the unscrolled wordmark
+	   (--logo-h0 is measured by view.js; 40px = container until then) */
 	.header-logo-container .logo-scrolled {
-		height: 44px;
+		height: var(--logo-h0, 40px);
 		max-height: none;
 	}
 
-	/* No scroll-linked shrink on mobile — only the logo crossfade */
+	/* No scroll-linked size change on mobile — only the logo crossfade */
 	.wp-block-create-block-my-header-block.has-scroll-progress {
 		--logo-shrink: 0;
+		--symbol-grow: 0;
 	}
 
 	/* Override the scrolled-state size bump so it matches the default */
