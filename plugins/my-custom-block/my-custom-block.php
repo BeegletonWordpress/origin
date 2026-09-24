@@ -141,7 +141,7 @@ function register_customer_case_post_type() {
         // template_lock is deliberately left unset — it only restricts the
         // templated block itself, not the rest of the post's content.
         'template'            => [
-            [ 'create-block/customer-case-hero', [ 'align' => 'full', 'lock' => [ 'move' => false, 'remove' => false ] ] ],
+            [ 'create-block/customer-case-hero', [ 'align' => 'wide', 'lock' => [ 'move' => false, 'remove' => false ] ] ],
         ],
     ];
 
@@ -503,6 +503,40 @@ function mcb_enqueue_global_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'mcb_enqueue_global_styles' );
 add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_global_styles' );
+
+/**
+ * Content widths for single Posts and Customer Cases (compiled from
+ * src/content-layout via its non-block build entry, same pattern as
+ * src/global-styles): text in the WP content width, every other block
+ * in the wide width. Only enqueued for those post types, since the rules
+ * target post content generically. enqueue_block_assets covers both the
+ * frontend and the editor canvas iframe.
+ */
+function mcb_enqueue_content_layout_styles() {
+	$style_path = __DIR__ . '/build/content-layout/style-index.css';
+	if ( ! file_exists( $style_path ) ) {
+		return;
+	}
+
+	if ( is_admin() ) {
+		$screen    = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		$post_type = $screen ? $screen->post_type : '';
+	} else {
+		$post_type = is_singular() ? get_post_type() : '';
+	}
+
+	if ( ! in_array( $post_type, [ 'post', 'customer_case' ], true ) ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'mcb-content-layout',
+		plugin_dir_url( __FILE__ ) . 'build/content-layout/style-index.css',
+		[],
+		filemtime( $style_path )
+	);
+}
+add_action( 'enqueue_block_assets', 'mcb_enqueue_content_layout_styles' );
 
 /**
  * Editor-only script (compiled from src/button-hover-colors via the

@@ -1,0 +1,64 @@
+/* Content widths for single Posts and Customer Cases — only enqueued for
+   those two post types (my-custom-block.php,
+   mcb_enqueue_content_layout_styles), so these selectors don't need to
+   scope themselves to a body class, which the editor canvas doesn't have.
+
+   Text sits in the narrow WP content width; every other block/pattern
+   defaults to the WP wide width; alignfull keeps core's behavior.
+
+   Applies to the post body — .wp-block-post-content on the frontend (and
+   in the editor, where it's also the root in post-only mode), or the
+   editor's root container otherwise — and to every core Group with
+   constrained layout inside it. Constrained Groups would otherwise cap
+   ALL their children at the group's own content width (some cases set a
+   per-group 700px), so images/galleries inside a Group ended up narrow.
+   The :is() takes its most specific argument's specificity (0,3,0), which
+   beats both core's `.is-layout-constrained > :where(…)` and the
+   per-group `.wp-container-core-group-is-layout-xxxx > :where(…)` rules.
+   Custom blocks that hardcode is-layout-constrained in their own markup
+   (handdrawn-container, count-up-numbers-inner) keep their own layout. */
+
+/* The case template (a DB wp_template) puts its post-content as a plain
+   child of the constrained .case-content group, which caps the whole body
+   at content-size and leaves nothing inside able to break out. */
+.case-content > .wp-block-post-content {
+	max-width: none;
+}
+
+/* Blocks & patterns default to wide width */
+:is(
+		.wp-block-post-content,
+		.is-root-container:not(:has(.wp-block-post-content)),
+		.wp-block-post-content .wp-block-group.is-layout-constrained
+	)
+	> :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+	max-width: var(--wp--style--global--wide-size);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Text stays in the narrow content column */
+:is(
+		.wp-block-post-content,
+		.is-root-container:not(:has(.wp-block-post-content)),
+		.wp-block-post-content .wp-block-group.is-layout-constrained
+	)
+	> :is(p, h1, h2, h3, h4, h5, h6, ul, ol, .wp-block-quote, .wp-block-details):not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright) {
+	max-width: var(--wp--style--global--content-size);
+}
+
+/* Default heading sizes for core Heading blocks in the post body. Only
+   .wp-block-heading, so custom blocks' own headings keep their sizing;
+   an editor's preset size class (!important) or custom inline size
+   still wins. (0,2,1) beats global styles' `:root :where(h2)`. */
+.wp-block-post-content h2.wp-block-heading {
+	font-size: var(--wp--preset--font-size--large);
+}
+
+.wp-block-post-content h3.wp-block-heading {
+	font-size: var(--wp--preset--font-size--medium);
+}
+
+.wp-block-post-content h4.wp-block-heading {
+	font-size: var(--wp--preset--font-size--small);
+}

@@ -1,0 +1,11 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/content-layout",
+	"version": "0.1.0",
+	"title": "Content Layout (internal — not a real block)",
+	"category": "theme",
+	"description": "Not a registered block. Exists only so the build pipeline compiles src/content-layout/style.css, which my-custom-block.php enqueues directly for Posts and Customer Cases on both the frontend and the block editor.",
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js"
+}
