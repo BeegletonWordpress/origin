@@ -48,17 +48,20 @@
 }
 
 /* Default heading sizes for core Heading blocks in the post body. Only
-   .wp-block-heading, so custom blocks' own headings keep their sizing;
-   an editor's preset size class (!important) or custom inline size
-   still wins. (0,2,1) beats global styles' `:root :where(h2)`. */
-.wp-block-post-content h2.wp-block-heading {
-	font-size: var(--wp--preset--font-size--large);
+   .wp-block-heading, so custom blocks' own headings keep their sizing.
+   !important because the live site's Global Styles "Additional CSS" sets
+   h1/h2/h3 font-size with !important on every element (it only exists in
+   the live DB, not locally). To still let an editor's own choice win,
+   headings with a size picked in the editor — a preset/custom size class
+   (has-*-font-size) or an inline font-size — are excluded. */
+.wp-block-post-content h2.wp-block-heading:not([class*="-font-size"]):not([style*="font-size"]) {
+	font-size: var(--wp--preset--font-size--large) !important;
 }
 
-.wp-block-post-content h3.wp-block-heading {
-	font-size: var(--wp--preset--font-size--medium);
+.wp-block-post-content h3.wp-block-heading:not([class*="-font-size"]):not([style*="font-size"]) {
+	font-size: var(--wp--preset--font-size--medium) !important;
 }
 
-.wp-block-post-content h4.wp-block-heading {
-	font-size: var(--wp--preset--font-size--small);
+.wp-block-post-content h4.wp-block-heading:not([class*="-font-size"]):not([style*="font-size"]) {
+	font-size: var(--wp--preset--font-size--small) !important;
 }
