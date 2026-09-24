@@ -1,6 +1,52 @@
 /* Frontend and Editor styles */
-.wp-block-create-block-my-small-handdrawn-card > svg path {
+.wp-block-create-block-my-small-handdrawn-card > svg path,
+.wp-block-create-block-my-small-handdrawn-card .small-handdrawn-card__ring path {
 	stroke: var(--handdrawn-stroke-color, #bbc7e7);
+}
+
+/* The ring is drawn around the card's first Heading block, not the whole
+   card. On the frontend render.php wraps that heading in
+   .small-handdrawn-card__heading (a flex item, so it shrinks to the
+   heading and stays centered); in the editor, index.js positions
+   .small-handdrawn-card__heading-anchor over the heading instead. The ring
+   sizes itself against either box the same way, with a percentage outset
+   so it scales with the heading. An <svg> is a replaced element, so it
+   needs an explicit width/height — inset alone won't stretch it. */
+.small-handdrawn-card__heading {
+	position: relative;
+}
+
+.small-handdrawn-card__heading > .wp-block-heading {
+	position: relative;
+	z-index: 1;
+}
+
+.small-handdrawn-card__heading-anchor {
+	position: absolute;
+	z-index: 0;
+	pointer-events: none;
+}
+
+.small-handdrawn-card__ring {
+	--ring-outset-x: 20%; /* of the heading's width, each side */
+	--ring-outset-y: 70%; /* of the heading's height, each side */
+	position: absolute;
+	top: calc(-1 * var(--ring-outset-y));
+	left: calc(-1 * var(--ring-outset-x));
+	width: calc(100% + 2 * var(--ring-outset-x));
+	height: calc(100% + 2 * var(--ring-outset-y));
+	max-width: none;
+	z-index: 0;
+	pointer-events: none;
+	overflow: visible;
+	transform-origin: center;
+}
+
+/* Keep the stroke weight constant: the ring is now much smaller than the
+   old whole-card ring, and a scaling stroke would get hairline-thin. */
+.small-handdrawn-card__ring path {
+	vector-effect: non-scaling-stroke;
+	stroke-width: 3px;
 }
 
 .wp-block-create-block-my-small-handdrawn-card.has-background,
