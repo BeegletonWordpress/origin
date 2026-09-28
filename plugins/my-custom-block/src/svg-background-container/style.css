@@ -25,10 +25,16 @@
 }
 
 /* On mobile the content is usually taller than the shape, so pin the
-   shape to the top of the container instead of centering it. */
+   shape to the top of the container instead of centering it, nudged 50px
+   up. The container clips whatever sticks out. */
 @media (max-width: 767px) {
+	.wp-block-create-block-my-svg-background-container {
+		overflow: hidden;
+	}
+
 	.wp-block-create-block-my-svg-background-container > .svg-background-container__bg {
 		align-self: start;
+		transform: translateY(-50px);
 	}
 }
 
