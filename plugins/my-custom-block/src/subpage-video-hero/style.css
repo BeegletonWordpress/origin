@@ -1,0 +1,49 @@
+/* Subpage Video Hero: same content layout as the Subpage Hero, with a
+   video or image covering the whole block behind it. */
+
+/* Full-bleed background, same breakout as .subpage-hero (see
+   src/subpage-hero/style.css for why a 100vw breakout is used). */
+.subpage-video-hero {
+    max-width: none !important;
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    padding-left: var(--wp--style--root--padding-left);
+    padding-right: var(--wp--style--root--padding-right);
+    isolation: isolate;
+    overflow: hidden;
+}
+
+/* Media and overlay fill the whole block, behind the content. */
+.subpage-video-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+
+.subpage-video-hero__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Same content-width cap as the Subpage Hero's text+image row. */
+.subpage-video-hero > .subpage-video-hero__row {
+    max-width: var(--wp--style--global--wide-size, 1340px);
+    margin-inline: auto;
+}
+
+.subpage-video-hero__content h2,
+.subpage-video-hero__content h3,
+.subpage-video-hero__content h4 {
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+    .subpage-video-hero > .subpage-video-hero__row {
+        padding-bottom: 0;
+    }
+}

@@ -45,6 +45,7 @@ function create_block_my_custom_block_block_init() {
 
     register_block_type( __DIR__ . '/build/subpage-template' );
     register_block_type( __DIR__ . '/build/subpage-hero' );
+    register_block_type( __DIR__ . '/build/subpage-video-hero' );
     register_block_type( __DIR__ . '/build/customer-case-hero' );
     register_block_type( __DIR__ . '/build/alt-subpage-hero' );
     register_block_type( __DIR__ . '/build/contact-info' );

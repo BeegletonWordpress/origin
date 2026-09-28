@@ -1,0 +1,83 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/subpage-video-hero",
+	"version": "0.1.0",
+	"title": "Subpage Video Hero",
+	"category": "theme",
+	"icon": "format-video",
+	"description": "A subpage hero with a full-width background video or image behind the content.",
+	"supports": {
+		"html": false,
+		"align": ["full", "wide"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"text": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"attributes": {
+		"tagline": {
+			"type": "string",
+			"source": "html",
+			"selector": "p"
+		},
+		"title": {
+			"type": "string",
+			"source": "html",
+			"selector": "h1",
+			"default": "Subpage Video Hero"
+		},
+		"subheader": {
+			"type": "string",
+			"source": "html",
+			"selector": "h2"
+		},
+		"mediaUrl": {
+			"type": "string"
+		},
+		"mediaId": {
+			"type": "number"
+		},
+		"mediaAlt": {
+			"type": "string"
+		},
+		"mediaType": {
+			"type": "string"
+		},
+		"svgColor": {
+			"type": "string"
+		},
+		"theme": {
+			"type": "string",
+			"default": "dark_1"
+		},
+		"contentWidth": {
+			"type": "number",
+			"default": 40
+		},
+		"overlayColor": {
+			"type": "string"
+		},
+		"overlayGradient": {
+			"type": "string",
+			"default": "linear-gradient(135deg,rgba(0,0,0,0.9) 32%,rgba(0,0,0,0) 61%)"
+		},
+		"overlayOpacity": {
+			"type": "number",
+			"default": 80
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"editorStyle": "file:./index.css",
+	"viewScript": "file:./view.js"
+}
