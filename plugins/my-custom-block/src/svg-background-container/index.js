@@ -8,18 +8,20 @@ import {
 import { PanelBody, ToggleControl } from "@wordpress/components";
 import { cloneElement } from "@wordpress/element";
 import metadata from "./block.json";
+import deprecated from "./deprecated";
 import { TEAM_BACKGROUND_SVG } from "../constants";
 import "./style.css";
 import "./editor.css";
 
 const TEMPLATE = [["core/paragraph", { placeholder: "Lägg till innehåll…" }]];
 
-// Same size and placement as the background in the Team Gallery: centered,
-// 135% of the container's width. `isolate` on the wrapper keeps the -z-10
-// shape behind the content but in front of any section background around it.
+// The shape and the content share one grid cell (see style.css), so the
+// container is as tall as the shape, or as the content if that is taller.
+// `isolate` on the wrapper keeps the shape behind the content but in front
+// of the page background.
 const Background = ({ svgColor, showOnMobile }) => (
 	<div
-		className={`svg-background-container__bg absolute max-w-375 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[135%] -z-10 pointer-events-none ${
+		className={`svg-background-container__bg ${
 			showOnMobile ? "" : "hidden md:block"
 		}`}
 		aria-hidden="true"
@@ -28,14 +30,22 @@ const Background = ({ svgColor, showOnMobile }) => (
 	</div>
 );
 
+// The layout support's classes (content/wide widths, the Layout panel and
+// the inner blocks' wide/full alignment) land on this element, since it is
+// the one wrapping the inner blocks, both in the editor
+// (useInnerBlocksProps) and on the frontend (WordPress's layout support
+// targets the inner wrapper). Keep it the last element with a class before
+// the inner blocks in save().
+const CONTENT_CLASS = "svg-background-container__content";
+
 registerBlockType(metadata.name, {
+	deprecated,
 	edit: ({ attributes, setAttributes }) => {
 		const { svgColor, showOnMobile } = attributes;
 
-		// Inner blocks sit directly in the wrapper (like core/group) so the
-		// layout support's content/wide widths apply to them.
-		const { children, ...innerBlocksProps } = useInnerBlocksProps(
-			useBlockProps({ className: "relative isolate" }),
+		const blockProps = useBlockProps({ className: "relative isolate" });
+		const innerBlocksProps = useInnerBlocksProps(
+			{ className: CONTENT_CLASS },
 			{ template: TEMPLATE },
 		);
 
@@ -61,9 +71,9 @@ registerBlockType(metadata.name, {
 						]}
 					/>
 				</InspectorControls>
-				<div {...innerBlocksProps}>
+				<div {...blockProps}>
 					<Background svgColor={svgColor} showOnMobile={showOnMobile} />
-					{children}
+					<div {...innerBlocksProps} />
 				</div>
 			</>
 		);
@@ -71,14 +81,15 @@ registerBlockType(metadata.name, {
 	save: ({ attributes }) => {
 		const { svgColor, showOnMobile } = attributes;
 
-		const { children, ...innerBlocksProps } = useInnerBlocksProps.save(
-			useBlockProps.save({ className: "relative isolate" }),
-		);
+		const blockProps = useBlockProps.save({ className: "relative isolate" });
+		const innerBlocksProps = useInnerBlocksProps.save({
+			className: CONTENT_CLASS,
+		});
 
 		return (
-			<div {...innerBlocksProps}>
+			<div {...blockProps}>
 				<Background svgColor={svgColor} showOnMobile={showOnMobile} />
-				{children}
+				<div {...innerBlocksProps} />
 			</div>
 		);
 	},

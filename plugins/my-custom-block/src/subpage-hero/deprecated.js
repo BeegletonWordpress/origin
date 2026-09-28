@@ -6,6 +6,7 @@
 import { InnerBlocks, RichText, useBlockProps } from "@wordpress/block-editor";
 import { UnderlineSVG } from "../handdrawn-header";
 import { THEMES } from "./themes";
+import metadata from "./block.json";
 
 const SUPPORTS = {
 	"html": false,
@@ -106,9 +107,15 @@ const v1 = {
 		const { overlayColor, overlayGradient, overlayOpacity, ...rest } =
 			attributes;
 
-		// No overlay yet: let the new default gradient and opacity apply.
+		// No overlay yet: give it the new default gradient and opacity. They
+		// have to be set explicitly, because WordPress doesn't re-apply the
+		// current attribute defaults to migrated attributes.
 		if (!overlayColor && !overlayGradient) {
-			return rest;
+			return {
+				...rest,
+				overlayGradient: metadata.attributes.overlayGradient.default,
+				overlayOpacity: metadata.attributes.overlayOpacity.default,
+			};
 		}
 
 		return {
