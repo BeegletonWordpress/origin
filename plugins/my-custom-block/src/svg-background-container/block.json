@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-svg-background-container",
+	"version": "0.1.0",
+	"title": "SVG Background Container",
+	"category": "layout",
+	"icon": "cover-image",
+	"description": "A container with the Team Gallery's hand-drawn SVG shape as its background. Put any blocks on top of it.",
+	"attributes": {
+		"svgColor": {
+			"type": "string",
+			"default": "#edb239"
+		},
+		"showOnMobile": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide", "full"],
+		"layout": {
+			"default": {
+				"type": "constrained"
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"text": true
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
