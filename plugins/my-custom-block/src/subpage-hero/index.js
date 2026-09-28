@@ -19,6 +19,8 @@ import {
 } from "@wordpress/components";
 import { useEffect } from "@wordpress/element";
 import metadata from "./block.json";
+import deprecated from "./deprecated";
+import { THEMES } from "./themes";
 import "./style.css";
 import "./editor.css";
 
@@ -40,40 +42,8 @@ const ImageOverlay = ({ color, gradient, opacity }) => {
 	);
 };
 
-const THEMES = {
-	default: {
-		bg: "var(--wp--preset--color--accent-1)",
-		text: "#3B3632",
-		svg: "#FDF0DB",
-		isDark: false,
-	},
-	dark_1: {
-		bg: "#3B3632",
-		text: "#FDF0DB",
-		svg: "#BBC7E7",
-		isDark: true,
-	},
-	dark_2: {
-		bg: "#3B3632",
-		text: "#FDF0DB",
-		svg: "#EEB137",
-		isDark: true,
-	},
-	light_1: {
-		bg: "#FDF0DB",
-		text: "#3B3632",
-		svg: "#4A6397",
-		isDark: false,
-	},
-	light_2: {
-		bg: "#FDF0DB",
-		text: "#3B3632",
-		svg: "#EEB137",
-		isDark: false,
-	},
-};
-
 registerBlockType(metadata.name, {
+	deprecated,
 	edit: ({ attributes, setAttributes }) => {
 		const {
 			tagline,
@@ -198,8 +168,11 @@ registerBlockType(metadata.name, {
 									// the value that was just picked.
 									onColorChange: (value) =>
 										setAttributes({ overlayColor: value }),
+									// overlayGradient has a default, so clearing it to
+									// undefined would bring the default back. Store ""
+									// instead: it is saved, and means "no gradient".
 									onGradientChange: (value) =>
-										setAttributes({ overlayGradient: value }),
+										setAttributes({ overlayGradient: value ?? "" }),
 									enableAlpha: true,
 									clearable: true,
 								},

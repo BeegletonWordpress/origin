@@ -1,0 +1,17 @@
+/* Keep the shape visible even when the container is nearly empty. */
+.wp-block-create-block-my-svg-background-container {
+	min-height: 200px;
+}
+
+/* The background is a direct child of the (constrained-layout) wrapper, so
+   opt it out of the layout's content-width max-width and auto margins. */
+.wp-block-create-block-my-svg-background-container > .svg-background-container__bg {
+	max-width: 93.75rem; /* max-w-375 */
+	margin: 0 !important;
+}
+
+.svg-background-container__bg svg {
+	display: block;
+	width: 100%;
+	height: auto;
+}

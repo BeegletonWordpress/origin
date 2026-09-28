@@ -70,11 +70,12 @@
 			"type": "string"
 		},
 		"overlayGradient": {
-			"type": "string"
+			"type": "string",
+			"default": "linear-gradient(135deg,rgba(0,0,0,0.9) 32%,rgba(0,0,0,0) 61%)"
 		},
 		"overlayOpacity": {
 			"type": "number",
-			"default": 50
+			"default": 80
 		}
 	},
 	"textdomain": "my-custom-block",
