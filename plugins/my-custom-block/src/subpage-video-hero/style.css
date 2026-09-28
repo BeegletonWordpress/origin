@@ -29,6 +29,21 @@
     margin-right: auto !important;
 }
 
+/* Optional full screen height. svh (the height with the mobile browser's
+   toolbars showing) rather than dvh, so the hero and its video don't
+   resize while scrolling on phones. The content is centered vertically. */
+.subpage-video-hero.is-full-height {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100svh;
+}
+
+.subpage-video-hero.is-full-height > .subpage-video-hero__row {
+    width: 100%;
+}
+
 /* Media and overlay fill the whole block, behind the content. */
 .subpage-video-hero__media {
     position: absolute;

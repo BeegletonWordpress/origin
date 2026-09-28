@@ -11,7 +11,12 @@ import {
 	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from "@wordpress/block-editor";
-import { PanelBody, RangeControl, SelectControl } from "@wordpress/components";
+import {
+	PanelBody,
+	RangeControl,
+	SelectControl,
+	ToggleControl,
+} from "@wordpress/components";
 import { useEffect } from "@wordpress/element";
 import metadata from "./block.json";
 import deprecated from "./deprecated";
@@ -40,6 +45,11 @@ const INNER_BLOCKS_TEMPLATE = [
 	["core/paragraph", { placeholder: "description goes here..." }],
 ];
 
+// is-full-height is only added when the option is on, so heroes using the
+// default height keep their original save() output.
+const getHeroClasses = (theme, fullHeight) =>
+	`subpage-video-hero theme-${theme}${fullHeight ? " is-full-height" : ""}`;
+
 registerBlockType(metadata.name, {
 	deprecated,
 	edit: ({ attributes, setAttributes }) => {
@@ -53,6 +63,7 @@ registerBlockType(metadata.name, {
 			svgColor,
 			theme,
 			contentWidth,
+			fullHeight,
 			overlayColor,
 			overlayGradient,
 			overlayOpacity,
@@ -90,7 +101,7 @@ registerBlockType(metadata.name, {
 		};
 
 		const blockProps = useBlockProps({
-			className: `subpage-video-hero theme-${theme}`,
+			className: getHeroClasses(theme, fullHeight),
 			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
 		});
 
@@ -132,6 +143,12 @@ registerBlockType(metadata.name, {
 							onChange={(value) =>
 								setAttributes({ contentWidth: Number(value) })
 							}
+						/>
+						<ToggleControl
+							label="Full screen height"
+							help="Fill the whole screen height instead of the standard hero height."
+							checked={!!fullHeight}
+							onChange={(value) => setAttributes({ fullHeight: value })}
 						/>
 					</PanelBody>
 					<PanelColorSettings
@@ -243,6 +260,7 @@ registerBlockType(metadata.name, {
 			svgColor,
 			theme,
 			contentWidth,
+			fullHeight,
 			overlayColor,
 			overlayGradient,
 			overlayOpacity,
@@ -250,7 +268,7 @@ registerBlockType(metadata.name, {
 		const activeTheme = THEMES[theme] || THEMES.default;
 
 		const blockProps = useBlockProps.save({
-			className: `subpage-video-hero theme-${theme}`,
+			className: getHeroClasses(theme, fullHeight),
 			style: { backgroundColor: activeTheme.bg, color: activeTheme.text },
 		});
 

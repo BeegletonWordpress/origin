@@ -67,6 +67,10 @@
 			"type": "number",
 			"default": 40
 		},
+		"fullHeight": {
+			"type": "boolean",
+			"default": false
+		},
 		"overlayColor": {
 			"type": "string"
 		},
