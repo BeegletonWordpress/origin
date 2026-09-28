@@ -14,6 +14,13 @@ import {
 import { PanelBody, RangeControl, SelectControl } from "@wordpress/components";
 import { useEffect } from "@wordpress/element";
 import metadata from "./block.json";
+import deprecated from "./deprecated";
+import {
+	getRowClasses,
+	getColumnClasses,
+	Overlay,
+	BackgroundMedia,
+} from "./components";
 import { THEMES } from "../subpage-hero/themes";
 import { UnderlineSVG } from "../handdrawn-header";
 import "./style.css";
@@ -29,61 +36,12 @@ const THEME_OPTIONS = [
 	{ label: "Light 2 (Light Yellow/Yellow)", value: "light_2" },
 ];
 
-const INNER_BLOCKS_ALLOWED = [
-	"core/heading",
-	"core/paragraph",
-	"core/list",
-	"create-block/my-handdrawn-button",
-];
-
 const INNER_BLOCKS_TEMPLATE = [
 	["core/paragraph", { placeholder: "description goes here..." }],
 ];
 
-const getRowClasses = () =>
-	"subpage-video-hero__row flex flex-col py-12 mb-8 md:flex-row w-full gap-4 md:gap-2 m-auto md:items-stretch md:min-h-[65vh] md:max-h-187.5";
-
-const getColumnClasses = (contentWidth) =>
-	`w-full relative ${contentWidth === 50 ? "md:w-[50%]" : "md:w-[40%]"}`;
-
-// Only rendered when an overlay is set; a cleared gradient is saved as "".
-const Overlay = ({ color, gradient, opacity }) => {
-	if (!color && !gradient) {
-		return null;
-	}
-
-	return (
-		<span
-			className="subpage-video-hero__overlay"
-			aria-hidden="true"
-			style={{ background: gradient || color, opacity: opacity / 100 }}
-		/>
-	);
-};
-
-const BackgroundMedia = ({ url, type }) => {
-	if (!url) {
-		return null;
-	}
-
-	if (type === "video") {
-		return (
-			<video
-				className="w-full h-full object-cover"
-				src={url}
-				autoPlay
-				muted
-				loop
-				playsInline
-				preload="auto"
-			/>
-		);
-	}
-
-	return <img className="w-full h-full object-cover" src={url} alt="" />;
-};
-
 registerBlockType(metadata.name, {
+	deprecated,
 	edit: ({ attributes, setAttributes }) => {
 		const {
 			tagline,
@@ -266,7 +224,6 @@ registerBlockType(metadata.name, {
 							</div>
 							<div className="mt-12 pt-5 subpage-video-hero__content md:mr-7">
 								<InnerBlocks
-									allowedBlocks={INNER_BLOCKS_ALLOWED}
 									template={INNER_BLOCKS_TEMPLATE}
 								/>
 							</div>

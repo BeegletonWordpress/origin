@@ -24,6 +24,10 @@
 		}
 	},
 	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "wide"
+		},
 		"tagline": {
 			"type": "string",
 			"source": "html",

@@ -240,12 +240,6 @@ registerBlockType(metadata.name, {
 								}`}
 							>
 								<InnerBlocks
-									allowedBlocks={[
-										"core/heading",
-										"core/paragraph",
-										"core/list",
-										"create-block/my-handdrawn-button",
-									]}
 									template={[
 										[
 											"core/paragraph",
