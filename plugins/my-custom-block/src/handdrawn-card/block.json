@@ -49,10 +49,15 @@
 		"cardShape": {
 			"type": "string",
 			"default": "shape1"
+		},
+		"drawAnimation": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": [ "file:./index.css", "file:./style-index.css" ],
-	"editorStyle": "file:./editor.css"
+	"editorStyle": "file:./editor.css",
+	"viewScript": "file:./view.js"
 }
