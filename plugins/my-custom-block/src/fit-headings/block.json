@@ -1,0 +1,11 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/fit-headings",
+	"version": "0.1.0",
+	"title": "Fit Headings (internal — not a real block)",
+	"category": "theme",
+	"description": "Not a registered block. Exists only so the build pipeline compiles src/fit-headings/view.js, which my-custom-block.php enqueues directly on every frontend page (mcb_enqueue_fit_headings).",
+	"textdomain": "my-custom-block",
+	"viewScript": "file:./view.js"
+}

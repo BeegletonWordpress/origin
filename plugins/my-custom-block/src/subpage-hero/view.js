@@ -74,12 +74,28 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		return;
 	}
 
+	// Parallax only on desktop (matches Tailwind's md breakpoint used by the layout).
+	const desktopQuery = window.matchMedia( '(min-width: 768px)' );
+
+	const resetImages = () => {
+		document.querySelectorAll( '.subpage-hero-image' ).forEach( ( el ) => {
+			el.style.transform = '';
+		} );
+	};
+
+	desktopQuery.addEventListener( 'change', ( event ) => {
+		if ( ! event.matches ) {
+			resetImages();
+		}
+	} );
+
 	window.lenis.on( 'scroll', () => {
+		if ( ! desktopQuery.matches ) {
+			return;
+		}
+
 		const scroll = window.lenis.animatedScroll;
 		document.querySelectorAll( '.subpage-hero-image' ).forEach( ( el ) => {
-			/* const wrapper = el.closest(".subpage-hero-image-wrapper");
-			if (wrapper) wrapper.style.transform = `translateY(${scroll * 0.5}px)`; */
-
 			el.style.transform = `translateY(${ scroll * 0.5 }px)`;
 		} );
 	} );

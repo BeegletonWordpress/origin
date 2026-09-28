@@ -566,6 +566,25 @@ add_action( 'wp_enqueue_scripts', 'mcb_enqueue_global_styles' );
 add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_global_styles' );
 
 /**
+ * Shrink headings whose longest word doesn't fit the screen (compiled from
+ * the non-block src/fit-headings build entry). Frontend only.
+ */
+function mcb_enqueue_fit_headings() {
+    $script_path = __DIR__ . '/build/fit-headings/view.js';
+    if ( ! file_exists( $script_path ) ) {
+        return;
+    }
+    wp_enqueue_script(
+        'mcb-fit-headings',
+        plugin_dir_url( __FILE__ ) . 'build/fit-headings/view.js',
+        [],
+        filemtime( $script_path ),
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'mcb_enqueue_fit_headings' );
+
+/**
  * Content widths for single Posts and Customer Cases (compiled from
  * src/content-layout via its non-block build entry, same pattern as
  * src/global-styles): text in the WP content width, every other block
