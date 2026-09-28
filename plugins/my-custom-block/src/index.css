@@ -163,6 +163,16 @@ p a {
 	.wp-block-group.is-nowrap.is-layout-flex {
 		flex-wrap: wrap;
 	}
+
+	/* Columns with the custom class "video-columns" always stack to a
+	   single column on mobile, even with "Stack on mobile" turned off. */
+	.wp-block-columns.video-columns {
+		flex-wrap: wrap !important;
+	}
+
+	.wp-block-columns.video-columns > .wp-block-column {
+		flex-basis: 100% !important;
+	}
 }
 
 /* WP core stacks Media & Text's image above its text below 600px but only
