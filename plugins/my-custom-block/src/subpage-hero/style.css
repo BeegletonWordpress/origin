@@ -43,3 +43,12 @@
     max-width: var(--wp--style--global--wide-size, 1340px);
     margin-inline: auto;
 }
+/* On mobile the row stacks (flex-col) with the image last, so the row's
+   bottom padding (py-12) ends up as empty space under the image. Done in
+   CSS rather than changing the classes in save(), which would break block
+   validation on existing content. */
+@media (max-width: 767px) {
+    .subpage-hero > div {
+        padding-bottom: 0;
+    }
+}
