@@ -8,9 +8,12 @@ import {
 	BlockControls,
 	InspectorControls,
 	PanelColorSettings,
+	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from "@wordpress/block-editor";
 import {
 	PanelBody,
+	RangeControl,
 	SelectControl,
 	ToggleControl,
 } from "@wordpress/components";
@@ -20,6 +23,22 @@ import "./style.css";
 import "./editor.css";
 
 import { UnderlineSVG } from "../handdrawn-header";
+
+// Only rendered when an overlay is set, so heroes without one keep their
+// original save() output and still validate.
+const ImageOverlay = ({ color, gradient, opacity }) => {
+	if (!color && !gradient) {
+		return null;
+	}
+
+	return (
+		<span
+			className="subpage-hero-image-overlay"
+			aria-hidden="true"
+			style={{ background: gradient || color, opacity: opacity / 100 }}
+		/>
+	);
+};
 
 const THEMES = {
 	default: {
@@ -67,9 +86,13 @@ registerBlockType(metadata.name, {
 			theme,
 			reverseLayout,
 			contentWidth,
+			overlayColor,
+			overlayGradient,
+			overlayOpacity,
 		} = attributes;
 
 		const activeTheme = THEMES[theme] || THEMES.default;
+		const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 		useEffect(() => {
 			const canvas =
@@ -160,6 +183,43 @@ registerBlockType(metadata.name, {
 							},
 						]}
 					/>
+					{imageUrl && (
+						<PanelColorGradientSettings
+							title="Image Overlay"
+							settings={[
+								{
+									label: "Overlay",
+									colorValue: overlayColor,
+									gradientValue: overlayGradient,
+									// Each handler sets only its own attribute: the control
+									// already clears the other one itself (it calls
+									// onGradientChange() right after onColorChange(value)
+									// and vice versa), so clearing it here too would wipe
+									// the value that was just picked.
+									onColorChange: (value) =>
+										setAttributes({ overlayColor: value }),
+									onGradientChange: (value) =>
+										setAttributes({ overlayGradient: value }),
+									enableAlpha: true,
+									clearable: true,
+								},
+							]}
+							{...colorGradientSettings}
+						>
+							{(overlayColor || overlayGradient) && (
+								<RangeControl
+									label="Overlay Opacity"
+									value={overlayOpacity}
+									onChange={(value) =>
+										setAttributes({ overlayOpacity: value })
+									}
+									min={0}
+									max={100}
+									step={5}
+								/>
+							)}
+						</PanelColorGradientSettings>
+					)}
 				</InspectorControls>
 				<div {...blockProps}>
 					<div
@@ -238,6 +298,11 @@ registerBlockType(metadata.name, {
 										alt={imageAlt}
 										className="w-full h-full object-cover subpage-hero-image max-h-200"
 									/>
+									<ImageOverlay
+										color={overlayColor}
+										gradient={overlayGradient}
+										opacity={overlayOpacity}
+									/>
 								</div>
 							) : (
 								<MediaPlaceholder
@@ -263,7 +328,10 @@ registerBlockType(metadata.name, {
 			svgColor,
 			theme,
 			reverseLayout,
-			contentWidth,			
+			contentWidth,
+			overlayColor,
+			overlayGradient,
+			overlayOpacity,
 		} = attributes;
 		const activeTheme = THEMES[theme] || THEMES.default;
 
@@ -332,6 +400,11 @@ registerBlockType(metadata.name, {
 									src={imageUrl}
 									alt={imageAlt}
 									className="w-full h-full object-cover subpage-hero-image max-h-200"
+								/>
+								<ImageOverlay
+									color={overlayColor}
+									gradient={overlayGradient}
+									opacity={overlayOpacity}
 								/>
 							</div>
 						)}

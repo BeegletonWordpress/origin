@@ -65,7 +65,17 @@
 		"contentWidth": {
 			"type": "number",
 			"default": 40
-		}		
+		},
+		"overlayColor": {
+			"type": "string"
+		},
+		"overlayGradient": {
+			"type": "string"
+		},
+		"overlayOpacity": {
+			"type": "number",
+			"default": 50
+		}
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",

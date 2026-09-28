@@ -74,11 +74,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		return;
 	}
 
+	// The overlay sits on top of the image, so it has to move with it.
+	const PARALLAX_SELECTOR =
+		'.subpage-hero-image, .subpage-hero-image-overlay';
+
 	// Parallax only on desktop (matches Tailwind's md breakpoint used by the layout).
 	const desktopQuery = window.matchMedia( '(min-width: 768px)' );
 
 	const resetImages = () => {
-		document.querySelectorAll( '.subpage-hero-image' ).forEach( ( el ) => {
+		document.querySelectorAll( PARALLAX_SELECTOR ).forEach( ( el ) => {
 			el.style.transform = '';
 		} );
 	};
@@ -95,7 +99,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		}
 
 		const scroll = window.lenis.animatedScroll;
-		document.querySelectorAll( '.subpage-hero-image' ).forEach( ( el ) => {
+		document.querySelectorAll( PARALLAX_SELECTOR ).forEach( ( el ) => {
 			el.style.transform = `translateY(${ scroll * 0.5 }px)`;
 		} );
 	} );

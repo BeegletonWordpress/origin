@@ -52,3 +52,16 @@
         padding-bottom: 0;
     }
 }
+
+/* Image overlay (solid color or gradient). Positioned from CSS rather than
+   a class on the wrapper so the wrapper's saved markup stays unchanged. */
+.subpage-hero-image-wrapper {
+    position: relative;
+}
+
+.subpage-hero-image-overlay {
+    position: absolute;
+    inset: 0;
+    max-height: 50rem; /* match the img's max-h-200 */
+    pointer-events: none;
+}
