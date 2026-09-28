@@ -11,3 +11,16 @@
 .wp-block-create-block-my-handdrawn-card[class*="has-"][class*="-background-color"] {
 	background-color: transparent !important;
 }
+
+/* Optional draw-in animation: hide the line until view.js has set up the
+   stroke dashes, so the full line doesn't flash before being drawn. */
+.wp-block-create-block-my-handdrawn-card.is-draw-animated:not(.is-draw-ready) > svg {
+	visibility: hidden;
+}
+
+/* Never leave the line hidden: no motion, or no script to draw it. */
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+	.wp-block-create-block-my-handdrawn-card.is-draw-animated > svg {
+		visibility: visible !important;
+	}
+}

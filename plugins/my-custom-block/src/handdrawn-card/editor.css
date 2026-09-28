@@ -1,2 +1,7 @@
 /* Editor-specific overrides for the card */
 
+
+/* Show the line statically in the editor, even with the animation on. */
+.wp-block-create-block-my-handdrawn-card.is-draw-animated > svg {
+	visibility: visible;
+}

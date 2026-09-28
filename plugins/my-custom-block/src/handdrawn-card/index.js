@@ -5,7 +5,7 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from "@wordpress/block-editor";
-import { PanelBody, SelectControl } from "@wordpress/components";
+import { PanelBody, SelectControl, ToggleControl } from "@wordpress/components";
 import metadata from "./block.json";
 import {
 	HAND_DRAWN_CARD_SHAPE,
@@ -27,6 +27,11 @@ const WRAPPER_CLASSES_DEFAULT = "flex-col gap-4 justify-between items-center";
 const WRAPPER_CLASSES_SMALL =
 	"flex-row flex-auto h-full justify-center min-h-[425px]";
 
+// The draw-in class is only added when the animation is on, so cards
+// without it keep their original save() output. view.js does the drawing.
+const getBlockClasses = (drawAnimation) =>
+	drawAnimation ? `${BLOCK_CLASSES} is-draw-animated` : BLOCK_CLASSES;
+
 const getWrapperClasses = (cardLayout) =>
 	`${WRAPPER_CLASSES_BASE} ${
 		cardLayout === "small" ? WRAPPER_CLASSES_SMALL : WRAPPER_CLASSES_DEFAULT
@@ -34,7 +39,8 @@ const getWrapperClasses = (cardLayout) =>
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { backgroundColor, style, cardLayout, cardShape } = attributes;
+		const { backgroundColor, style, cardLayout, cardShape, drawAnimation } =
+			attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -58,7 +64,7 @@ registerBlockType(metadata.name, {
 		}
 
 		const blockProps = useBlockProps({
-			className: BLOCK_CLASSES,
+			className: getBlockClasses(drawAnimation),
 			style: {
 				"--handdrawn-stroke-color":
 					customBgColor || "var(--wp--preset--color--primary, #000)",
@@ -108,6 +114,12 @@ registerBlockType(metadata.name, {
 							]}
 							onChange={(newShape) => setAttributes({ cardShape: newShape })}
 						/>
+						<ToggleControl
+							label="Draw-in animation"
+							help="Draws the line when the card scrolls into view."
+							checked={!!drawAnimation}
+							onChange={(value) => setAttributes({ drawAnimation: value })}
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<div {...blockProps}>
@@ -124,7 +136,8 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: function save({ attributes }) {
-		const { backgroundColor, style, cardLayout, cardShape } = attributes;
+		const { backgroundColor, style, cardLayout, cardShape, drawAnimation } =
+			attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -139,7 +152,7 @@ registerBlockType(metadata.name, {
 		}
 
 		const blockProps = useBlockProps.save({
-			className: BLOCK_CLASSES,
+			className: getBlockClasses(drawAnimation),
 			style: {
 				"--handdrawn-stroke-color":
 					customBgColor || "var(--wp--preset--color--primary, #000)",
