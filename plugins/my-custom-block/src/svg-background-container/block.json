@@ -8,6 +8,10 @@
 	"icon": "cover-image",
 	"description": "A container with the Team Gallery's hand-drawn SVG shape as its background. Put any blocks on top of it.",
 	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
 		"svgColor": {
 			"type": "string",
 			"default": "#edb239"
@@ -32,6 +36,7 @@
 		},
 		"color": {
 			"background": true,
+			"gradients": true,
 			"text": true
 		}
 	},

@@ -1,13 +1,27 @@
-/* Keep the shape visible even when the container is nearly empty. */
+/* The shape and the content are stacked in a single grid cell, so the
+   container is as tall as the shape (or the content, if that is taller)
+   and the content is vertically centered over the shape. */
 .wp-block-create-block-my-svg-background-container {
-	min-height: 200px;
+	display: grid;
+	grid-template-areas: "stack";
+	align-items: center;
 }
 
-/* The background is a direct child of the (constrained-layout) wrapper, so
-   opt it out of the layout's content-width max-width and auto margins. */
+.wp-block-create-block-my-svg-background-container > .svg-background-container__bg,
+.wp-block-create-block-my-svg-background-container > .svg-background-container__content {
+	grid-area: stack;
+	min-width: 0;
+}
+
+/* Same size as the Team Gallery background: 135% of the container, capped
+   at 93.75rem, centered. It sticks out on the sides (clipped by the
+   html/body overflow-x rule) but not above or below. */
 .wp-block-create-block-my-svg-background-container > .svg-background-container__bg {
-	max-width: 93.75rem; /* max-w-375 */
-	margin: 0 !important;
+	--svg-bg-width: min(135%, 93.75rem);
+	width: var(--svg-bg-width);
+	margin-inline: calc((100% - var(--svg-bg-width)) / 2);
+	z-index: -1;
+	pointer-events: none;
 }
 
 .svg-background-container__bg svg {
