@@ -1,15 +1,11 @@
-/* Full-bleed in the editor, same technique as src/subpage-hero/editor.css:
-   negative root padding instead of the frontend's 100vw breakout, which
-   the editor iframe can't absorb. Doubled class to beat core's
-   .is-layout-constrained auto margins. */
-.subpage-video-hero.subpage-video-hero {
+/* In the editor, full width uses core's own negative-root-padding
+   .alignfull handling instead of the frontend's 100vw breakout, which the
+   editor iframe can't absorb (same as src/subpage-hero/editor.css). The
+   tripled class beats both style.css and core's alignfull margins. */
+.subpage-video-hero.subpage-video-hero.alignfull {
 	width: auto !important;
 	left: auto !important;
 	right: auto !important;
-}
-
-.subpage-video-hero.subpage-video-hero:not(.alignfull) {
-	max-width: none !important;
 	margin-left: calc(var(--wp--style--root--padding-left, 0px) * -1) !important;
 	margin-right: calc(var(--wp--style--root--padding-right, 0px) * -1) !important;
 }

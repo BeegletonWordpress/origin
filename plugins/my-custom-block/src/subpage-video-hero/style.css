@@ -1,20 +1,32 @@
 /* Subpage Video Hero: same content layout as the Subpage Hero, with a
    video or image covering the whole block behind it. */
 
-/* Full-bleed background, same breakout as .subpage-hero (see
-   src/subpage-hero/style.css for why a 100vw breakout is used). */
 .subpage-video-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-left: var(--wp--style--root--padding-left);
+    padding-right: var(--wp--style--root--padding-right);
+}
+
+/* Full width: full-bleed breakout, same as .subpage-hero (see
+   src/subpage-hero/style.css for why a 100vw breakout is used). */
+.subpage-video-hero.alignfull {
     max-width: none !important;
     width: 100vw !important;
-    position: relative !important;
     left: 50% !important;
     right: 50% !important;
     margin-left: -50vw !important;
     margin-right: -50vw !important;
-    padding-left: var(--wp--style--root--padding-left);
-    padding-right: var(--wp--style--root--padding-right);
-    isolation: isolate;
-    overflow: hidden;
+}
+
+/* Wide (the default): the theme's wide width, centered. Set here as well
+   as by core's .alignwide, because inside Subpage Template the parent has
+   no layout support to apply it. */
+.subpage-video-hero.alignwide {
+    max-width: var(--wp--style--global--wide-size, 1340px);
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 /* Media and overlay fill the whole block, behind the content. */
