@@ -417,6 +417,49 @@ function subpage_hero_frontend_scripts() {
 add_action( 'wp_enqueue_scripts', 'subpage_hero_frontend_scripts' );
 
 /**
+ * Give Subpage Heroes saved before the image overlay existed the default
+ * overlay on the frontend. The block is static, so those heroes' saved HTML
+ * has no overlay until the page is re-saved in the editor (the deprecation
+ * in src/subpage-hero/deprecated.js adds it then). This adds the same
+ * markup save() produces, at render time, without touching the database.
+ *
+ * Skipped for heroes that already have an overlay in their HTML, or that
+ * set overlayColor / overlayGradient (a cleared overlay is saved as "").
+ */
+function mcb_subpage_hero_default_overlay( $block_content, $block ) {
+    $attrs = $block['attrs'] ?? [];
+
+    if (
+        array_key_exists( 'overlayColor', $attrs ) ||
+        array_key_exists( 'overlayGradient', $attrs ) ||
+        false !== strpos( $block_content, 'subpage-hero-image-overlay' )
+    ) {
+        return $block_content;
+    }
+
+    $block_type = WP_Block_Type_Registry::get_instance()->get_registered( 'create-block/subpage-hero' );
+    $gradient   = $block_type->attributes['overlayGradient']['default'] ?? '';
+    $opacity    = $block_type->attributes['overlayOpacity']['default'] ?? 100;
+
+    if ( '' === $gradient ) {
+        return $block_content;
+    }
+
+    $overlay = sprintf(
+        '<span class="subpage-hero-image-overlay" aria-hidden="true" style="%s"></span>',
+        esc_attr( 'background:' . $gradient . ';opacity:' . ( $opacity / 100 ) )
+    );
+
+    return preg_replace(
+        '/<img\b[^>]*\bclass="[^"]*\bsubpage-hero-image(?![\w-])[^"]*"[^>]*>/',
+        '$0' . $overlay,
+        $block_content,
+        1
+    );
+}
+add_filter( 'render_block_create-block/subpage-hero', 'mcb_subpage_hero_default_overlay', 10, 2 );
+
+/**
  * Show all customer cases (no pagination) for main query.
  */
 function show_all_customer_cases( $query ) {
