@@ -44,6 +44,18 @@
     width: 100%;
 }
 
+/* Full-height hero pulled up behind the header by view.js: keep its
+   content below the header, and let the video show through the header
+   until the page is scrolled (the scrolled header keeps its own
+   background from src/header/block/style.css). */
+.subpage-video-hero.is-full-height {
+    padding-top: var(--hero-header-offset, 0px);
+}
+
+body.has-hero-under-header .wp-block-create-block-my-header-block:not(.is-scrolled) {
+    background-color: transparent !important;
+}
+
 /* Media and overlay fill the whole block, behind the content. */
 .subpage-video-hero__media {
     position: absolute;
