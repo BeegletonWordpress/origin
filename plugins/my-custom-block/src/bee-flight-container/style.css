@@ -1,3 +1,16 @@
+/* Customer Case / Post content with the "Flying bee" switch on (see
+   mcb_bee_flight_post_content in my-custom-block.php). The post content is
+   a constrained layout, so keep the layer out of its content-width rules. */
+.mcb-bee-flight-host {
+	position: relative;
+	isolation: isolate;
+}
+
+.mcb-bee-flight-host > .bee-flight__layer {
+	max-width: none !important;
+	margin: 0 !important;
+}
+
 /* The bee flies in this layer, behind the content and clipped to the
    container. view.js moves it; before that it waits hidden above it. */
 .bee-flight__layer {

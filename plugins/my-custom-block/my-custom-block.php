@@ -691,6 +691,79 @@ function mcb_enqueue_button_hover_colors_script() {
 add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_button_hover_colors_script' );
 
 /**
+ * "Flying bee" on Customer Cases and Posts: a per-post switch (the
+ * mcb_bee_flight meta, set from the document sidebar by the editor-only
+ * src/bee-flight-toggle script) that lets the Bee Flight Container's bee fly
+ * through the post's content, without a block. Nothing is added to the saved
+ * content: the post-content wrapper gets the mcb-bee-flight-host class at
+ * render time, and src/bee-flight-container/view.js builds the bee there.
+ */
+const MCB_BEE_FLIGHT_POST_TYPES = [ 'post', 'customer_case' ];
+
+function mcb_register_bee_flight_meta() {
+	foreach ( MCB_BEE_FLIGHT_POST_TYPES as $post_type ) {
+		register_post_meta( $post_type, 'mcb_bee_flight', [
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'boolean',
+			'default'       => false,
+			'auth_callback' => function ( $allowed, $meta_key, $post_id ) {
+				return current_user_can( 'edit_post', $post_id );
+			},
+		] );
+	}
+}
+add_action( 'init', 'mcb_register_bee_flight_meta' );
+
+function mcb_enqueue_bee_flight_toggle() {
+	$script_path = __DIR__ . '/build/bee-flight-toggle/index.js';
+	$asset_path  = __DIR__ . '/build/bee-flight-toggle/index.asset.php';
+	if ( ! file_exists( $script_path ) || ! file_exists( $asset_path ) ) {
+		return;
+	}
+	$asset = require $asset_path;
+	wp_enqueue_script(
+		'mcb-bee-flight-toggle',
+		plugin_dir_url( __FILE__ ) . 'build/bee-flight-toggle/index.js',
+		$asset['dependencies'],
+		$asset['version'],
+		true
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_bee_flight_toggle' );
+
+function mcb_bee_flight_post_content( $block_content, $block, $instance ) {
+	if ( ! is_singular( MCB_BEE_FLIGHT_POST_TYPES ) ) {
+		return $block_content;
+	}
+
+	$post_id = $instance->context['postId'] ?? 0;
+	if ( (int) $post_id !== get_queried_object_id() || ! get_post_meta( $post_id, 'mcb_bee_flight', true ) ) {
+		return $block_content;
+	}
+
+	$processor = new WP_HTML_Tag_Processor( $block_content );
+	if ( ! $processor->next_tag() ) {
+		return $block_content;
+	}
+	$processor->add_class( 'mcb-bee-flight-host' );
+
+	// The Bee Flight Container isn't on the page, so load its assets here.
+	$bee_block = WP_Block_Type_Registry::get_instance()->get_registered( 'create-block/my-bee-flight-container' );
+	if ( $bee_block ) {
+		foreach ( $bee_block->style_handles as $handle ) {
+			wp_enqueue_style( $handle );
+		}
+		foreach ( $bee_block->view_script_handles as $handle ) {
+			wp_enqueue_script( $handle );
+		}
+	}
+
+	return $processor->get_updated_html();
+}
+add_filter( 'render_block_core/post-content', 'mcb_bee_flight_post_content', 10, 3 );
+
+/**
  * Output the SVG clipPath used to shape Max Mega Menu submenus.
  */
 function beegleton_output_submenu_clip_path() {

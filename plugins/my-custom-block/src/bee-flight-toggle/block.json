@@ -1,0 +1,11 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/bee-flight-toggle",
+	"version": "0.1.0",
+	"title": "Flying Bee Toggle (internal — not a real block)",
+	"category": "design",
+	"description": "Not a registered block. Exists only so the build pipeline compiles the editor-only script that adds the \"Flying bee\" switch to the document sidebar of Customer Cases and Posts. Enqueued directly by my-custom-block.php (mcb_enqueue_bee_flight_toggle).",
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js"
+}
