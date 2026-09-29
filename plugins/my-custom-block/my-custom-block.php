@@ -462,14 +462,32 @@ function mcb_subpage_hero_default_overlay( $block_content, $block ) {
 add_filter( 'render_block_create-block/subpage-hero', 'mcb_subpage_hero_default_overlay', 10, 2 );
 
 /**
- * Show all customer cases (no pagination) for main query.
+ * "Beegleton" look for the core Pagination block (styles in src/index.css),
+ * plus a ready-made pattern to insert inside a Query Loop: centered chevron
+ * arrows and page numbers, kept together instead of core's space-between
+ * spread. The customer case archive paginates like the posts page (it
+ * used to force posts_per_page = -1), using Settings → Reading's
+ * "posts per page".
  */
-function show_all_customer_cases( $query ) {
-    if ( ! is_admin() && $query->is_main_query() && $query->get( 'post_type' ) === 'customer_case' ) {
-        $query->set( 'posts_per_page', -1 );
-    }
+function mcb_register_beegleton_pagination() {
+	register_block_style( 'core/query-pagination', [
+		'name'  => 'beegleton',
+		'label' => __( 'Beegleton', 'my-custom-block' ),
+	] );
+
+	register_block_pattern( 'my-custom-block/beegleton-pagination', [
+		'title'       => __( 'Beegleton Pagination', 'my-custom-block' ),
+		'description' => __( 'Page numbers with previous/next arrows in boxes, centered.', 'my-custom-block' ),
+		'categories'  => [ 'query' ],
+		'blockTypes'  => [ 'core/query-pagination' ],
+		'content'     => '<!-- wp:query-pagination {"paginationArrow":"chevron","showLabel":false,"className":"is-style-beegleton","layout":{"type":"flex","justifyContent":"center"}} -->
+<!-- wp:query-pagination-previous /-->
+<!-- wp:query-pagination-numbers {"midSize":1} /-->
+<!-- wp:query-pagination-next /-->
+<!-- /wp:query-pagination -->',
+	] );
 }
-add_action( 'pre_get_posts', 'show_all_customer_cases' );
+add_action( 'init', 'mcb_register_beegleton_pagination' );
 
 /**
  * Register block template for customer_case archive.
@@ -731,6 +749,28 @@ function mcb_enqueue_bee_flight_toggle() {
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_bee_flight_toggle' );
+
+/**
+ * Editor-only script registering the "Beegleton Pagination" variation of
+ * the core Pagination block (src/pagination-variation), so it's listed in
+ * the block inserter inside a Query Loop.
+ */
+function mcb_enqueue_pagination_variation() {
+	$script_path = __DIR__ . '/build/pagination-variation/index.js';
+	$asset_path  = __DIR__ . '/build/pagination-variation/index.asset.php';
+	if ( ! file_exists( $script_path ) || ! file_exists( $asset_path ) ) {
+		return;
+	}
+	$asset = require $asset_path;
+	wp_enqueue_script(
+		'mcb-pagination-variation',
+		plugin_dir_url( __FILE__ ) . 'build/pagination-variation/index.js',
+		$asset['dependencies'],
+		$asset['version'],
+		true
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'mcb_enqueue_pagination_variation' );
 
 function mcb_bee_flight_post_content( $block_content, $block, $instance ) {
 	if ( ! is_singular( MCB_BEE_FLIGHT_POST_TYPES ) ) {
