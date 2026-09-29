@@ -429,10 +429,14 @@ p a {
    stronger fill instead. */
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-previous,
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-next {
-	width: 64px;
+	/* Grows with the label when "Show label" is on; arrow-only stays a
+	   compact blob. */
+	width: auto;
+	min-width: 64px;
 	height: 48px;
-	padding: 0;
-	font-size: 1.4em;
+	padding: 0 22px;
+	gap: 8px;
+	white-space: nowrap;
 	background-color: color-mix(in srgb, var(--pg-ink) 12%, transparent);
 	-webkit-mask-image: var(--mcb-handdrawn-button-mask);
 	mask-image: var(--mcb-handdrawn-button-mask);
@@ -454,11 +458,14 @@ p a {
 	color: var(--pg-paper);
 }
 
-/* Core spaces the arrow from its (hidden) label; center it in the blob. */
+/* Only the arrow is enlarged, not the label. Core's own margin between
+   arrow and label is replaced by the gap above. */
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-previous-arrow,
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-next-arrow {
 	margin: 0;
 	display: inline-block;
+	font-size: 1.4em;
+	line-height: 1;
 }
 
 @media (max-width: 600px) {
@@ -478,7 +485,8 @@ p a {
 
 	.wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-previous,
 	.wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-next {
-		width: 52px;
+		min-width: 52px;
 		height: 40px;
+		padding: 0 16px;
 	}
 }
