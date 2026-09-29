@@ -327,14 +327,38 @@ p a {
 }
 
 /* "Beegleton" style for the core Pagination block (registered in
-   my-custom-block.php, with a matching "Beegleton Pagination" pattern):
-   square boxes, current page filled, arrows on a light fill. Items are kept
-   together and centered, cancelling core's space-between layout, which
-   pushes Previous/Next to the far edges with auto margins. */
+   my-custom-block.php, with a matching "Beegleton Pagination" pattern and
+   block variation): round page numbers, current page filled, and
+   Previous/Next on the same hand-drawn blob as the Button "Fill" style.
+   Items are kept together and centered, cancelling core's space-between
+   layout, which pushes Previous/Next to the far edges with auto margins.
+
+   All colours come from two tokens. By default they follow the page theme
+   (--page-theme-*, set by the heroes), and src/pagination-variation/view.js
+   adds .is-on-dark / .is-on-light from the actual background behind the
+   pagination (e.g. a dark Group), which overrides them. */
+:root {
+	/* Same blob as the core Button "Fill" style above. */
+	--mcb-handdrawn-button-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 214 57' preserveAspectRatio='none'%3E%3Cpath d='M5.62509 51.9341C3.76994 51.9041 2.35218 51.1141 2.51809 50.1963C3.8001 42.7635 8.98849 13.0098 11.266 5.02783C11.6129 3.83166 13.6037 2.93642 16.032 2.8988C38.5804 2.54522 147.235 1.19859 207.429 6.78823C209.903 7.01392 211.637 8.12734 211.487 9.37616L206.615 51.5956C206.464 52.8745 204.383 53.8901 201.819 53.9353C175.53 54.3716 29.8175 52.2877 5.62509 51.9341Z' fill='white'/%3E%3C/svg%3E");
+}
+
 .wp-block-query-pagination.is-style-beegleton {
+	--pg-ink: var(--page-theme-text, #3b3632);
+	--pg-paper: var(--page-theme-bg, #fdf0db);
 	justify-content: center !important;
 	flex-wrap: wrap;
 	gap: 12px;
+	color: var(--pg-ink);
+}
+
+.wp-block-query-pagination.is-style-beegleton.is-on-dark {
+	--pg-ink: #fdf0db;
+	--pg-paper: #3b3632;
+}
+
+.wp-block-query-pagination.is-style-beegleton.is-on-light {
+	--pg-ink: #3b3632;
+	--pg-paper: #fdf0db;
 }
 
 .wp-block-query-pagination.is-style-beegleton > * {
@@ -344,6 +368,7 @@ p a {
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-numbers {
 	display: flex;
 	flex-wrap: wrap;
+	align-items: center;
 	gap: 12px;
 }
 
@@ -354,62 +379,86 @@ p a {
 	align-items: center;
 	justify-content: center;
 	box-sizing: border-box;
-	min-width: 48px;
-	height: 48px;
-	padding: 0 12px;
 	margin: 0;
-	border: 1px solid transparent;
-	border-radius: 6px;
-	color: #3b3632;
+	color: var(--pg-ink);
 	font-weight: 500;
 	line-height: 1;
 	text-decoration: none;
 	transition:
 		background-color 0.2s ease,
-		border-color 0.2s ease;
+		border-color 0.2s ease,
+		color 0.2s ease;
+}
+
+/* Page numbers: circles. */
+.wp-block-query-pagination.is-style-beegleton .page-numbers {
+	width: 48px;
+	height: 48px;
+	padding: 0;
+	border: 1px solid transparent;
+	border-radius: 50%;
 }
 
 .wp-block-query-pagination.is-style-beegleton a.page-numbers {
-	border-color: rgba(59, 54, 50, 0.35);
+	border-color: color-mix(in srgb, var(--pg-ink) 35%, transparent);
 }
 
 .wp-block-query-pagination.is-style-beegleton a.page-numbers:hover {
-	border-color: #3b3632;
+	border-color: var(--pg-ink);
 }
 
 .wp-block-query-pagination.is-style-beegleton .page-numbers.current {
-	background-color: #3b3632;
-	border-color: #3b3632;
-	color: #fdf0db;
+	background-color: var(--pg-ink);
+	border-color: var(--pg-ink);
+	color: var(--pg-paper);
 }
 
 .wp-block-query-pagination.is-style-beegleton .page-numbers.dots {
-	min-width: 32px;
-	padding: 0;
+	width: auto;
+	min-width: 24px;
 	border-color: transparent;
 }
 
+.wp-block-query-pagination.is-style-beegleton a.page-numbers:focus-visible {
+	outline: 2px solid var(--pg-ink);
+	outline-offset: 2px;
+}
+
+/* Previous / Next: the hand-drawn button blob, lightly tinted. The mask
+   clips the whole link (focus outline included), so focus is shown with a
+   stronger fill instead. */
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-previous,
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-next {
-	background-color: rgba(59, 54, 50, 0.06);
+	width: 64px;
+	height: 48px;
+	padding: 0;
 	font-size: 1.4em;
+	background-color: color-mix(in srgb, var(--pg-ink) 12%, transparent);
+	-webkit-mask-image: var(--mcb-handdrawn-button-mask);
+	mask-image: var(--mcb-handdrawn-button-mask);
+	-webkit-mask-size: 100% 100%;
+	mask-size: 100% 100%;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
 }
 
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-previous:hover,
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-next:hover {
-	background-color: rgba(59, 54, 50, 0.12);
+	background-color: color-mix(in srgb, var(--pg-ink) 22%, transparent);
 }
 
-/* Core spaces the arrow from its (hidden) label; center it in the box. */
+.wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-previous:focus-visible,
+.wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-next:focus-visible {
+	outline: none;
+	background-color: var(--pg-ink);
+	color: var(--pg-paper);
+}
+
+/* Core spaces the arrow from its (hidden) label; center it in the blob. */
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-previous-arrow,
 .wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-next-arrow {
 	margin: 0;
 	display: inline-block;
-}
-
-.wp-block-query-pagination.is-style-beegleton a:focus-visible {
-	outline: 2px solid #3b3632;
-	outline-offset: 2px;
 }
 
 @media (max-width: 600px) {
@@ -418,11 +467,18 @@ p a {
 		gap: 8px;
 	}
 
-	.wp-block-query-pagination.is-style-beegleton .page-numbers,
+	.wp-block-query-pagination.is-style-beegleton .page-numbers {
+		width: 40px;
+		height: 40px;
+	}
+
+	.wp-block-query-pagination.is-style-beegleton .page-numbers.dots {
+		width: auto;
+	}
+
 	.wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-previous,
 	.wp-block-query-pagination.is-style-beegleton .wp-block-query-pagination-next {
-		min-width: 40px;
+		width: 52px;
 		height: 40px;
-		padding: 0 10px;
 	}
 }

@@ -490,6 +490,32 @@ function mcb_register_beegleton_pagination() {
 add_action( 'init', 'mcb_register_beegleton_pagination' );
 
 /**
+ * On pages with a Beegleton-styled Pagination block, load the small script
+ * (src/pagination-variation/view.js) that picks light or dark colours from
+ * the actual background behind it.
+ */
+function mcb_beegleton_pagination_contrast_script( $block_content, $block ) {
+	$class_name = $block['attrs']['className'] ?? '';
+	if ( false === strpos( $class_name, 'is-style-beegleton' ) ) {
+		return $block_content;
+	}
+
+	$script_path = __DIR__ . '/build/pagination-variation/view.js';
+	if ( file_exists( $script_path ) ) {
+		wp_enqueue_script(
+			'mcb-pagination-contrast',
+			plugin_dir_url( __FILE__ ) . 'build/pagination-variation/view.js',
+			[],
+			filemtime( $script_path ),
+			true
+		);
+	}
+
+	return $block_content;
+}
+add_filter( 'render_block_core/query-pagination', 'mcb_beegleton_pagination_contrast_script', 10, 2 );
+
+/**
  * Register block template for customer_case archive.
  */
 function register_customer_case_archive_template() {
