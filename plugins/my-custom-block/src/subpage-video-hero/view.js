@@ -13,6 +13,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 	pullFullHeightHeroUnderHeader( blocks );
 
+	flipOverlayGradientsOnMobile( blocks );
+
 	// Respect "reduce motion": keep background videos still.
 	if ( window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ) {
 		blocks.forEach( ( block ) => {
@@ -98,4 +100,53 @@ function pullFullHeightHeroUnderHeader( blocks ) {
 			place();
 		} );
 	} );
+}
+
+/**
+ * On mobile, point the overlay gradient from bottom to top, so its first
+ * colour stop (the dark end of the default gradient) sits at the bottom
+ * of the hero. The editor's chosen colours and stops are kept; only the
+ * angle changes. Solid-colour overlays and radial gradients are left as is.
+ *
+ * @param {NodeList} blocks Subpage Video Hero elements.
+ */
+function flipOverlayGradientsOnMobile( blocks ) {
+	const mobileQuery = window.matchMedia( '(max-width: 767px)' );
+	// First argument of a linear gradient, when it is an angle or direction.
+	const LEADING_DIRECTION =
+		/^(\s*(?:repeating-)?linear-gradient\(\s*)(?:-?[\d.]+(?:deg|grad|rad|turn)|to\s+[a-z\s]+?)\s*,/i;
+	const LINEAR = /^(\s*(?:repeating-)?linear-gradient\(\s*)/i;
+
+	const overlays = [];
+	blocks.forEach( ( block ) => {
+		block
+			.querySelectorAll( '.subpage-video-hero__overlay' )
+			.forEach( ( overlay ) => {
+				const original = overlay.style.backgroundImage;
+				if ( ! LINEAR.test( original ) ) {
+					return;
+				}
+
+				const mobile = LEADING_DIRECTION.test( original )
+					? original.replace( LEADING_DIRECTION, '$1to top,' )
+					: original.replace( LINEAR, '$1to top, ' );
+
+				overlays.push( { overlay, original, mobile } );
+			} );
+	} );
+
+	if ( ! overlays.length ) {
+		return;
+	}
+
+	const apply = () => {
+		overlays.forEach( ( { overlay, original, mobile } ) => {
+			overlay.style.backgroundImage = mobileQuery.matches
+				? mobile
+				: original;
+		} );
+	};
+
+	apply();
+	mobileQuery.addEventListener( 'change', apply );
 }
