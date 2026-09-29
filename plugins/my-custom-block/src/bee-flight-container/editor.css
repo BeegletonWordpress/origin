@@ -1,0 +1,9 @@
+.wp-block-create-block-my-bee-flight-container {
+	outline: 1px dashed rgba(0, 0, 0, 0.1);
+	min-height: 150px;
+}
+
+/* Show the bee in the editor (on the frontend it waits above the container). */
+.wp-block-create-block-my-bee-flight-container .bee-flight__bee {
+	transform: translate3d(24px, 24px, 0);
+}

@@ -1,0 +1,60 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/my-bee-flight-container",
+	"version": "0.1.0",
+	"title": "Bee Flight Container",
+	"category": "layout",
+	"icon": "buddicons-activity",
+	"description": "A container where a bee flies behind the content in smooth curves as you scroll through it.",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"beeColor": {
+			"type": "string",
+			"default": "#3B3632"
+		},
+		"beeSize": {
+			"type": "number",
+			"default": 64
+		},
+		"showOnMobile": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTrail": {
+			"type": "boolean",
+			"default": true
+		},
+		"landOnButton": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide", "full"],
+		"layout": {
+			"default": {
+				"type": "constrained"
+			}
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"gradients": true,
+			"text": true
+		}
+	},
+	"textdomain": "my-custom-block",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}
