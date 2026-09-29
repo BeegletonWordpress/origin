@@ -5,9 +5,51 @@
  * ends sitting on top of the last one. The path is computed from the live
  * layout, so it adapts to any height, screen width or button position.
  */
+import { BEE_PATH, BEE_VIEWBOX } from './bee-path';
+import metadata from './block.json';
+
+/**
+ * Customer Cases / Posts with the "Flying bee" switch on get the
+ * mcb-bee-flight-host class on their post content (my-custom-block.php,
+ * mcb_bee_flight_post_content). There is no block markup there, so build the
+ * same layer and bee the block saves, with the block's default size/colour.
+ */
+function addBeeToHost( host ) {
+	if ( host.querySelector( ':scope > .bee-flight__layer' ) ) {
+		return;
+	}
+
+	const SVG_NS = 'http://www.w3.org/2000/svg';
+	const layer = document.createElement( 'div' );
+	layer.className = 'bee-flight__layer';
+	layer.setAttribute( 'aria-hidden', 'true' );
+
+	const bee = document.createElement( 'div' );
+	bee.className = 'bee-flight__bee';
+	bee.style.setProperty(
+		'--bee-size',
+		`${ metadata.attributes.beeSize.default }px`
+	);
+	bee.style.color = metadata.attributes.beeColor.default;
+
+	const svg = document.createElementNS( SVG_NS, 'svg' );
+	svg.setAttribute( 'viewBox', BEE_VIEWBOX );
+	svg.setAttribute( 'class', 'w-full h-full' );
+	const path = document.createElementNS( SVG_NS, 'path' );
+	path.setAttribute( 'fill', 'currentColor' );
+	path.setAttribute( 'd', BEE_PATH );
+	svg.appendChild( path );
+
+	bee.appendChild( svg );
+	layer.appendChild( bee );
+	host.prepend( layer );
+}
+
 document.addEventListener( 'DOMContentLoaded', () => {
+	document.querySelectorAll( '.mcb-bee-flight-host' ).forEach( addBeeToHost );
+
 	const containers = document.querySelectorAll(
-		'.wp-block-create-block-my-bee-flight-container'
+		'.wp-block-create-block-my-bee-flight-container, .mcb-bee-flight-host'
 	);
 
 	if (
