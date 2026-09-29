@@ -1,14 +1,12 @@
 /**
- * Bee Flight Container: the bee flies from above the container down through
- * it as the section scrolls through the screen, easing after the scroll and
- * settling when it stops. Its route is planned around the content (text
- * lines, images, cards, buttons) so it weaves through the gaps in gentle
- * S-curves (see route.js), and if the content has a button the flight ends
- * sitting on top of the last one. Everything is computed from the live
- * layout, so it adapts to any height, screen width or content.
+ * Bee Flight Container: the bee flies gentle S-curves from above the
+ * container down through it as the section scrolls through the screen,
+ * easing after the scroll and settling when it stops. If the content has a
+ * button, the flight ends sitting on top of the last one. The path is
+ * computed from the live layout, so it adapts to any height, screen width
+ * or button position.
  */
 import { BEE_PATH, BEE_VIEWBOX } from './bee-path';
-import { planRoute, positionAtY, pointOnRoute } from './route';
 import metadata from './block.json';
 
 /**
@@ -68,28 +66,14 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	const AMPLITUDE = 0.9; // share of the free width used by the curves
 	const EASE = 0.035; // how quickly the bee catches up with the scroll
 	const MAX_TILT = 18; // degrees
+	const TRAIL_SAMPLES = 120;
 	const SVG_NS = 'http://www.w3.org/2000/svg';
 	const EPSILON = 0.0005;
-	const LANDING_SHARE = 0.1; // last part of the route spent levelling out
+	const LANDING_SHARE = 0.25; // last part of the flight spent curving in
 	const PERCH = 0.85; // how much of the bee's height sits above the button
 	const START_ABOVE = 1.5; // start this many bee heights above the container
-	const CELL_MIN = 24; // smallest route grid cell, px
-	const OBSTACLE_MARGIN = 0.35; // gap kept around content, in bee sizes
 	const BUTTON_SELECTOR =
 		'.wp-block-button__link, .wp-block-create-block-my-handdrawn-button';
-	const TEXT_SELECTOR = 'p, h1, h2, h3, h4, h5, h6, li, blockquote, figcaption';
-	const SOLID_SELECTOR = [
-		'img',
-		'video',
-		'iframe',
-		'table',
-		'.wp-block-embed',
-		'.wp-block-cover',
-		'.has-background',
-		'.wp-block-create-block-my-handdrawn-card',
-		'.wp-block-create-block-small-handdrawn-card',
-		BUTTON_SELECTOR,
-	].join( ', ' );
 
 	const flights = [ ...containers ]
 		.map( ( container, index ) => {
@@ -111,12 +95,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				facing: 1,
 				visible: false,
 				landed: false,
-				// Landing spot and button (relative to the layer), or null to
-				// end at the bottom of the container.
+				// Landing spot (relative to the layer), or null to end at the
+				// bottom of the container.
 				land: null,
 				canLand: ! layer.classList.contains( 'no-landing' ),
-				// Evenly spaced route points (the bee's top-left corner).
-				route: null,
 				trail: layer.classList.contains( 'no-trail' )
 					? null
 					: createTrail( layer, bee, index ),
@@ -135,7 +117,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		flight.height = flight.layer.clientHeight;
 		flight.size = flight.bee.offsetWidth;
 		flight.land = flight.canLand ? findLandingSpot( flight ) : null;
-		flight.route = buildRoute( flight );
 		buildTrail( flight );
 	}
 
@@ -155,7 +136,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		const free = Math.max( 0, flight.width - flight.size );
 		return {
-			button,
 			x: clamp(
 				rect.left - layerRect.left + rect.width / 2 - flight.size / 2,
 				0,
@@ -165,124 +145,23 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		};
 	}
 
-	// Start (hidden above the container) and end of the flight, as the
-	// bee's top-left corner.
-	function startPoint( flight ) {
-		return {
-			x: ( flight.width - flight.size ) / 2,
-			y: -flight.size * START_ABOVE,
-		};
-	}
-
-	function endPoint( flight ) {
+	// Where the flight ends, from the top of the layer.
+	function endY( flight ) {
 		return flight.land
-			? { x: flight.land.x, y: flight.land.y }
-			: {
-					x: ( flight.width - flight.size ) / 2,
-					y: Math.max( 0, flight.height - flight.size ),
-			  };
+			? flight.land.y
+			: Math.max( 0, flight.height - flight.size );
 	}
 
-	/**
-	 * Boxes the bee should fly around, relative to the layer: the actual
-	 * lines of text (not the full-width paragraph boxes) and solid things
-	 * like images, videos, cards and buttons. The landing button is left
-	 * out, since the bee flies to it.
-	 */
-	function collectObstacles( flight ) {
-		const layerRect = flight.layer.getBoundingClientRect();
-		const boxes = [];
-		const skip = ( el ) =>
-			flight.layer.contains( el ) ||
-			( flight.land &&
-				( flight.land.button.contains( el ) ||
-					el.contains( flight.land.button ) ) );
-
-		const add = ( rect ) => {
-			if ( rect.width < 1 || rect.height < 1 ) {
-				return;
-			}
-			boxes.push( {
-				left: rect.left - layerRect.left,
-				top: rect.top - layerRect.top,
-				right: rect.right - layerRect.left,
-				bottom: rect.bottom - layerRect.top,
-			} );
-		};
-
-		flight.container.querySelectorAll( TEXT_SELECTOR ).forEach( ( el ) => {
-			if ( skip( el ) || ! el.textContent.trim() ) {
-				return;
-			}
-			const range = document.createRange();
-			range.selectNodeContents( el );
-			[ ...range.getClientRects() ].forEach( add );
-		} );
-
-		flight.container.querySelectorAll( SOLID_SELECTOR ).forEach( ( el ) => {
-			if ( ! skip( el ) ) {
-				add( el.getBoundingClientRect() );
-			}
-		} );
-
-		return boxes;
-	}
-
-	// Plan the route around the content (in the bee's centre coordinates),
-	// then store it as the bee's top-left corner.
-	function buildRoute( flight ) {
-		const { width, height, size } = flight;
-		const half = size / 2;
-		const toCentre = ( point ) => ( { x: point.x + half, y: point.y + half } );
-		const start = toCentre( startPoint( flight ) );
-		const end = toCentre( endPoint( flight ) );
-
-		const waves = Math.max( 1, Math.round( height / WAVE_HEIGHT ) );
-		const amplitude = ( Math.max( 0, width - size ) / 2 ) * AMPLITUDE;
-		const span = end.y - start.y || 1;
-		const waveX = ( y ) =>
-			width / 2 +
-			amplitude * Math.sin( ( 2 * Math.PI * waves * ( y - start.y ) ) / span );
-
-		// Keep the bee's body (not just its centre) clear of the content.
-		const reach = half * 0.8 + size * OBSTACLE_MARGIN;
-		const obstacles = collectObstacles( flight ).map( ( box ) => ( {
-			left: box.left - reach,
-			top: box.top - reach,
-			right: box.right + reach,
-			bottom: box.bottom + reach,
-		} ) );
-
-		const route = planRoute( {
-			width,
-			size,
-			start,
-			end,
-			obstacles,
-			waveX,
-			cell: Math.max( CELL_MIN, size * 0.6 ),
-		} );
-
-		return route.map( ( point ) => ( { x: point.x - half, y: point.y - half } ) );
-	}
-
-	// Position on the route at u (0 = start above the container, 1 = end).
-	function pointAt( flight, u ) {
-		return flight.route
-			? pointOnRoute( flight.route, u )
-			: startPoint( flight );
-	}
-
-	// 0 → 1 over the last part of the route, eased at both ends.
-	function landingWeight( u ) {
-		const t = clamp( ( u - ( 1 - LANDING_SHARE ) ) / LANDING_SHARE, 0, 1 );
+	// 0 → 1 over the last part of the flight, eased at both ends.
+	function landingWeight( p ) {
+		const t = clamp( ( p - ( 1 - LANDING_SHARE ) ) / LANDING_SHARE, 0, 1 );
 		return t * t * ( 3 - 2 * t );
 	}
 
 	/**
-	 * Dotted trail behind the bee: a dotted copy of the route, masked by a
-	 * solid copy whose dash offset follows the bee, so only the part already
-	 * flown is visible. Generated here (not saved in the markup).
+	 * Dotted trail behind the bee: a dotted copy of the flight path, masked
+	 * by a solid copy whose dash offset follows the bee, so only the part
+	 * already flown is visible. Generated here (not saved in the markup).
 	 */
 	function createTrail( layer, bee, index ) {
 		const id = `bee-trail-${ index }-${ Math.random().toString( 36 ).slice( 2, 8 ) }`;
@@ -319,11 +198,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		return { svg, mask, reveal, dots };
 	}
 
-	// The route points are evenly spaced, so the share of the trail flown is
-	// simply the bee's position u.
 	function buildTrail( flight ) {
-		const { trail, route, width, height, size } = flight;
-		if ( ! trail || ! route ) {
+		const { trail, width, height, size } = flight;
+		if ( ! trail ) {
 			return;
 		}
 
@@ -334,43 +211,90 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		trail.mask.setAttribute( 'height', `${ height }` );
 
 		const half = size / 2;
-		const d = route
-			.map(
-				( point, i ) =>
-					`${ i ? 'L' : 'M' }${ ( point.x + half ).toFixed( 1 ) },${ (
-						point.y + half
-					).toFixed( 1 ) }`
-			)
-			.join( '' );
+		let d = '';
+		let prev = null;
+		// Distance along the trail at each sample, so the reveal can follow
+		// the bee exactly: progress p moves the bee evenly downwards, but the
+		// wide sideways parts of a curve cover far more trail per step.
+		const lengths = [];
+		for ( let i = 0; i <= TRAIL_SAMPLES; i++ ) {
+			const point = pointAt( flight, i / TRAIL_SAMPLES );
+			lengths.push(
+				prev
+					? lengths[ i - 1 ] +
+							Math.hypot( point.x - prev.x, point.y - prev.y )
+					: 0
+			);
+			prev = point;
+			d += `${ i ? 'L' : 'M' }${ ( point.x + half ).toFixed( 1 ) },${ (
+				point.y + half
+			).toFixed( 1 ) }`;
+		}
+		trail.lengths = lengths;
 		trail.reveal.setAttribute( 'd', d );
 		trail.dots.setAttribute( 'd', d );
 	}
 
+	// Share of the trail (0–1) flown by the time the bee is at progress p.
+	function trailShare( trail, p ) {
+		const { lengths } = trail;
+		const total = lengths && lengths[ lengths.length - 1 ];
+		if ( ! total ) {
+			return p;
+		}
+
+		const index = clamp( p, 0, 1 ) * TRAIL_SAMPLES;
+		const i = Math.min( TRAIL_SAMPLES - 1, Math.floor( index ) );
+		const t = index - i;
+		return ( lengths[ i ] + ( lengths[ i + 1 ] - lengths[ i ] ) * t ) / total;
+	}
+
+	// Position on the path at progress p (0 = top, 1 = end of the flight).
+	function pointAt( flight, p ) {
+		const free = Math.max( 0, flight.width - flight.size );
+		const waves = Math.max( 1, Math.round( flight.height / WAVE_HEIGHT ) );
+		const amplitude = ( free / 2 ) * AMPLITUDE;
+		const wave = free / 2 + amplitude * Math.sin( 2 * Math.PI * waves * p );
+
+		// Start just above the container (hidden by the layer's overflow),
+		// so the bee flies in from the top.
+		const startY = -flight.size * START_ABOVE;
+		const y = startY + p * ( endY( flight ) - startY );
+
+		if ( ! flight.land ) {
+			return { x: wave, y };
+		}
+
+		// Curve in towards the button over the last part of the flight.
+		const w = landingWeight( p );
+		return {
+			x: wave * ( 1 - w ) + flight.land.x * w,
+			y,
+		};
+	}
+
 	// Scroll progress: 0 when the section's top is 75% down the screen, 1
-	// when the end of the flight (the button, or the bottom) is 40% down, so
-	// the bee stays in view and lands while the button is on screen. The
-	// progress picks a height, and the bee goes to where its route reaches it.
+	// when the end of the flight (the button, or the bottom) is 40% down,
+	// so the bee stays in view and lands while the button is on screen.
 	function targetFor( flight ) {
 		const rect = flight.container.getBoundingClientRect();
 		const vh = window.innerHeight;
-		const start = startPoint( flight ).y;
-		const end = endPoint( flight ).y;
-		const t = clamp( ( vh * 0.75 - rect.top ) / ( vh * 0.35 + end ), 0, 1 );
-
-		return flight.route
-			? positionAtY( flight.route, start + t * ( end - start ) )
-			: t;
+		return clamp(
+			( vh * 0.75 - rect.top ) / ( vh * 0.35 + endY( flight ) ),
+			0,
+			1
+		);
 	}
 
 	function render( flight, direction ) {
-		const u = flight.current;
-		const { x, y } = pointAt( flight, u );
-		const ahead = pointAt( flight, Math.min( 1, u + 0.004 ) );
-		const behind = pointAt( flight, Math.max( 0, u - 0.004 ) );
+		const p = flight.current;
+		const { x, y } = pointAt( flight, p );
+		const ahead = pointAt( flight, Math.min( 1, p + 0.002 ) );
+		const behind = pointAt( flight, Math.max( 0, p - 0.002 ) );
 		const dx = ahead.x - behind.x;
 		const dy = ahead.y - behind.y;
 
-		// Moving along the route (down) or back along it (up).
+		// Moving along the path (down) or back along it (up).
 		const vx = dx * direction;
 		const vy = dy * direction;
 
@@ -382,13 +306,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const heading =
 			Math.atan2( vy, Math.abs( vx ) || 0.01 ) * ( 180 / Math.PI );
 		// Level out while landing.
-		const level = flight.land ? 1 - landingWeight( u ) : 1;
+		const level = flight.land ? 1 - landingWeight( p ) : 1;
 		const tilt = clamp( heading, -MAX_TILT, MAX_TILT ) * flight.facing * level;
 		const flip = BEE_FACES_RIGHT ? flight.facing : -flight.facing;
 
 		flight.bee.style.transform = `translate3d(${ x }px, ${ y }px, 0) rotate(${ tilt }deg) scaleX(${ flip })`;
 
-		const landed = !! flight.land && u > 0.995;
+		const landed = !! flight.land && p > 0.995;
 		if ( landed !== flight.landed ) {
 			flight.landed = landed;
 			flight.bee.classList.toggle( 'is-landed', landed );
@@ -397,7 +321,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		if ( flight.trail ) {
 			flight.trail.reveal.setAttribute(
 				'stroke-dashoffset',
-				`${ 1 - u }`
+				`${ 1 - trailShare( flight.trail, flight.current ) }`
 			);
 		}
 	}
@@ -442,29 +366,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		}
 	}
 
-	// Re-plan a flight's route, at most once per frame.
-	const pending = new Set();
-	let measureFrame = null;
-	function remeasure( flight ) {
-		pending.add( flight );
-		if ( measureFrame ) {
-			return;
-		}
-		measureFrame = requestAnimationFrame( () => {
-			measureFrame = null;
-			pending.forEach( ( item ) => {
-				measure( item );
-				if ( item.current !== null ) {
-					// Keep the bee at the same height on the new route.
-					item.current = item.target = targetFor( item );
-					render( item, 1 );
-				}
-			} );
-			pending.clear();
-			schedule();
-		} );
-	}
-
 	const visibility = new IntersectionObserver(
 		( entries ) => {
 			entries.forEach( ( entry ) => {
@@ -486,9 +387,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				( item ) => item.container === entry.target
 			);
 			if ( flight ) {
-				remeasure( flight );
+				measure( flight );
+				if ( flight.current !== null ) {
+					render( flight, 1 );
+				}
 			}
 		} );
+		schedule();
 	} );
 
 	flights.forEach( ( flight ) => {
@@ -497,9 +402,15 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		sizes.observe( flight.container );
 	} );
 
-	// Fonts and images can move the content after DOMContentLoaded.
+	// Fonts and images can move the button after DOMContentLoaded.
 	window.addEventListener( 'load', () => {
-		flights.forEach( remeasure );
+		flights.forEach( ( flight ) => {
+			measure( flight );
+			if ( flight.current !== null ) {
+				render( flight, 1 );
+			}
+		} );
+		schedule();
 	} );
 
 	window.addEventListener( 'scroll', schedule, { passive: true } );
