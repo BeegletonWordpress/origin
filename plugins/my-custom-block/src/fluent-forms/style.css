@@ -210,3 +210,16 @@
 		transition: none;
 	}
 }
+
+/* Number fields (used for phone numbers): hide the browser's up/down
+   spinner arrows. */
+.fluentform input[type="number"] {
+	-moz-appearance: textfield;
+	appearance: textfield;
+}
+
+.fluentform input[type="number"]::-webkit-outer-spin-button,
+.fluentform input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}

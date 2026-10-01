@@ -325,6 +325,20 @@ function lenis_enqueue() {
             stopInertiaOnNavigate: true
         })
     ' );
+
+    // Links that are just "#" (e.g. Max Mega Menu parent items that only
+    // open a submenu) make the browser jump to the top of the page. Cancel
+    // only that default action: menu handlers still run (no
+    // stopPropagation), and real anchors like "#kontakt" are untouched
+    // (Lenis smooth-scrolls those).
+    wp_add_inline_script( 'lenis', '
+        document.addEventListener( "click", function ( event ) {
+            var link = event.target.closest && event.target.closest( "a[href]" );
+            if ( link && link.getAttribute( "href" ).trim() === "#" ) {
+                event.preventDefault();
+            }
+        } );
+    ' );
 }
 add_action( 'wp_enqueue_scripts', 'lenis_enqueue' );
 
