@@ -57,9 +57,90 @@
 		stroke-width 0.2s ease;
 }
 
+/* Focus (WCAG 2.4.7): a heavier stroke on the field, plus a second
+   hand-drawn ring around it (.handdrawn-focus-ring, injected by view.js),
+   so it doesn't depend on a colour change alone and stays in the design. */
 .fluentform .ff-el-form-control:focus + .handdrawn-input-shape path {
-	stroke: var(--wp--preset--color--primary, #3b3632);
+	stroke: #3b3632;
 	stroke-width: 3;
+}
+
+.fluentform .handdrawn-input-wrapper,
+.fluentform .handdrawn-checkbox-wrapper {
+	overflow: visible !important;
+}
+
+.fluentform .handdrawn-focus-ring {
+	position: absolute;
+	inset: -7px -9px;
+	width: calc(100% + 18px);
+	height: calc(100% + 14px);
+	z-index: 1;
+	pointer-events: none;
+	opacity: 0;
+	transform: scale(0.97);
+	transition:
+		opacity 0.15s ease,
+		transform 0.15s ease;
+}
+
+.fluentform .handdrawn-checkbox-wrapper .handdrawn-focus-ring {
+	inset: -6px;
+	width: calc(100% + 12px);
+	height: calc(100% + 12px);
+}
+
+.fluentform .handdrawn-focus-ring path {
+	fill: none;
+	stroke: #3b3632;
+	stroke-width: 2;
+}
+
+.fluentform .handdrawn-input-wrapper:focus-within > .handdrawn-focus-ring,
+.fluentform .handdrawn-checkbox-wrapper:has(input:focus-visible) > .handdrawn-focus-ring {
+	opacity: 1;
+	transform: none;
+}
+
+.fluentform .ff-el-is-error .handdrawn-focus-ring path {
+	stroke: #b42318;
+}
+
+/* Placeholder text readable on the white field (WCAG 1.4.3, ≈6:1). */
+.fluentform .ff-el-form-control::placeholder {
+	color: #6b625b !important;
+	opacity: 1;
+}
+
+/* Keep focused fields clear of the sticky header (WCAG 2.4.11). */
+.fluentform .ff-el-form-control,
+.fluentform .handdrawn-checkbox-wrapper input[type="checkbox"] {
+	scroll-margin-top: 140px;
+	scroll-margin-bottom: 40px;
+}
+
+/* Errors: dark red text with enough contrast (WCAG 1.4.3, ≈6.6:1 on white,
+   ≈5.8:1 on cream), and the field itself marked too (WCAG 1.4.11). view.js
+   links each message to its field with aria-describedby / aria-invalid. */
+.fluentform .ff-el-is-error .error,
+.fluentform .text-danger {
+	color: #b42318 !important;
+}
+
+.fluentform .ff-el-is-error .handdrawn-input-shape path {
+	stroke: #b42318;
+	stroke-width: 3;
+}
+
+.fluentform .ff-el-is-error .ff-el-form-control:focus + .handdrawn-input-shape path {
+	stroke: #b42318;
+	stroke-width: 3;
+}
+
+/* Required-field asterisk, same contrast as the error text. */
+.fluentform .ff-el-is-required.asterisk-right label::after,
+.fluentform .ff-el-is-required.asterisk-left label::before {
+	color: #b42318 !important;
 }
 
 .fluentform .ff-el-form-control:focus {
@@ -70,7 +151,8 @@
 .fluentform .handdrawn-checkbox-wrapper {
 	position: relative;
 	display: inline-block;
-	width: 23px;
+	/* At least 24px wide: the minimum target size (WCAG 2.5.8). */
+	width: 24px;
 	height: 39px;
 	margin-right: 12px;
 	vertical-align: middle;
@@ -118,4 +200,13 @@
 .fluentform .ff-el-form-check label {
 	display: flex !important;
 	align-items: center;
+	cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fluentform .handdrawn-input-shape path,
+	.fluentform .handdrawn-checkbox-shape .check-path,
+	.fluentform .handdrawn-focus-ring {
+		transition: none;
+	}
 }

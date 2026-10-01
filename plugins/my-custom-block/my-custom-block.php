@@ -729,8 +729,61 @@ function mcb_enqueue_fluent_forms_styling() {
 			true
 		);
 	}
+
+	$button_typography = mcb_get_button_typography_css();
+	if ( '' !== $button_typography ) {
+		wp_add_inline_style( 'mcb-fluent-forms', ".fluentform .ff-btn-submit{{$button_typography}}" );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'mcb_enqueue_fluent_forms_styling' );
+
+/**
+ * The typography core Buttons ("Knappar") use, as CSS declarations: the
+ * Button element styles from global styles (theme.json plus anything saved
+ * in the Site Editor), with Styles → Blocks → Button on top. Applied to the
+ * Fluent Forms submit button so it matches. !important beats Fluent Forms'
+ * own button styles and older per-form custom CSS.
+ */
+function mcb_get_button_typography_css() {
+	if ( ! function_exists( 'wp_get_global_styles' ) ) {
+		return '';
+	}
+
+	$typography = array_merge(
+		(array) wp_get_global_styles( [ 'elements', 'button', 'typography' ] ),
+		(array) wp_get_global_styles( [ 'blocks', 'core/button', 'typography' ] )
+	);
+
+	$properties = [
+		'fontFamily'     => 'font-family',
+		'fontSize'       => 'font-size',
+		'fontStyle'      => 'font-style',
+		'fontWeight'     => 'font-weight',
+		'letterSpacing'  => 'letter-spacing',
+		'lineHeight'     => 'line-height',
+		'textDecoration' => 'text-decoration',
+		'textTransform'  => 'text-transform',
+	];
+
+	$css = '';
+	foreach ( $properties as $key => $property ) {
+		$value = $typography[ $key ] ?? null;
+		if ( ! is_string( $value ) && ! is_numeric( $value ) ) {
+			continue;
+		}
+		$value = (string) $value;
+		// "var:preset|font-size|medium" → "var(--wp--preset--font-size--medium)".
+		if ( 0 === strpos( $value, 'var:' ) ) {
+			$value = 'var(--wp--' . str_replace( '|', '--', substr( $value, 4 ) ) . ')';
+		}
+		if ( '' === $value || preg_match( '/[{};<>]/', $value ) ) {
+			continue;
+		}
+		$css .= "{$property}:{$value} !important;";
+	}
+
+	return $css;
+}
 
 /**
  * Content widths for single Posts and Customer Cases (compiled from

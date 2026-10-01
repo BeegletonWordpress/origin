@@ -341,7 +341,11 @@ p a {
 	background-color: var(--wp--preset--color--accent-1) !important;
 	color: var(--wp--preset--color--contrast) !important;
 	transform: none !important;
+	cursor: pointer !important;
 	transition: color 0.2s ease !important;
+	/* Keep it clear of the sticky header when tabbed to (WCAG 2.4.11). */
+	scroll-margin-top: 140px;
+	scroll-margin-bottom: 40px;
 	-webkit-mask-image: var(--mcb-handdrawn-button-mask);
 	mask-image: var(--mcb-handdrawn-button-mask);
 	-webkit-mask-size: 100% 100%;
@@ -366,11 +370,29 @@ p a {
 .fluentform .ff-btn-submit:active {
 	transform: none !important;
 	color: var(--wp--preset--color--contrast) !important;
+	/* Fluent Forms fades its buttons on hover; the wipe is the hover cue. */
+	opacity: 1 !important;
 }
 
 .fluentform .ff-btn-submit:hover::after,
 .fluentform .ff-btn-submit:focus-visible::after {
 	clip-path: inset(0 0 0 0);
+}
+
+/* The mask clips any outline, so keyboard focus also underlines the label
+   as a cue that doesn't rely on colour alone (WCAG 2.4.7). */
+.fluentform .ff-btn-submit:focus-visible {
+	outline: none !important;
+	text-decoration: underline !important;
+	text-decoration-thickness: 2px !important;
+	text-underline-offset: 4px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fluentform .ff-btn-submit,
+	.fluentform .ff-btn-submit::after {
+		transition: none !important;
+	}
 }
 
 .fluentform .ff-btn-submit .handdrawn-button-shape {
