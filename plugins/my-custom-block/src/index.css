@@ -101,6 +101,55 @@ p a {
 	text-decoration-line: underline;
 }
 
+/* Keyboard focus that fits the design, instead of the browser's blue box
+   (WCAG 2.4.7). Everything uses the element's own text colour, so it works
+   on light and dark backgrounds, and only :focus-visible, so mouse clicks
+   don't show it. Form fields, the form submit button, Knappar and the
+   Beegleton pagination have their own focus looks and are excluded.
+
+   The :root:not(#…) chain only adds specificity (three IDs' worth), so
+   these rules beat Max Mega Menu's ID-scoped focus styles. */
+
+/* WordPress core outlines anything with :focus (block themes:
+   :where(.wp-site-blocks *:focus){outline:2px solid}), so mouse clicks on
+   links and cards show a border. Keep outlines for keyboard focus only;
+   the :focus-visible styles below handle that. Core's rule has zero
+   specificity, so no !important is needed. */
+.wp-site-blocks :focus:not(:focus-visible) {
+	outline: none;
+}
+
+/* Text links: a bold underline, like a pen stroke. Links containing an
+   image get the ring below instead (excluded here, or this rule's
+   outline: none would win over the ring on specificity). */
+:root:not(#mcb-focus-a):not(#mcb-focus-b):not(#mcb-focus-c)
+	a:focus-visible:not(.wp-block-button__link):not(.page-numbers):not(
+		.wp-block-query-pagination-previous
+	):not(.wp-block-query-pagination-next):not(
+		:has(img, picture, svg, video)
+	) {
+	outline: none !important;
+	box-shadow: none !important;
+	text-decoration-line: underline !important;
+	text-decoration-style: solid !important;
+	text-decoration-thickness: 3px !important;
+	text-underline-offset: 6px !important;
+	text-decoration-color: currentColor !important;
+	text-decoration-skip-ink: none !important;
+}
+
+/* Links without text (logo, images, icons) and other buttons: a soft
+   rounded ring, since an underline wouldn't show. */
+:root:not(#mcb-focus-a):not(#mcb-focus-b):not(#mcb-focus-c)
+	a:focus-visible:has(img, picture, svg, video),
+:root:not(#mcb-focus-a):not(#mcb-focus-b):not(#mcb-focus-c)
+	:is(button, [role="button"], summary):focus-visible:not(.ff-btn-submit) {
+	outline: 2px solid currentColor !important;
+	outline-offset: 4px !important;
+	border-radius: 6px;
+	box-shadow: none !important;
+}
+
 /* Default Post Title size on single Posts. The ancestor scoping is wrapped
    in :where() so this carries no more specificity than a single class —
    an editor's own has-*-font-size class or inline size still wins. Heading
@@ -318,12 +367,23 @@ p a {
 	transition: clip-path 0.4s ease;
 }
 
-.wp-block-button > .wp-block-button__link:hover::after {
+.wp-block-button > .wp-block-button__link:hover::after,
+.wp-block-button > .wp-block-button__link:focus-visible::after {
 	clip-path: inset(0 0 0 0);
 }
 
-.wp-block-button > .wp-block-button__link:hover {
+.wp-block-button > .wp-block-button__link:hover,
+.wp-block-button > .wp-block-button__link:focus-visible {
 	color: var(--mcb-hover-text, var(--wp--preset--color--contrast)) !important;
+}
+
+/* The mask clips any outline, so keyboard focus shows the hover wipe plus
+   an underlined label (WCAG 2.4.7), like the form submit button. */
+.wp-block-button > .wp-block-button__link:focus-visible {
+	outline: none !important;
+	text-decoration: underline !important;
+	text-decoration-thickness: 2px !important;
+	text-underline-offset: 4px !important;
 }
 
 /* Fluent Forms submit buttons get the same look as core Buttons: the
