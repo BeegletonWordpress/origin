@@ -1,0 +1,11 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "create-block/fluent-forms",
+	"version": "0.1.0",
+	"title": "Fluent Forms styling (internal — not a real block)",
+	"category": "design",
+	"description": "Not a registered block. Exists only so the build pipeline compiles the site-wide Fluent Forms styling (hand-drawn inputs, textareas and checkboxes) that used to be pasted into each form's custom CSS/JS. Enqueued directly by my-custom-block.php (mcb_enqueue_fluent_forms_styling).",
+	"textdomain": "my-custom-block",
+	"viewScript": "file:./view.js"
+}

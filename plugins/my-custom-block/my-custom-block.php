@@ -700,6 +700,39 @@ function mcb_enqueue_fit_headings() {
 add_action( 'wp_enqueue_scripts', 'mcb_enqueue_fit_headings' );
 
 /**
+ * Site-wide Fluent Forms styling (src/fluent-forms): hand-drawn inputs,
+ * textareas and checkboxes, bold uppercase labels and a 600px form width,
+ * which used to be pasted into every form's custom CSS/JS. Loaded on every
+ * page, since a form can appear in any page, popup or template; the script
+ * does nothing when there's no form. The submit button's look is in
+ * src/index.css.
+ */
+function mcb_enqueue_fluent_forms_styling() {
+	$style_path  = __DIR__ . '/build/fluent-forms/style-view.css';
+	$script_path = __DIR__ . '/build/fluent-forms/view.js';
+
+	if ( file_exists( $style_path ) ) {
+		wp_enqueue_style(
+			'mcb-fluent-forms',
+			plugin_dir_url( __FILE__ ) . 'build/fluent-forms/style-view.css',
+			[],
+			filemtime( $style_path )
+		);
+	}
+
+	if ( file_exists( $script_path ) ) {
+		wp_enqueue_script(
+			'mcb-fluent-forms',
+			plugin_dir_url( __FILE__ ) . 'build/fluent-forms/view.js',
+			[],
+			filemtime( $script_path ),
+			true
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'mcb_enqueue_fluent_forms_styling' );
+
+/**
  * Content widths for single Posts and Customer Cases (compiled from
  * src/content-layout via its non-block build entry, same pattern as
  * src/global-styles): text in the WP content width, every other block
