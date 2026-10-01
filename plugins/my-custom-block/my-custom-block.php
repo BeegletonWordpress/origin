@@ -490,6 +490,31 @@ function mcb_register_beegleton_pagination() {
 add_action( 'init', 'mcb_register_beegleton_pagination' );
 
 /**
+ * Default colours for core Buttons ("Knappar"), set in the theme's
+ * theme.json layer so they show as the defaults in the editor's colour
+ * controls and each button can still override them. Global Styles saved
+ * in the Site Editor (Styles → Blocks → Button) take precedence over this.
+ * The hover defaults (Accent 6 / Contrast) live in the button's own Hover
+ * Colors controls instead (src/button-hover-colors, src/index.css).
+ */
+function mcb_default_button_colors( $theme_json ) {
+	return $theme_json->update_with( [
+		'version' => 3,
+		'styles'  => [
+			'elements' => [
+				'button' => [
+					'color' => [
+						'background' => 'var:preset|color|accent-1',
+						'text'       => 'var:preset|color|contrast',
+					],
+				],
+			],
+		],
+	] );
+}
+add_filter( 'wp_theme_json_data_theme', 'mcb_default_button_colors' );
+
+/**
  * On pages with a Beegleton-styled Pagination block, load the small script
  * (src/pagination-variation/view.js) that picks light or dark colours from
  * the actual background behind it.
