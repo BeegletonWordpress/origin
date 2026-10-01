@@ -1,0 +1,121 @@
+/* Site-wide Fluent Forms styling: what used to be pasted into every form's
+   custom CSS. Scoped to .fluentform so nothing outside forms is affected.
+   The submit button's look lives in src/index.css (.fluentform
+   .ff-btn-submit, the same design as core Buttons). The hand-drawn shapes
+   are injected by view.js. */
+
+.fluentform form {
+	max-width: 600px;
+	margin: auto;
+}
+
+.fluentform .ff-el-input--label {
+	font-weight: 900;
+	text-transform: uppercase;
+	font-size: 18.5px;
+}
+
+/* --- Input fields and textareas --- */
+.fluentform .handdrawn-input-wrapper {
+	position: relative !important;
+	background: transparent !important;
+	padding: 2px !important;
+}
+
+.fluentform .ff-el-form-control {
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+	position: relative !important;
+	z-index: 2 !important;
+	padding: 12px 15px !important;
+	height: auto !important;
+	color: #3b3632 !important;
+}
+
+.fluentform textarea.ff-el-form-control {
+	min-height: 120px !important;
+	padding: 12px 35px !important;
+}
+
+.fluentform .handdrawn-input-shape {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.fluentform .handdrawn-input-shape path {
+	stroke: #3b3632;
+	stroke-width: 2;
+	fill: #ffffff;
+	transition:
+		stroke 0.2s ease,
+		stroke-width 0.2s ease;
+}
+
+.fluentform .ff-el-form-control:focus + .handdrawn-input-shape path {
+	stroke: var(--wp--preset--color--primary, #3b3632);
+	stroke-width: 3;
+}
+
+.fluentform .ff-el-form-control:focus {
+	box-shadow: none !important;
+}
+
+/* --- Checkboxes --- */
+.fluentform .handdrawn-checkbox-wrapper {
+	position: relative;
+	display: inline-block;
+	width: 23px;
+	height: 39px;
+	margin-right: 12px;
+	vertical-align: middle;
+}
+
+/* The native input covers the whole shape, so it stays clickable. */
+.fluentform .handdrawn-checkbox-wrapper input[type="checkbox"] {
+	position: absolute;
+	opacity: 0 !important;
+	cursor: pointer;
+	inset: 0;
+	margin: 0;
+	width: 100% !important;
+	height: 100% !important;
+	z-index: 3;
+}
+
+.fluentform .handdrawn-checkbox-shape {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.fluentform .handdrawn-checkbox-shape .box-path {
+	fill: #3b3632;
+}
+
+.fluentform .handdrawn-checkbox-shape .check-path {
+	fill: #3b3632;
+	opacity: 0; /* Hidden when unchecked */
+	transition: opacity 0.1s ease;
+}
+
+.fluentform
+	.handdrawn-checkbox-wrapper
+	input[type="checkbox"]:checked
+	+ .handdrawn-checkbox-shape
+	.check-path {
+	opacity: 1;
+}
+
+.fluentform .ff-el-form-check label {
+	display: flex !important;
+	align-items: center;
+}
