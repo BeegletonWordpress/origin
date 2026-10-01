@@ -48,7 +48,6 @@ registerBlockType(metadata.name, {
 		const { children, ...innerBlocksProps } = useInnerBlocksProps(
 			{ className: "w-full flex flex-col items-center" },
 			{
-				allowedBlocks: ["create-block/my-handdrawn-button"],
 				template: showButton
 					? [["create-block/my-handdrawn-button", { text: "Visa alla case" }]]
 					: [],

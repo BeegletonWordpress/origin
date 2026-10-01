@@ -1,11 +1,22 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
+import { useEffect, useRef } from '@wordpress/element';
 import {
 	InspectorControls,
 	PanelColorSettings,
 	useSetting,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+
+// Default button colours (palette slugs), the same as the theme.json
+// defaults in my-custom-block.php (mcb_default_button_colors).
+const DEFAULT_BACKGROUND = 'accent-1';
+const DEFAULT_TEXT = 'contrast';
+
+// Default hover colours (palette slugs), matching the fallbacks in
+// src/index.css.
+const DEFAULT_HOVER_BACKGROUND = 'accent-6';
+const DEFAULT_HOVER_TEXT = 'contrast';
 
 /**
  * Adds hoverBackgroundColor / hoverTextColor attributes to core/button only.
@@ -33,6 +44,53 @@ addFilter(
  * the same PanelColorSettings component and theme color palette as WP's
  * own Text/Background color controls.
  */
+const isOutline = ( className ) =>
+	( className || '' ).split( ' ' ).includes( 'is-style-outline' );
+
+/**
+ * Fills in the default colours (Accent 1 background, Contrast text) on a
+ * button that has none, the first time it's selected, so the Colour panel
+ * shows them instead of empty swatches. New buttons are selected as soon as
+ * they're inserted, so they get them right away. Not done as attribute
+ * defaults: those would change the saved markup of every existing button
+ * and make it fail validation. Outline buttons only get the text colour
+ * (a background would fill them in), and switching a button to Outline
+ * drops the default background again.
+ */
+function ButtonColorDefaults( { attributes, setAttributes, isSelected } ) {
+	const applied = useRef( false );
+	const { backgroundColor, textColor, gradient, style, className } = attributes;
+	const outline = isOutline( className );
+
+	useEffect( () => {
+		if ( ! isSelected || applied.current ) {
+			return;
+		}
+		applied.current = true;
+
+		const updates = {};
+		const hasBackground =
+			backgroundColor || gradient || style?.color?.background || style?.color?.gradient;
+		if ( ! textColor && ! style?.color?.text ) {
+			updates.textColor = DEFAULT_TEXT;
+		}
+		if ( ! hasBackground && ! outline ) {
+			updates.backgroundColor = DEFAULT_BACKGROUND;
+		}
+		if ( Object.keys( updates ).length ) {
+			setAttributes( updates );
+		}
+	}, [ isSelected ] );
+
+	useEffect( () => {
+		if ( outline && backgroundColor === DEFAULT_BACKGROUND ) {
+			setAttributes( { backgroundColor: undefined } );
+		}
+	}, [ outline ] );
+
+	return null;
+}
+
 const withHoverColorControls = createHigherOrderComponent( ( BlockEdit ) => ( props ) => {
 	if ( props.name !== 'core/button' ) {
 		return <BlockEdit { ...props } />;
@@ -42,8 +100,21 @@ const withHoverColorControls = createHigherOrderComponent( ( BlockEdit ) => ( pr
 	const { hoverBackgroundColor, hoverTextColor } = attributes;
 	const colors = useSetting( 'color.palette' ) || [];
 
+	// Shown when no hover colour is picked: the same defaults src/index.css
+	// falls back to (Accent 6 background, Contrast text). Not stored, so
+	// buttons only save hover colours someone actually chose.
+	const paletteColor = ( slug ) =>
+		colors.find( ( color ) => color.slug === slug )?.color;
+	const defaultHoverBackground = paletteColor( DEFAULT_HOVER_BACKGROUND );
+	const defaultHoverText = paletteColor( DEFAULT_HOVER_TEXT );
+
 	return (
 		<>
+			<ButtonColorDefaults
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+				isSelected={ props.isSelected }
+			/>
 			<BlockEdit { ...props } />
 			<InspectorControls>
 				<PanelColorSettings
@@ -51,14 +122,14 @@ const withHoverColorControls = createHigherOrderComponent( ( BlockEdit ) => ( pr
 					initialOpen={ false }
 					colorSettings={ [
 						{
-							value: hoverBackgroundColor,
+							value: hoverBackgroundColor || defaultHoverBackground,
 							onChange: ( value ) =>
 								setAttributes( { hoverBackgroundColor: value } ),
 							label: __( 'Hover Background Color', 'my-custom-block' ),
 							colors,
 						},
 						{
-							value: hoverTextColor,
+							value: hoverTextColor || defaultHoverText,
 							onChange: ( value ) =>
 								setAttributes( { hoverTextColor: value } ),
 							label: __( 'Hover Text Color', 'my-custom-block' ),
