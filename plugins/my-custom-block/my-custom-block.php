@@ -130,6 +130,43 @@ function mcb_hide_site_structure_blocks( $allowed_blocks, $context ) {
 add_filter( 'allowed_block_types_all', 'mcb_hide_site_structure_blocks', 20, 2 );
 
 /**
+ * The header logo link has no accessible name: the header block's saved
+ * markup hard-codes alt="" on its three logo images (dark, light and
+ * scrolled; all are in the page at once and cross-fade with CSS), so the
+ * alt text set in the media library never reached the page (WCAG 2.4.4,
+ * 4.1.2). Name the link instead, with the first logo's alt text from the
+ * media library (falling back to "<site name> – startsida"). The images
+ * stay decorative, so screen readers say the name once, not three times.
+ * Render-time only, so the saved header template part stays valid.
+ */
+function mcb_header_logo_link_name( $block_content, $block ) {
+	$attrs = $block['attrs'] ?? [];
+	$label = '';
+	foreach ( [ 'darkLogoId', 'lightLogoId', 'scrolledLogoId' ] as $key ) {
+		if ( ! empty( $attrs[ $key ] ) ) {
+			$alt = trim( (string) get_post_meta( (int) $attrs[ $key ], '_wp_attachment_image_alt', true ) );
+			if ( '' !== $alt ) {
+				$label = $alt;
+				break;
+			}
+		}
+	}
+	if ( '' === $label ) {
+		$label = sprintf( '%s – startsida', get_bloginfo( 'name' ) );
+	}
+
+	$processor = new WP_HTML_Tag_Processor( $block_content );
+	while ( $processor->next_tag( 'a' ) ) {
+		if ( $processor->has_class( 'header-logo-link' ) ) {
+			$processor->set_attribute( 'aria-label', $label );
+			break;
+		}
+	}
+	return $processor->get_updated_html();
+}
+add_filter( 'render_block_create-block/my-header-block', 'mcb_header_logo_link_name', 10, 2 );
+
+/**
  * Remove empty links left behind by rich-text editing (a link applied, then
  * its text retyped or replaced, can leave <a href="…"></a> next to the real
  * link). Screen readers announce those as just "link" (WCAG 2.4.4, 4.1.2).
