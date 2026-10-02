@@ -847,6 +847,47 @@ function mcb_enqueue_fluent_forms_styling() {
 add_action( 'wp_enqueue_scripts', 'mcb_enqueue_fluent_forms_styling' );
 
 /**
+ * Fluent Forms puts an aria-label on its <label> elements, which already
+ * have visible text. aria-label on a label is poorly supported by screen
+ * readers and adds nothing, so remove it; the label's text still names its
+ * field. Applied to the form wherever it's rendered (block, shortcode, or a
+ * shortcode/HTML block in a template part such as the footer). Forms that
+ * load later are cleaned by src/fluent-forms/view.js.
+ */
+function mcb_fluent_forms_strip_label_aria( $html ) {
+	if ( ! is_string( $html ) || false === stripos( $html, '<label' ) || false === stripos( $html, 'aria-label' ) ) {
+		return $html;
+	}
+
+	$processor = new WP_HTML_Tag_Processor( $html );
+	while ( $processor->next_tag( 'label' ) ) {
+		if ( null !== $processor->get_attribute( 'aria-label' ) ) {
+			$processor->remove_attribute( 'aria-label' );
+		}
+	}
+	return $processor->get_updated_html();
+}
+
+function mcb_fluent_forms_strip_label_aria_shortcode( $output, $tag ) {
+	return in_array( $tag, [ 'fluentform', 'fluentform_modal' ], true )
+		? mcb_fluent_forms_strip_label_aria( $output )
+		: $output;
+}
+add_filter( 'do_shortcode_tag', 'mcb_fluent_forms_strip_label_aria_shortcode', 10, 2 );
+
+function mcb_fluent_forms_strip_label_aria_block( $block_content, $block ) {
+	$name = $block['blockName'] ?? '';
+	if ( 0 === strpos( $name, 'fluentfom/' ) || 0 === strpos( $name, 'fluentform/' ) ) {
+		return mcb_fluent_forms_strip_label_aria( $block_content );
+	}
+	if ( in_array( $name, [ 'core/shortcode', 'core/html' ], true ) && false !== strpos( $block_content, 'fluentform' ) ) {
+		return mcb_fluent_forms_strip_label_aria( $block_content );
+	}
+	return $block_content;
+}
+add_filter( 'render_block', 'mcb_fluent_forms_strip_label_aria_block', 10, 2 );
+
+/**
  * The typography core Buttons ("Knappar") use, as CSS declarations: the
  * Button element styles from global styles (theme.json plus anything saved
  * in the Site Editor), with Styles → Blocks → Button on top. Applied to the

@@ -165,6 +165,20 @@ import './style.css';
 		} );
 	}
 
+	// Fluent Forms puts aria-label on <label>s that already have visible
+	// text; that's poorly supported by screen readers and adds nothing.
+	// (Also removed server-side in my-custom-block.php; this covers forms
+	// that load later, e.g. in popups.)
+	function stripLabelAria() {
+		document
+			.querySelectorAll( '.fluentform label[aria-label]' )
+			.forEach( ( label ) => {
+				if ( label.textContent.trim() ) {
+					label.removeAttribute( 'aria-label' );
+				}
+			} );
+	}
+
 	function start() {
 		// Error states are class changes on a form's field groups; watch
 		// those only inside forms, not across the whole page.
@@ -185,6 +199,7 @@ import './style.css';
 		};
 
 		const update = () => {
+			stripLabelAria();
 			applyHanddrawnStyles();
 			watchForms();
 			linkErrors();
