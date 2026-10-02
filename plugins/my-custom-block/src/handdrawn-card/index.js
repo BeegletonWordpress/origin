@@ -4,6 +4,7 @@ import {
 	useInnerBlocksProps,
 	InnerBlocks,
 	InspectorControls,
+	PanelColorSettings,
 } from "@wordpress/block-editor";
 import { PanelBody, SelectControl, ToggleControl } from "@wordpress/components";
 import metadata from "./block.json";
@@ -39,8 +40,14 @@ const getWrapperClasses = (cardLayout) =>
 
 registerBlockType(metadata.name, {
 	edit: function Edit({ attributes, setAttributes }) {
-		const { backgroundColor, style, cardLayout, cardShape, drawAnimation } =
-			attributes;
+		const {
+			backgroundColor,
+			style,
+			cardLayout,
+			cardShape,
+			drawAnimation,
+			cardFill,
+		} = attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -68,6 +75,9 @@ registerBlockType(metadata.name, {
 			style: {
 				"--handdrawn-stroke-color":
 					customBgColor || "var(--wp--preset--color--primary, #000)",
+				// Only set when a fill is picked, so cards without one keep
+				// their original saved markup.
+				"--handdrawn-fill": cardFill || undefined,
 			},
 		});
 
@@ -121,6 +131,21 @@ registerBlockType(metadata.name, {
 							onChange={(value) => setAttributes({ drawAnimation: value })}
 						/>
 					</PanelBody>
+					<PanelColorSettings
+						title="Card background"
+						colorSettings={[
+							{
+								value: cardFill,
+								onChange: (value) => setAttributes({ cardFill: value }),
+								label: "Fill color",
+							},
+						]}
+					>
+						<p className="components-base-control__help">
+							Fills the area inside the hand-drawn border. The border's own
+							colour is the Background colour under Styles.
+						</p>
+					</PanelColorSettings>
 				</InspectorControls>
 				<div {...blockProps}>
 					{currentShape}
@@ -136,8 +161,14 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: function save({ attributes }) {
-		const { backgroundColor, style, cardLayout, cardShape, drawAnimation } =
-			attributes;
+		const {
+			backgroundColor,
+			style,
+			cardLayout,
+			cardShape,
+			drawAnimation,
+			cardFill,
+		} = attributes;
 
 		let customBgColor = style?.color?.background;
 		if (backgroundColor) {
@@ -156,6 +187,9 @@ registerBlockType(metadata.name, {
 			style: {
 				"--handdrawn-stroke-color":
 					customBgColor || "var(--wp--preset--color--primary, #000)",
+				// Only set when a fill is picked, so cards without one keep
+				// their original saved markup.
+				"--handdrawn-fill": cardFill || undefined,
 			},
 		});
 

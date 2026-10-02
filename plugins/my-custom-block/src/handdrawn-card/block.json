@@ -53,6 +53,9 @@
 		"drawAnimation": {
 			"type": "boolean",
 			"default": false
+		},
+		"cardFill": {
+			"type": "string"
 		}
 	},
 	"textdomain": "my-custom-block",

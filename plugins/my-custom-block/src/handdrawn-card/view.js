@@ -23,9 +23,11 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	).matches;
 
 	const show = ( card ) => card.classList.add( 'is-draw-ready' );
+	// The card's fill fades in once its border is drawn (style.css).
+	const finish = ( card ) => card.classList.add( 'is-draw-ready', 'is-drawn' );
 
 	if ( reducedMotion || ! ( 'IntersectionObserver' in window ) ) {
-		cards.forEach( show );
+		cards.forEach( finish );
 		return;
 	}
 
@@ -65,14 +67,20 @@ document.addEventListener( 'DOMContentLoaded', () => {
 					observer.unobserve( card );
 
 					if ( ! path ) {
+						finish( card );
 						return;
 					}
 
 					// Clear the dashes once drawn, so a later resize can't
-					// leave a gap in the line.
-					path.addEventListener( 'transitionend', () => clear( path ), {
-						once: true,
-					} );
+					// leave a gap in the line, then let the fill fade in.
+					path.addEventListener(
+						'transitionend',
+						() => {
+							clear( path );
+							finish( card );
+						},
+						{ once: true }
+					);
 
 					path.style.transition = `stroke-dashoffset ${ DURATION }ms ease-in-out`;
 					path.style.transitionDelay = `${ index * STAGGER }ms`;
@@ -96,7 +104,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			if ( path ) {
 				clear( path );
 			}
-			show( card );
+			finish( card );
 			return;
 		}
 
