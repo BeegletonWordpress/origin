@@ -78,28 +78,48 @@ function create_block_my_custom_block_block_init() {
 add_action( 'init', 'create_block_my_custom_block_block_init' );
 
 /**
- * Fluid spacing preset overrides. Registered on both the frontend and the
- * block editor so `var(--wp--preset--spacing--*)` resolves to the same
- * fluid values in the editor canvas as it does on the live site — without
- * this, the editor falls back to the static theme.json defaults and every
- * block using these presets (which is most of them) renders with different
- * spacing than the real page.
+ * Fluid spacing preset overrides (--wp--preset--spacing--20…80), so every
+ * block using the spacing presets gets the same, smaller fluid values.
+ *
+ * Frontend: printed inside the global-styles inline style. Editor: the
+ * block editor doesn't print global styles through that stylesheet handle
+ * (they come through the editor settings), so the values are added to the
+ * editor canvas styles instead (mcb_editor_fluid_spacing), on `body` so they
+ * win over the presets the editor defines on :root regardless of load
+ * order. Without that, the editor showed the theme's larger values and
+ * spacing looked bigger in the admin than on the live site.
  */
+function mcb_get_fluid_spacing_css( $selector ) {
+	return $selector . ' {
+		--wp--preset--spacing--20: clamp(0.568rem, 0.68vw, 0.568rem);
+		--wp--preset--spacing--30: clamp(0.71rem, 0.85vw, 0.71rem);
+		--wp--preset--spacing--40: clamp(0.96rem, 1.15vw, 0.96rem);
+		--wp--preset--spacing--50: clamp(1.28rem, 1.85vw, 1.5rem);
+		--wp--preset--spacing--60: clamp(1.6rem, 2.77vw, 2.25rem);
+		--wp--preset--spacing--70: clamp(2.24rem, 4.15vw, 3.375rem);
+		--wp--preset--spacing--80: clamp(3.2rem, 6.25vw, 5.063rem);
+	}';
+}
+
 function mcb_output_fluid_spacing_vars() {
-  wp_add_inline_style('global-styles', '
-    :root {
-        --wp--preset--spacing--20: clamp(0.568rem, 0.68vw, 0.568rem);
-        --wp--preset--spacing--30: clamp(0.71rem, 0.85vw, 0.71rem);
-        --wp--preset--spacing--40: clamp(0.96rem, 1.15vw, 0.96rem);
-        --wp--preset--spacing--50: clamp(1.28rem, 1.85vw, 1.5rem);
-        --wp--preset--spacing--60: clamp(1.6rem, 2.77vw, 2.25rem);
-        --wp--preset--spacing--70: clamp(2.24rem, 4.15vw, 3.375rem);
-        --wp--preset--spacing--80: clamp(3.2rem, 6.25vw, 5.063rem);
-    }
-  ');
+	wp_add_inline_style( 'global-styles', mcb_get_fluid_spacing_css( ':root' ) );
 }
 add_action( 'wp_enqueue_scripts', 'mcb_output_fluid_spacing_vars', 20 );
-add_action( 'enqueue_block_editor_assets', 'mcb_output_fluid_spacing_vars' );
+
+function mcb_editor_fluid_spacing( $settings ) {
+	if ( ! isset( $settings['styles'] ) || ! is_array( $settings['styles'] ) ) {
+		return $settings;
+	}
+
+	$settings['styles'][] = [
+		'css'            => mcb_get_fluid_spacing_css( 'body' ),
+		'__unstableType' => 'user',
+		'isGlobalStyles' => false,
+	];
+
+	return $settings;
+}
+add_filter( 'block_editor_settings_all', 'mcb_editor_fluid_spacing' );
 
 /**
  * Site-wide CSS that used to live in the Site Editor's "Additional CSS"
