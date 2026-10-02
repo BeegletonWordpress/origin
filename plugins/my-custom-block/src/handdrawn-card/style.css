@@ -4,7 +4,7 @@
 	/* Card background: the path's own fill, so it's contained by the
 	   hand-drawn border, with the stroke painted on top. */
 	fill: var(--handdrawn-fill, none);
-	transition: fill-opacity 0.4s ease;
+	transition: fill-opacity 0.3s ease;
 }
 
 .wp-block-create-block-my-handdrawn-card h4 {
@@ -33,10 +33,10 @@
 }
 
 /* With the draw-in animation, the content fades in 0.1s after the fill has
-   faded in (the fill takes 0.4s), so it never floats before the card has
+   faded in (the fill takes 0.3s), so it never floats before the card has
    a background. */
 .wp-block-create-block-my-handdrawn-card.is-draw-animated > :not(svg) {
-	transition: opacity 0.4s ease 0.5s;
+	transition: opacity 0.3s ease 0.4s;
 }
 
 .wp-block-create-block-my-handdrawn-card.is-draw-animated:not(.is-drawn) > :not(svg) {

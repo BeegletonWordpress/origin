@@ -15,8 +15,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	}
 
 	const SAMPLES = 200;
-	const DURATION = 1500;
-	const STAGGER = 150;
+	const DURATION = 1000;
+	const STAGGER = 100;
 
 	const reducedMotion = window.matchMedia(
 		'(prefers-reduced-motion: reduce)'
