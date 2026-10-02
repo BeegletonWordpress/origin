@@ -19,6 +19,10 @@
 		"showOnMobile": {
 			"type": "boolean",
 			"default": false
+		},
+		"shape": {
+			"type": "string",
+			"default": "splash"
 		}
 	},
 	"supports": {
