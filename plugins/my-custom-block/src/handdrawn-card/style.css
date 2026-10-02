@@ -32,7 +32,18 @@
 	fill-opacity: 0;
 }
 
-/* Never leave the line or the fill hidden: no motion, or no script to draw
+/* With the draw-in animation, the content fades in 0.1s after the fill has
+   faded in (the fill takes 0.4s), so it never floats before the card has
+   a background. */
+.wp-block-create-block-my-handdrawn-card.is-draw-animated > :not(svg) {
+	transition: opacity 0.4s ease 0.5s;
+}
+
+.wp-block-create-block-my-handdrawn-card.is-draw-animated:not(.is-drawn) > :not(svg) {
+	opacity: 0;
+}
+
+/* Never leave the line, fill or content hidden: no motion, or no script to draw
    it. (After the rules above, so it wins.) */
 @media (prefers-reduced-motion: reduce), (scripting: none) {
 	.wp-block-create-block-my-handdrawn-card.is-draw-animated > svg {
@@ -41,6 +52,11 @@
 
 	.wp-block-create-block-my-handdrawn-card.is-draw-animated > svg path {
 		fill-opacity: 1 !important;
+		transition: none;
+	}
+
+	.wp-block-create-block-my-handdrawn-card.is-draw-animated > :not(svg) {
+		opacity: 1 !important;
 		transition: none;
 	}
 }

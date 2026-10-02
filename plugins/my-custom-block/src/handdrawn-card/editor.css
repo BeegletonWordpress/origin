@@ -1,7 +1,8 @@
 /* Editor-specific overrides for the card */
 
 
-/* Editor: show the card as it looks after the draw-in (border and fill),
+/* Editor: show the card as it looks after the draw-in (border, fill and
+   content),
    since the animation script (view.js) only runs on the live site. Scoped
    to the editor canvas because this file is also loaded on the frontend
    (it's compiled into index.css, which block.json loads as a style), and
@@ -13,4 +14,8 @@
 
 .editor-styles-wrapper .wp-block-create-block-my-handdrawn-card.is-draw-animated > svg path {
 	fill-opacity: 1 !important;
+}
+
+.editor-styles-wrapper .wp-block-create-block-my-handdrawn-card.is-draw-animated > :not(svg) {
+	opacity: 1 !important;
 }
