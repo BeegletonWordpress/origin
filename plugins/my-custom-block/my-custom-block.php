@@ -135,16 +135,23 @@ add_filter( 'allowed_block_types_all', 'mcb_hide_site_structure_blocks', 20, 2 )
  * scrolled; all are in the page at once and cross-fade with CSS), so the
  * alt text set in the media library never reached the page (WCAG 2.4.4,
  * 4.1.2). Name the link instead, with the first logo's alt text from the
- * media library (falling back to "<site name> – startsida"). The images
+ * media library (found by ID, or by URL when only the URL is stored;
+ * falling back to "<site name> – startsida"). The images
  * stay decorative, so screen readers say the name once, not three times.
  * Render-time only, so the saved header template part stays valid.
  */
 function mcb_header_logo_link_name( $block_content, $block ) {
 	$attrs = $block['attrs'] ?? [];
 	$label = '';
-	foreach ( [ 'darkLogoId', 'lightLogoId', 'scrolledLogoId' ] as $key ) {
-		if ( ! empty( $attrs[ $key ] ) ) {
-			$alt = trim( (string) get_post_meta( (int) $attrs[ $key ], '_wp_attachment_image_alt', true ) );
+	// Each logo is stored with its URL, and only sometimes its media ID, so
+	// fall back to looking the attachment up by URL.
+	foreach ( [ 'dark', 'light', 'scrolled' ] as $logo ) {
+		$id = (int) ( $attrs[ "{$logo}LogoId" ] ?? 0 );
+		if ( ! $id && ! empty( $attrs[ "{$logo}LogoUrl" ] ) ) {
+			$id = (int) attachment_url_to_postid( $attrs[ "{$logo}LogoUrl" ] );
+		}
+		if ( $id ) {
+			$alt = trim( (string) get_post_meta( $id, '_wp_attachment_image_alt', true ) );
 			if ( '' !== $alt ) {
 				$label = $alt;
 				break;
