@@ -3,13 +3,22 @@
 	"apiVersion": 3,
 	"name": "create-block/contact-info",
 	"version": "0.1.0",
-	"title": "Contact Info",
-	"category": "theme",
+	"title": "Kontaktuppgifter",
+	"category": "beegleton-content",
 	"icon": "phone",
-	"description": "A contact information block with icon and text.",
+	"description": "Kontaktuppgifter som adress, telefon och e-post.",
+	"keywords": [
+		"kontakt",
+		"adress",
+		"telefon",
+		"e-post"
+	],
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"],
+		"align": [
+			"full",
+			"wide"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true

@@ -186,28 +186,28 @@ registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				<InspectorControls>
-					<PanelBody title="Query">
+					<PanelBody title="Urval">
 						<SelectControl
-							label="Order By"
+							label="Sortera efter"
 							value={orderBy}
 							options={[
-								{ label: "Date", value: "date" },
-								{ label: "Title", value: "title" },
+								{ label: "Datum", value: "date" },
+								{ label: "Titel", value: "title" },
 							]}
 							onChange={(val) => setAttributes({ orderBy: val })}
 						/>
 						<SelectControl
-							label="Order"
+							label="Ordning"
 							value={order}
 							options={[
-								{ label: "Ascending", value: "asc" },
-								{ label: "Descending", value: "desc" },
+								{ label: "Stigande", value: "asc" },
+								{ label: "Fallande", value: "desc" },
 							]}
 							onChange={(val) => setAttributes({ order: val })}
 						/>
 					</PanelBody>
 
-					<PanelBody title="Desktop Grid">
+					<PanelBody title="Rutnät dator">
 						<QueryControls
 							numberOfItems={postsPerPage}
 							onNumberOfItemsChange={(val) =>
@@ -216,7 +216,7 @@ registerBlockType(metadata.name, {
 						/>
 					</PanelBody>
 
-					<PanelBody title="Mobile Grid">
+					<PanelBody title="Rutnät mobil">
 						<QueryControls
 							numberOfItems={mobilePostsPerPage}
 							onNumberOfItemsChange={(val) =>
@@ -226,19 +226,19 @@ registerBlockType(metadata.name, {
 					</PanelBody>
 
 					<PanelColorSettings
-						title="SVG Color"
+						title="Färger"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Background SVG Color",
+								label: "Formens färg",
 							},
 						]}
 					/>
 				</InspectorControls>
 
 				{!hasResolved ? (
-					<Placeholder icon={<Spinner />} label="Fetching Members..." />
+					<Placeholder icon={<Spinner />} label="Hämtar medarbetare…" />
 				) : posts?.length > 0 ? (
 					<div className="w-full flex flex-col items-center relative overflow-visible">
 						<BackgroundSVG color={svgColor} />
@@ -289,7 +289,7 @@ registerBlockType(metadata.name, {
 						</div>
 					</div>
 				) : (
-					<Placeholder label="No members found" icon="grid-view" />
+					<Placeholder label="Inga medarbetare hittades" icon="grid-view" />
 				)}
 			</div>
 		);

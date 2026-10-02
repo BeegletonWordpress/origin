@@ -1,114 +1,18 @@
 /**
  * Draw-in animation for My Handdrawn Card (opt-in per card, via the
- * is-draw-animated class). The border path uses
- * vector-effect: non-scaling-stroke inside a stretched SVG, so dash lengths
- * are in screen pixels; the path's on-screen length is measured by
- * sampling it rather than taken from getTotalLength().
+ * is-draw-animated class): the border draws in when the card scrolls into
+ * view, then style.css fades in the fill and the content. The animation
+ * itself is the shared src/draw-in.js, also used by the SVG Background
+ * Container's line shapes.
  */
+import { setupDrawIn } from '../draw-in';
+
 document.addEventListener( 'DOMContentLoaded', () => {
-	const cards = document.querySelectorAll(
-		'.wp-block-create-block-my-handdrawn-card.is-draw-animated'
-	);
-
-	if ( ! cards.length ) {
-		return;
-	}
-
-	const SAMPLES = 200;
-	const DURATION = 1000;
-	const STAGGER = 100;
-
-	const reducedMotion = window.matchMedia(
-		'(prefers-reduced-motion: reduce)'
-	).matches;
-
-	const show = ( card ) => card.classList.add( 'is-draw-ready' );
-	// The card's fill fades in once its border is drawn (style.css).
-	const finish = ( card ) => card.classList.add( 'is-draw-ready', 'is-drawn' );
-
-	if ( reducedMotion || ! ( 'IntersectionObserver' in window ) ) {
-		cards.forEach( finish );
-		return;
-	}
-
-	function getScreenLength( path ) {
-		const ctm = path.getScreenCTM();
-		const total = path.getTotalLength();
-		let length = 0;
-		let prev = null;
-
-		for ( let i = 0; i <= SAMPLES; i++ ) {
-			const point = path
-				.getPointAtLength( ( total * i ) / SAMPLES )
-				.matrixTransform( ctm );
-			if ( prev ) {
-				length += Math.hypot( point.x - prev.x, point.y - prev.y );
-			}
-			prev = point;
-		}
-
-		return Math.ceil( length ) + 4;
-	}
-
-	function clear( path ) {
-		path.style.transition = '';
-		path.style.transitionDelay = '';
-		path.style.strokeDasharray = '';
-		path.style.strokeDashoffset = '';
-	}
-
-	const observer = new IntersectionObserver(
-		( entries ) => {
-			entries
-				.filter( ( entry ) => entry.isIntersecting )
-				.forEach( ( entry, index ) => {
-					const card = entry.target;
-					const path = card.querySelector( ':scope > svg path' );
-					observer.unobserve( card );
-
-					if ( ! path ) {
-						finish( card );
-						return;
-					}
-
-					// Clear the dashes once drawn, so a later resize can't
-					// leave a gap in the line, then let the fill fade in.
-					path.addEventListener(
-						'transitionend',
-						() => {
-							clear( path );
-							finish( card );
-						},
-						{ once: true }
-					);
-
-					path.style.transition = `stroke-dashoffset ${ DURATION }ms ease-in-out`;
-					path.style.transitionDelay = `${ index * STAGGER }ms`;
-					path.style.strokeDashoffset = '0';
-				} );
-		},
-		{ threshold: 0.3 }
-	);
-
-	cards.forEach( ( card ) => {
-		const path = card.querySelector( ':scope > svg path' );
-
-		try {
-			if ( path ) {
-				const length = getScreenLength( path );
-				path.style.strokeDasharray = `${ length }`;
-				path.style.strokeDashoffset = `${ length }`;
-			}
-		} catch ( e ) {
-			// If measuring fails, just show the line as it is.
-			if ( path ) {
-				clear( path );
-			}
-			finish( card );
-			return;
-		}
-
-		show( card );
-		observer.observe( card );
+	setupDrawIn( {
+		items: document.querySelectorAll(
+			'.wp-block-create-block-my-handdrawn-card.is-draw-animated'
+		),
+		getPaths: ( card ) =>
+			[ card.querySelector( ':scope > svg path' ) ].filter( Boolean ),
 	} );
 } );

@@ -3,10 +3,24 @@
 	"apiVersion": 3,
 	"name": "create-block/contact-card",
 	"version": "0.1.0",
-	"title": "Contact Card",
-	"category": "theme",
+	"title": "Kontaktkort",
+	"category": "beegleton-content",
 	"icon": "index-card",
-	"description": "A contact card block with hand-drawn shapes and hover effects.",
+	"description": "Kort för en medarbetare med bild, namn, roll och kontaktuppgifter.",
+	"keywords": [
+		"kontakt",
+		"medarbetare",
+		"kort",
+		"person"
+	],
+	"example": {
+		"attributes": {
+			"name": "Förnamn Efternamn",
+			"role": "Roll",
+			"email": "namn@beegleton.com",
+			"phone": "070-000 00 00"
+		}
+	},
 	"attributes": {
 		"cardShape": {
 			"type": "string",

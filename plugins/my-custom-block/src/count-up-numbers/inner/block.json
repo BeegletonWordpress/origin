@@ -3,17 +3,24 @@
 	"apiVersion": 3,
 	"name": "create-block/my-count-up-numbers-inner",
 	"version": "0.1.0",
-	"title": "Count Up Numbers Inner",
-	"category": "theme",
+	"title": "Räknande siffror – innehåll",
+	"category": "beegleton-content",
 	"icon": "money",
-	"description": "Inner wrapper for count up numbers with wide alignment.",
+	"description": "Innehållsdelen i Räknande siffror.",
+	"keywords": [
+		"siffror"
+	],
 	"example": {},
 	"supports": {
 		"html": false
 	},
-	"parent": ["create-block/my-count-up-numbers"],
+	"parent": [
+		"create-block/my-count-up-numbers"
+	],
 	"attributes": {},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": ["file:./style-index.css"]
+	"style": [
+		"file:./style-index.css"
+	]
 }

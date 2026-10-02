@@ -3,13 +3,21 @@
 	"apiVersion": 3,
 	"name": "create-block/subpage-template",
 	"version": "0.1.0",
-	"title": "Subpage Template",
-	"category": "theme",
+	"title": "Undersidesmall",
+	"category": "beegleton-layout",
 	"icon": "layout",
-	"description": "A template block for subpages with a required subpage-hero and flexible page content area.",
+	"description": "Grundlayout för undersidor med hjälte och innehåll.",
+	"keywords": [
+		"mall",
+		"undersida",
+		"layout"
+	],
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"],
+		"align": [
+			"full",
+			"wide"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true

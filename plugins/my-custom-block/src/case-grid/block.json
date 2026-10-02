@@ -3,10 +3,17 @@
 	"apiVersion": 3,
 	"name": "create-block/my-case-grid",
 	"version": "0.1.0",
-	"title": "My Case Grid",
-	"category": "theme",
+	"title": "Kundcase-rutnät",
+	"category": "beegleton-content",
 	"icon": "grid-view",
-	"description": "Displays customer cases in a 3-column grid.",
+	"description": "Rutnät eller karusell med kundcase, valfritt filtrerat på kategori.",
+	"keywords": [
+		"kundcase",
+		"case",
+		"rutnät",
+		"karusell"
+	],
+	"example": {},
 	"attributes": {
 		"postsPerPage": {
 			"type": "number",
@@ -29,7 +36,10 @@
 		}
 	},
 	"supports": {
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"interactivity": true,
 		"spacing": {

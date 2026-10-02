@@ -162,16 +162,16 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="SVG Visibility" initialOpen={false}>
+					<PanelBody title="Ring" initialOpen={false}>
 						<CheckboxControl
-							label="Show SVG"
+							label="Visa ring"
 							checked={svgToggle !== false}
 							onChange={(value) => setAttributes({ svgToggle: value })}
 						/>
 					</PanelBody>
-					<PanelBody title="Ring Size & Position" initialOpen={false}>
+					<PanelBody title="Ringens storlek och position" initialOpen={false}>
 						<RangeControl
-							label="Width (%)"
+							label="Bredd (%)"
 							value={ringWidth}
 							onChange={(value) => setAttributes({ ringWidth: value })}
 							min={50}
@@ -180,7 +180,7 @@ registerBlockType(metadata.name, {
 							help={`Scale the ring's width around the heading (default ${RING_DEFAULTS.ringWidth}%)`}
 						/>
 						<RangeControl
-							label="Height (%)"
+							label="Höjd (%)"
 							value={ringHeight}
 							onChange={(value) => setAttributes({ ringHeight: value })}
 							min={50}
@@ -189,22 +189,22 @@ registerBlockType(metadata.name, {
 							help={`Scale the ring's height around the heading (default ${RING_DEFAULTS.ringHeight}%)`}
 						/>
 						<RangeControl
-							label="Offset X (rem)"
+							label="Förskjutning X (rem)"
 							value={ringOffsetX}
 							onChange={(value) => setAttributes({ ringOffsetX: value })}
 							min={-3}
 							max={3}
 							step={0.1}
-							help="Move the ring left (negative) or right (positive)"
+							help="Flytta ringen åt vänster (negativt) eller höger (positivt)"
 						/>
 						<RangeControl
-							label="Offset Y (rem)"
+							label="Förskjutning Y (rem)"
 							value={ringOffsetY}
 							onChange={(value) => setAttributes({ ringOffsetY: value })}
 							min={-3}
 							max={3}
 							step={0.1}
-							help="Move the ring up (negative) or down (positive)"
+							help="Flytta ringen uppåt (negativt) eller nedåt (positivt)"
 						/>
 					</PanelBody>
 				</InspectorControls>

@@ -45,3 +45,16 @@
 	width: 100%;
 	height: auto;
 }
+
+/* Optional draw-in for line shapes (src/draw-in.js): only shapes that the
+   script marks as waiting below the fold are hidden until their dashes are
+   set up; shapes visible on load, the editor and no-JS show the full line. */
+.svg-background-container__bg.is-draw-pending:not(.is-draw-ready) > svg {
+	visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+	.svg-background-container__bg.is-draw-animated > svg {
+		visibility: visible !important;
+	}
+}

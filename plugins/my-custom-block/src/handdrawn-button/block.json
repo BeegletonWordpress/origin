@@ -3,10 +3,15 @@
 	"apiVersion": 3,
 	"name": "create-block/my-handdrawn-button",
 	"version": "0.1.0",
-	"title": "My Handdrawn Button",
-	"category": "theme",
+	"title": "Handritad knapp (gammal)",
+	"category": "beegleton-content",
 	"icon": "button",
-	"description": "A custom button with an irregular, hand-drawn look.",
+	"description": "Äldre handritad knapp. Använd blocket Knappar i stället.",
+	"keywords": [
+		"knapp",
+		"button",
+		"gammal"
+	],
 	"supports": {
 		"color": {
 			"background": true,
@@ -21,8 +26,13 @@
 			"fontSize": true,
 			"lineHeight": true
 		},
-		"align": [ "left", "center", "right" ],
-		"html": false
+		"align": [
+			"left",
+			"center",
+			"right"
+		],
+		"html": false,
+		"inserter": false
 	},
 	"attributes": {
 		"backgroundColor": {
@@ -79,6 +89,9 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": [ "file:./index.css", "file:./style-index.css" ],
+	"style": [
+		"file:./index.css",
+		"file:./style-index.css"
+	],
 	"editorStyle": "file:./editor.css"
 }

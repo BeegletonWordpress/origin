@@ -3,12 +3,18 @@
 	"apiVersion": 3,
 	"name": "create-block/my-footer-column",
 	"version": "0.1.0",
-	"title": "My Footer Column",
-	"category": "theme",
+	"title": "Sidfotskolumn",
+	"category": "beegleton-site",
 	"icon": "columns",
-	"description": "A column inside the custom footer.",
-	"parent": [ "create-block/my-footer-row" ],
+	"description": "En kolumn i en sidfotsrad.",
+	"keywords": [
+		"sidfot",
+		"kolumn"
+	],
 	"example": {},
+	"parent": [
+		"create-block/my-footer-row"
+	],
 	"supports": {
 		"html": false,
 		"spacing": {

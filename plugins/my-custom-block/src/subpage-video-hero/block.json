@@ -3,13 +3,38 @@
 	"apiVersion": 3,
 	"name": "create-block/subpage-video-hero",
 	"version": "0.1.0",
-	"title": "Subpage Video Hero",
-	"category": "theme",
+	"title": "Undersidans hjälte – video",
+	"category": "beegleton-hero",
 	"icon": "format-video",
-	"description": "A subpage hero with a full-width background video or image behind the content.",
+	"description": "Toppsektion för undersidor med video eller bild som bakgrund och overlay.",
+	"keywords": [
+		"hero",
+		"topp",
+		"video",
+		"bakgrund",
+		"undersida"
+	],
+	"example": {
+		"attributes": {
+			"tagline": "Vi hjälper dig",
+			"title": "Rubrik för sidan",
+			"subheader": "En kort underrubrik"
+		},
+		"innerBlocks": [
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "En kort introduktion till sidan."
+				}
+			}
+		]
+	},
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"],
+		"align": [
+			"full",
+			"wide"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true

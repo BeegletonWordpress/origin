@@ -25,7 +25,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	} );
 
 	if ( ! window.lenis ) {
-		console.log( 'Lenis not initialized, skipping arrow animation' );
 		return;
 	}
 

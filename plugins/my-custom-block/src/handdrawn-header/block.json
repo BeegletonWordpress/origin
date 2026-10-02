@@ -3,14 +3,36 @@
 	"apiVersion": 3,
 	"name": "my-custom-block/handdrawn-header",
 	"version": "0.1.0",
-	"title": "Handdrawn Header",
-	"category": "text",
+	"title": "Handritad rubrik",
+	"category": "beegleton-content",
 	"icon": "heading",
-	"description": "A header with a handdrawn SVG underline decoration.",
+	"description": "Rubrik med handritad understrykning eller ring.",
+	"keywords": [
+		"rubrik",
+		"heading",
+		"handritad",
+		"understrykning"
+	],
+	"example": {
+		"innerBlocks": [
+			{
+				"name": "core/heading",
+				"attributes": {
+					"content": "Handritad rubrik"
+				}
+			}
+		]
+	},
 	"supports": {
 		"html": false,
 		"anchor": true,
-		"align": ["wide", "full", "left", "center", "right"],
+		"align": [
+			"wide",
+			"full",
+			"left",
+			"center",
+			"right"
+		],
 		"layout": {
 			"allowEditing": true,
 			"allowInheriting": true

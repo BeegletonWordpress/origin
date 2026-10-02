@@ -1,9 +1,20 @@
 {
 	"apiVersion": 3,
 	"name": "create-block/service-block",
-	"title": "Service Block",
+	"title": "Tjänstesektion",
+	"category": "beegleton-content",
+	"icon": "grid-view",
+	"description": "Sektion som presenterar tjänster med kort.",
+	"keywords": [
+		"tjänster",
+		"service",
+		"sektion"
+	],
 	"editorScript": "file:./index.js",
-	"style": ["file:./index.css", "file:./style-index.css"],
+	"style": [
+		"file:./index.css",
+		"file:./style-index.css"
+	],
 	"editorStyle": "file:./editor.css",
 	"attributes": {
 		"title": {

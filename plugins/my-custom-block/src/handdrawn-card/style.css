@@ -4,7 +4,6 @@
 	/* Card background: the path's own fill, so it's contained by the
 	   hand-drawn border, with the stroke painted on top. */
 	fill: var(--handdrawn-fill, none);
-	transition: fill-opacity 0.3s ease;
 }
 
 .wp-block-create-block-my-handdrawn-card h4 {
@@ -16,35 +15,37 @@
 	background-color: transparent !important;
 }
 
-/* Optional draw-in animation: hide the line until view.js has set up the
-   stroke dashes, so the full line doesn't flash before being drawn. */
-.wp-block-create-block-my-handdrawn-card.is-draw-animated:not(.is-draw-ready) > svg {
+/* Optional draw-in animation. Only cards that view.js marks as waiting
+   below the fold (.is-draw-pending) are ever hidden; cards already on screen
+   when the page loads are left fully visible, so they don't delay Largest
+   Contentful Paint, and without the script nothing is hidden at all. The
+   content stays in the HTML throughout, so this doesn't affect SEO/GEO.
+
+   Sequence for a pending card: the line stays hidden until its dashes are
+   set up (.is-draw-ready), then draws; once drawn (.is-drawn) the fill fades
+   in, and the content 0.1s after the fill has finished. */
+.wp-block-create-block-my-handdrawn-card.is-draw-pending:not(.is-draw-ready) > svg {
 	visibility: hidden;
 }
 
-/* Never leave the line hidden: no motion, or no script to draw it. */
+.wp-block-create-block-my-handdrawn-card.is-draw-pending > svg path {
+	transition: fill-opacity 0.3s ease;
+}
 
-
-
-/* With the draw-in animation, the fill appears once the border is drawn
-   (view.js adds .is-drawn). */
-.wp-block-create-block-my-handdrawn-card.is-draw-animated:not(.is-drawn) > svg path {
+.wp-block-create-block-my-handdrawn-card.is-draw-pending:not(.is-drawn) > svg path {
 	fill-opacity: 0;
 }
 
-/* With the draw-in animation, the content fades in 0.1s after the fill has
-   faded in (the fill takes 0.3s), so it never floats before the card has
-   a background. */
-.wp-block-create-block-my-handdrawn-card.is-draw-animated > :not(svg) {
+.wp-block-create-block-my-handdrawn-card.is-draw-pending > :not(svg) {
 	transition: opacity 0.3s ease 0.4s;
 }
 
-.wp-block-create-block-my-handdrawn-card.is-draw-animated:not(.is-drawn) > :not(svg) {
+.wp-block-create-block-my-handdrawn-card.is-draw-pending:not(.is-drawn) > :not(svg) {
 	opacity: 0;
 }
 
-/* Never leave the line, fill or content hidden: no motion, or no script to draw
-   it. (After the rules above, so it wins.) */
+/* Safety net: never leave anything hidden with reduced motion or without
+   the script (view.js doesn't mark cards pending in those cases anyway). */
 @media (prefers-reduced-motion: reduce), (scripting: none) {
 	.wp-block-create-block-my-handdrawn-card.is-draw-animated > svg {
 		visibility: visible !important;

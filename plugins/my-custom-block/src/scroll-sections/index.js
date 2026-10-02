@@ -38,7 +38,7 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Image" initialOpen={true}>
+					<PanelBody title="Bild" initialOpen={true}>
 						{image?.url && (
 							<img
 								src={image.url}

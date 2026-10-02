@@ -20,22 +20,22 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Number Settings">
+					<PanelBody title="Siffra">
 						<NumberControl
-							label="Number"
+							label="Siffra"
 							value={number}
 							onChange={(val) =>
 								setAttributes({ number: parseInt(val, 10) || 0 })
 							}
 						/>
 						<TextControl
-							label="Suffix"
+							label="Efter siffran"
 							value={suffix}
 							onChange={(val) => setAttributes({ suffix: val })}
-							help="Text to append after number (e.g., +, k, %)"
+							help="Text efter siffran, t.ex. +, k eller %"
 						/>
 						<TextControl
-							label="Description"
+							label="Beskrivning"
 							value={description}
 							onChange={(val) => setAttributes({ description: val })}
 						/>

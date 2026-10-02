@@ -3,14 +3,22 @@
 	"apiVersion": 3,
 	"name": "my-custom-block/animation-arrow",
 	"version": "0.1.0",
-	"title": "Animated Arrow",
-	"category": "layout",
+	"title": "Animerad pil",
+	"category": "beegleton-content",
 	"icon": "arrow-right-alt",
-	"description": "An animated arrow with lottiefiles animation.",
+	"description": "Handritad pil som ritas fram vid scroll.",
+	"keywords": [
+		"pil",
+		"arrow",
+		"animation"
+	],
 	"supports": {
 		"html": false,
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"layout": {
 			"allowEditing": true,
 			"allowInheriting": true

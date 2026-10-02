@@ -3,13 +3,20 @@
 	"apiVersion": 3,
 	"name": "create-block/my-footer-block",
 	"version": "0.1.0",
-	"title": "My Footer Block",
-	"category": "theme",
+	"title": "Sidfot",
+	"category": "beegleton-site",
 	"icon": "layout",
-	"description": "Custom footer made for Beegleton with dynamic columns.",
+	"description": "Webbplatsens sidfot. Används i mallen för sidfoten.",
+	"keywords": [
+		"sidfot",
+		"footer"
+	],
 	"example": {},
 	"supports": {
-		"align": [ "full", "wide" ],
+		"align": [
+			"full",
+			"wide"
+		],
 		"html": false
 	},
 	"attributes": {
@@ -20,6 +27,9 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": [ "file:./index.css", "file:./style-index.css" ],
+	"style": [
+		"file:./index.css",
+		"file:./style-index.css"
+	],
 	"viewScript": "file:./view.js"
 }

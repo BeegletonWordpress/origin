@@ -35,9 +35,9 @@ registerBlockType( metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Slider Settings">
+					<PanelBody title="Slinga">
 						<ToggleControl
-							label="Autoplay"
+							label="Spela automatiskt"
 							checked={ autoplay }
 							onChange={ ( val ) =>
 								setAttributes( { autoplay: val } )
@@ -46,17 +46,17 @@ registerBlockType( metadata.name, {
 						{ autoplay && (
 							<>
 								<RangeControl
-									label="Scroll Speed"
+									label="Hastighet"
 									value={ scrollSpeed }
 									onChange={ ( val ) =>
 										setAttributes( { scrollSpeed: val } )
 									}
 									min={ 10 }
 									max={ 200 }
-									help="Pixels per second (lower is faster)"
+									help="Pixlar per sekund (lägre är snabbare)"
 								/>
 								<ToggleControl
-									label="Pause on Hover"
+									label="Pausa när muspekaren är över"
 									checked={ pauseOnHover }
 									onChange={ ( val ) =>
 										setAttributes( { pauseOnHover: val } )

@@ -3,10 +3,16 @@
 	"apiVersion": 3,
 	"name": "create-block/my-small-handdrawn-card",
 	"version": "0.1.0",
-	"title": "My Small Handdrawn Card",
-	"category": "theme",
+	"title": "Litet handritat kort",
+	"category": "beegleton-content",
 	"icon": "admin-page",
-	"description": "A small custom card with an irregular, hand-drawn look.",
+	"description": "Litet kort med handritad ring runt rubriken.",
+	"keywords": [
+		"kort",
+		"card",
+		"handritad",
+		"ring"
+	],
 	"example": {
 		"attributes": {
 			"backgroundColor": "primary"
@@ -22,7 +28,11 @@
 			"padding": true,
 			"margin": true
 		},
-		"align": ["left", "center", "right"],
+		"align": [
+			"left",
+			"center",
+			"right"
+		],
 		"html": false,
 		"typography": {
 			"fontSize": true,
@@ -66,6 +76,9 @@
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"render": "file:./render.php",
-	"style": ["file:./index.css", "file:./style-index.css"],
+	"style": [
+		"file:./index.css",
+		"file:./style-index.css"
+	],
 	"editorStyle": "file:./editor.css"
 }

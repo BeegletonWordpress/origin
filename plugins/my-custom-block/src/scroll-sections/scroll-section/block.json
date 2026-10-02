@@ -3,11 +3,17 @@
 	"apiVersion": 3,
 	"name": "create-block/scroll-section",
 	"version": "0.1.0",
-	"title": "Scroll Section",
-	"category": "theme",
+	"title": "Scrollsektion",
+	"category": "beegleton-layout",
 	"icon": "editor-insertmore",
-	"description": "One content section with its own image, used inside the Scroll Sections block.",
-	"parent": ["create-block/scroll-sections"],
+	"description": "En sektion i Scrollsektioner.",
+	"keywords": [
+		"scroll",
+		"sektion"
+	],
+	"parent": [
+		"create-block/scroll-sections"
+	],
 	"attributes": {
 		"image": {
 			"type": "object"
@@ -22,4 +28,4 @@
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"style": "file:./style.css"
-} 
+}

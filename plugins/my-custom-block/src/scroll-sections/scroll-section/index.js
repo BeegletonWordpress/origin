@@ -53,17 +53,17 @@ registerBlockType(metadata.name, {
 				</div>
 				<InspectorControls>
 					<PanelColorSettings
-						title="Divider Color"
+						title="Avdelarens färg"
 						colorSettings={[
 							{
 								value: dividerColor,
 								onChange: (val) =>
 									setAttributes({ dividerColor: val }),
-								label: "Divider Color",
+								label: "Avdelarens färg",
 							},
 						]}
 					/>
-					<PanelBody title="Section Image" initialOpen={true}>
+					<PanelBody title="Sektionens bild" initialOpen={true}>
 						{image?.url && (
 							<img
 								src={image.url}
@@ -110,7 +110,7 @@ registerBlockType(metadata.name, {
 					<img
 						src={image.url}
 						alt=""
-						title="Shown on the front end while this section is in view"
+						title="Visas på webbplatsen medan sektionen syns"
 						className="absolute top-16 right-0 w-12 h-12 object-cover rounded shadow border-2 border-white"
 					/>
 				)}

@@ -102,48 +102,48 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Card Settings">
+					<PanelBody title="Kortinställningar">
 						<SelectControl
-							label="Card Layout"
+							label="Layout"
 							value={cardLayout || "buzz"}
 							options={[
 								{ label: "Buzz", value: "buzz" },
 								{ label: "Build", value: "build" },
 								{ label: "Boost", value: "boost" },
-								{ label: "Small", value: "small" },
+								{ label: "Liten", value: "small" },
 							]}
 							onChange={(newLayout) => setAttributes({ cardLayout: newLayout })}
 						/>
 						<SelectControl
-							label="Card Shape"
+							label="Form"
 							value={cardShape || "shape1"}
 							options={[
-								{ label: "Shape 1", value: "shape1" },
-								{ label: "Shape 2", value: "shape2" },
-								{ label: "Shape 3", value: "shape3" },
+								{ label: "Form 1", value: "shape1" },
+								{ label: "Form 2", value: "shape2" },
+								{ label: "Form 3", value: "shape3" },
 							]}
 							onChange={(newShape) => setAttributes({ cardShape: newShape })}
 						/>
 						<ToggleControl
-							label="Draw-in animation"
-							help="Draws the line when the card scrolls into view."
+							label="Ritanimation"
+							help="Ritar fram ramen när kortet scrollas in i bild."
 							checked={!!drawAnimation}
 							onChange={(value) => setAttributes({ drawAnimation: value })}
 						/>
 					</PanelBody>
 					<PanelColorSettings
-						title="Card background"
+						title="Kortets bakgrund"
 						colorSettings={[
 							{
 								value: cardFill,
 								onChange: (value) => setAttributes({ cardFill: value }),
-								label: "Fill color",
+								label: "Bakgrundsfärg",
 							},
 						]}
 					>
 						<p className="components-base-control__help">
-							Fills the area inside the hand-drawn border. The border's own
-							colour is the Background colour under Styles.
+							Fyller ytan innanför den handritade ramen. Ramens egen färg
+							väljs under Stilar → Bakgrund.
 						</p>
 					</PanelColorSettings>
 				</InspectorControls>

@@ -69,8 +69,6 @@ registerBlockType(metadata.name, {
 				document.querySelector('iframe[name="editor-canvas"]')?.contentDocument
 					?.body || document.body;
 
-			console.log("Applying theme colors to editor canvas:", canvas);
-
 			canvas.style.setProperty("--page-theme-bg", activeTheme.bg);
 			canvas.style.setProperty("--page-theme-text", activeTheme.text);
 			canvas.style.setProperty("--page-theme-svg", svgColor || activeTheme.svg);
@@ -113,26 +111,26 @@ registerBlockType(metadata.name, {
 					</BlockControls>
 				)}
 				<InspectorControls>
-					<PanelBody title="Theme Selection">
+					<PanelBody title="Utseende">
 						<SelectControl
-							label="Hero Theme"
+							label="Tema"
 							value={theme}
 							options={[
-								{ label: "Default (Accent 1)", value: "default" },
-								{ label: "Dark 1 (Dark Gray/Blue)", value: "dark_1" },
-								{ label: "Dark 2 (Dark Gray/Yellow)", value: "dark_2" },
-								{ label: "Light 1 (Light Yellow/Blue)", value: "light_1" },
-								{ label: "Light 2 (Light Yellow/Yellow)", value: "light_2" },
+								{ label: "Standard (Accent 1)", value: "default" },
+								{ label: "Mörk 1 (mörkgrå/blå)", value: "dark_1" },
+								{ label: "Mörk 2 (mörkgrå/gul)", value: "dark_2" },
+								{ label: "Ljus 1 (ljusgul/blå)", value: "light_1" },
+								{ label: "Ljus 2 (ljusgul/gul)", value: "light_2" },
 							]}
 							onChange={(value) => setAttributes({ theme: value })}
 						/>
 						<ToggleControl
-							label="Flip Layout (Image on Left)"
+							label="Spegelvänd (bild till vänster)"
 							checked={reverseLayout}
 							onChange={(value) => setAttributes({ reverseLayout: value })}
 						/>
 						<SelectControl
-							label="Content Width"
+							label="Innehållets bredd"
 							value={contentWidth}
 							options={[
 								{ label: "40%", value: 40 },
@@ -144,18 +142,18 @@ registerBlockType(metadata.name, {
 						/>						
 					</PanelBody>
 					<PanelColorSettings
-						title="SVG Color"
+						title="Färger"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Override Theme Underline Color",
+								label: "Understrykningens färg (ersätter temats)",
 							},
 						]}
 					/>
 					{imageUrl && (
 						<PanelColorGradientSettings
-							title="Image Overlay"
+							title="Overlay"
 							settings={[
 								{
 									label: "Overlay",
@@ -181,7 +179,7 @@ registerBlockType(metadata.name, {
 						>
 							{(overlayColor || overlayGradient) && (
 								<RangeControl
-									label="Overlay Opacity"
+									label="Overlayens täckning"
 									value={overlayOpacity}
 									onChange={(value) =>
 										setAttributes({ overlayOpacity: value })
@@ -214,21 +212,21 @@ registerBlockType(metadata.name, {
 									tagName="p"
 									value={tagline}
 									onChange={(value) => setAttributes({ tagline: value })}
-									placeholder="Tagline..."
+									placeholder="Tagline…"
 									className="has-cas-red-ink-font-family text-5xl"
 								/>
 								<RichText
 									tagName="h1"
 									value={title}
 									onChange={(value) => setAttributes({ title: value })}
-									placeholder="Hero Title"
+									placeholder="Rubrik"
 									className="text-pretty whitespace-nowrap"
 								/>
 								<RichText
 									tagName="h2"
 									value={subheader}
 									onChange={(value) => setAttributes({ subheader: value })}
-									placeholder="Optional subheader..."
+									placeholder="Underrubrik (valfri)…"
 								/>
 								<div className="scale-125 -rotate-2">
 									<UnderlineSVG color={svgColor || activeTheme.svg} />
@@ -276,7 +274,7 @@ registerBlockType(metadata.name, {
 									onSelect={onSelectImage}
 									allowedTypes={["image"]}
 									multiple={false}
-									labels={{ title: "Select Image" }}
+									labels={{ title: "Välj bild" }}
 								/>
 							)}
 						</div>

@@ -3,13 +3,27 @@
 	"apiVersion": 3,
 	"name": "create-block/customer-case-hero",
 	"version": "0.1.0",
-	"title": "Customer Case Hero",
-	"category": "theme",
+	"title": "Kundcasets hjälte",
+	"category": "beegleton-hero",
 	"icon": "welcome-widgets-menus",
-	"description": "A hero block for customer case study pages.",
+	"description": "Toppsektion för kundcase med casets titel, tagline och bild.",
+	"keywords": [
+		"hero",
+		"kundcase",
+		"case",
+		"topp"
+	],
+	"example": {
+		"attributes": {
+			"tagline": "Så hjälpte vi kunden"
+		}
+	},
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"],
+		"align": [
+			"full",
+			"wide"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true

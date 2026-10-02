@@ -3,10 +3,20 @@
 	"apiVersion": 3,
 	"name": "create-block/label",
 	"version": "0.1.0",
-	"title": "Label",
-	"category": "theme",
+	"title": "Etikett",
+	"category": "beegleton-content",
 	"icon": "tag",
-	"description": "A small text label with an editable hand-drawn dashed border and colors.",
+	"description": "Liten handritad etikett med text.",
+	"keywords": [
+		"etikett",
+		"label",
+		"tagg"
+	],
+	"example": {
+		"attributes": {
+			"text": "Etikett"
+		}
+	},
 	"attributes": {
 		"text": {
 			"type": "string",
@@ -28,5 +38,5 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-    "style": "file:./style.css"
+	"style": "file:./style.css"
 }

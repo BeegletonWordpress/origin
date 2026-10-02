@@ -3,15 +3,21 @@
 	"apiVersion": 3,
 	"name": "create-block/my-count-up-numbers-item",
 	"version": "0.1.0",
-	"title": "Count Up Number Item",
-	"category": "theme",
+	"title": "Siffra",
+	"category": "beegleton-content",
 	"icon": "money",
-	"description": "Individual number item within count up numbers block.",
+	"description": "En räknande siffra med beskrivning.",
+	"keywords": [
+		"siffra",
+		"nummer"
+	],
 	"example": {},
 	"supports": {
 		"html": false
 	},
-	"parent": ["create-block/my-count-up-numbers-inner"],
+	"parent": [
+		"create-block/my-count-up-numbers-inner"
+	],
 	"attributes": {
 		"number": {
 			"type": "number",
@@ -28,6 +34,8 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": ["file:./style-index.css"],
+	"style": [
+		"file:./style-index.css"
+	],
 	"render": "file:./render.php"
 }

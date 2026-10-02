@@ -102,7 +102,7 @@ registerBlockType( metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Logo Settings">
+					<PanelBody title="Logotyp">
 						<div style={ { marginBottom: '20px' } }>
 							<label
 								style={ {

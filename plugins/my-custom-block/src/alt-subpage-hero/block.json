@@ -3,13 +3,28 @@
 	"apiVersion": 3,
 	"name": "create-block/alt-subpage-hero",
 	"version": "0.1.0",
-	"title": "Alt Subpage Hero",
-	"category": "theme",
+	"title": "Undersidans hjälte – alternativ",
+	"category": "beegleton-hero",
 	"icon": "welcome-widgets-menus",
-	"description": "A hero block with optional right column for centered header layout.",
+	"description": "Alternativ toppsektion för undersidor med tagline, rubrik och valfri högerkolumn.",
+	"keywords": [
+		"hero",
+		"topp",
+		"undersida",
+		"alternativ"
+	],
+	"example": {
+		"attributes": {
+			"tagline": "Vi hjälper dig",
+			"title": "Rubrik för sidan"
+		}
+	},
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"],
+		"align": [
+			"full",
+			"wide"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true

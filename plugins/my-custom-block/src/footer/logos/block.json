@@ -3,16 +3,26 @@
 	"apiVersion": 3,
 	"name": "create-block/my-footer-logos",
 	"version": "0.1.0",
-	"title": "My Footer Logos",
-	"category": "theme",
+	"title": "Sidfotslogotyper",
+	"category": "beegleton-site",
 	"icon": "layout",
-	"description": "Logo column within the footer.",
+	"description": "Logotyper i sidfoten.",
+	"keywords": [
+		"sidfot",
+		"logotyper"
+	],
 	"example": {},
 	"supports": {
 		"html": false
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": [ "file:./index.css", "file:./style-index.css" ],
-	"viewScript": "file:./view.js"
+	"style": [
+		"file:./index.css",
+		"file:./style-index.css"
+	],
+	"viewScript": "file:./view.js",
+	"ancestor": [
+		"create-block/my-footer-block"
+	]
 }

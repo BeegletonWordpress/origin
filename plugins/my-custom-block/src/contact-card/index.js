@@ -119,7 +119,7 @@ registerBlockType(metadata.name, {
 		);
 
 		const staffOptions = [
-			{ label: "Manual Entry", value: 0 },
+			{ label: "Fyll i manuellt", value: 0 },
 			...(staffMembers?.map((post) => ({
 				label: post.title.rendered,
 				value: post.id,
@@ -172,55 +172,55 @@ registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				<InspectorControls>
-					<PanelBody title="Card Settings">
+					<PanelBody title="Kortinställningar">
 						<SelectControl
-							label="Card Shape"
+							label="Form"
 							value={cardShape}
 							options={[
-								{ label: "Shape 1", value: "shape1" },
-								{ label: "Shape 2", value: "shape2" },
-								{ label: "Shape 3", value: "shape3" },
+								{ label: "Form 1", value: "shape1" },
+								{ label: "Form 2", value: "shape2" },
+								{ label: "Form 3", value: "shape3" },
 							]}
 							onChange={(val) => setAttributes({ cardShape: val })}
 						/>
 						<SelectControl
-							label="Sync with Staff Member"
+							label="Hämta från medarbetare"
 							value={staffMemberId}
 							options={staffOptions}
 							onChange={handleStaffChange}
 						/>
 						<TextControl
-							label="Name"
+							label="Namn"
 							value={name || ""}
 							onChange={(val) => setAttributes({ name: val })}
 						/>
 						<TextControl
-							label="Role"
+							label="Roll"
 							value={role || ""}
 							onChange={(val) => setAttributes({ role: val })}
 						/>
 						<TextControl
-							label="Email"
+							label="E-post"
 							value={email || ""}
 							onChange={(val) => setAttributes({ email: val })}
 						/>
 						<TextControl
-							label="Phone"
+							label="Telefon"
 							value={phone || ""}
 							onChange={(val) => setAttributes({ phone: val })}
 						/>
 					</PanelBody>
 					<PanelColorSettings
-						title="SVG Color"
+						title="Färger"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (val) => setAttributes({ svgColor: val }),
-								label: "Border Color",
+								label: "Ramens färg",
 							},
 						]}
 					/>
-					<PanelBody title="Images">
+					<PanelBody title="Bilder">
 						<div className="mb-4">
 							<label className="block mb-2">Normal Image</label>
 							{imageNormal ? (

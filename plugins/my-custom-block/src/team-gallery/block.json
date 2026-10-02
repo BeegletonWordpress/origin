@@ -3,10 +3,17 @@
 	"apiVersion": 3,
 	"name": "create-block/team-gallery",
 	"version": "0.1.0",
-	"title": "Team Gallery",
-	"category": "theme",
+	"title": "Teamgalleri",
+	"category": "beegleton-content",
 	"icon": "grid-view",
-	"description": "Displays team members in a responsive grid.",
+	"description": "Galleri med medarbetare, med bläddring.",
+	"keywords": [
+		"team",
+		"medarbetare",
+		"galleri",
+		"personal"
+	],
+	"example": {},
 	"attributes": {
 		"postsPerPage": {
 			"type": "number",
@@ -35,7 +42,10 @@
 	},
 	"supports": {
 		"interactivity": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"spacing": {
 			"margin": true,

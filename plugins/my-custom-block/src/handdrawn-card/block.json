@@ -3,10 +3,16 @@
 	"apiVersion": 3,
 	"name": "create-block/my-handdrawn-card",
 	"version": "0.1.0",
-	"title": "My Handdrawn Card",
-	"category": "theme",
+	"title": "Handritat kort",
+	"category": "beegleton-content",
 	"icon": "admin-page",
-	"description": "A custom card with an irregular, hand-drawn look.",
+	"description": "Kort med handritad ram, valfri bakgrundsfärg och ritanimation.",
+	"keywords": [
+		"kort",
+		"card",
+		"handritad",
+		"ram"
+	],
 	"example": {
 		"attributes": {
 			"backgroundColor": "primary"
@@ -22,7 +28,11 @@
 			"padding": true,
 			"margin": true
 		},
-		"align": [ "left", "center", "right" ],
+		"align": [
+			"left",
+			"center",
+			"right"
+		],
 		"html": false,
 		"typography": {
 			"fontSize": true,
@@ -60,7 +70,10 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": [ "file:./index.css", "file:./style-index.css" ],
+	"style": [
+		"file:./index.css",
+		"file:./style-index.css"
+	],
 	"editorStyle": "file:./editor.css",
 	"viewScript": "file:./view.js"
 }
