@@ -91,6 +91,14 @@ const { state, actions } = store("team-gallery", {
 
 			return context.currentPage >= context.maxPages;
 		},
+
+		// Announced to screen readers after paging (visually hidden live
+		// region next to the arrows).
+		get pageStatus() {
+			const context = getContext();
+
+			return `Sida ${context.currentPage} av ${context.maxPages}`;
+		},
 	},
 
 	actions: {

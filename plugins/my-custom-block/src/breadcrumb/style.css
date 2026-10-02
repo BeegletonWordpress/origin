@@ -25,8 +25,11 @@
   font-weight: 700;
 }
 
+/* The current page is dimmed, but stays at ≥4.5:1 contrast (WCAG 1.4.3):
+   0.85 gives about 6.9:1 on the cream background and 4.6:1 on yellow
+   Accent 1 (0.6 was 3.4:1). */
 .rank-math-breadcrumb > p > :last-child {
-  opacity: 0.6;
+  opacity: 0.85;
 }
 
 .rank-math-breadcrumb .home {

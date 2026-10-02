@@ -130,6 +130,29 @@ function mcb_hide_site_structure_blocks( $allowed_blocks, $context ) {
 add_filter( 'allowed_block_types_all', 'mcb_hide_site_structure_blocks', 20, 2 );
 
 /**
+ * Remove empty links left behind by rich-text editing (a link applied, then
+ * its text retyped or replaced, can leave <a href="…"></a> next to the real
+ * link). Screen readers announce those as just "link" (WCAG 2.4.4, 4.1.2).
+ * Only links with nothing but an href and no content are removed, so icon
+ * links (with a class, aria-label, title …) are never touched. Render-time
+ * only: saved content and block validation are unchanged.
+ */
+const MCB_EMPTY_LINK_BLOCKS = [
+	'create-block/contact-info',
+	'core/paragraph',
+	'core/heading',
+	'core/list-item',
+];
+
+function mcb_strip_empty_links( $block_content, $block ) {
+	if ( ! in_array( $block['blockName'] ?? '', MCB_EMPTY_LINK_BLOCKS, true ) || false === stripos( $block_content, '</a>' ) ) {
+		return $block_content;
+	}
+	return preg_replace( '#<a\s+href="[^"]*"\s*>\s*</a>#i', '', $block_content );
+}
+add_filter( 'render_block', 'mcb_strip_empty_links', 10, 2 );
+
+/**
  * Fluid spacing preset overrides (--wp--preset--spacing--20…80), so every
  * block using the spacing presets gets the same, smaller fluid values.
  *

@@ -11,6 +11,14 @@ import metadata from "./block.json";
 import "./style-index.css";
 import "./editor.css";
 
+// Rich-text editing can leave an empty link (<a href="…"></a>) next to the
+// real one, which screen readers announce as just "link". Strip those before
+// saving; links with any other attribute or content are kept.
+const stripEmptyLinks = (value) =>
+	typeof value === "string"
+		? value.replace(/<a\s+href="[^"]*"\s*>\s*<\/a>/gi, "")
+		: value;
+
 registerBlockType(metadata.name, {
 	edit: ({ attributes, setAttributes }) => {
 		const { imageId, imageUrl, imageAlt, header, paragraph } = attributes;
@@ -87,14 +95,14 @@ registerBlockType(metadata.name, {
 					<RichText
 						tagName="h3"
 						value={header}
-						onChange={(val) => setAttributes({ header: val })}
+						onChange={(val) => setAttributes({ header: stripEmptyLinks(val) })}
 						placeholder="Rubrik…"
 						className="has-cas-red-ink-font-family text-4xl! capitalize! font-bold! row-start-1 col-start-2"
 					/>
 					<RichText
 						tagName="p"
 						value={paragraph}
-						onChange={(val) => setAttributes({ paragraph: val })}
+						onChange={(val) => setAttributes({ paragraph: stripEmptyLinks(val) })}
 						placeholder="Text…"
 						className="text-base row-start-2 col-span-2 md:col-span-1 md:col-start-2"
 					/>

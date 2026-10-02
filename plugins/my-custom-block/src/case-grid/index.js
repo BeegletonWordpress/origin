@@ -155,8 +155,8 @@ registerBlockType(metadata.name, {
 					<div {...innerBlocksProps}>
 						{isCarousel && (
 							<p className="text-sm opacity-60 mb-4">
-								Carousel mode: arrows appear on the published page — this
-								preview shows all matching cases.
+								Karuselläge: pilarna visas på den publicerade sidan – här
+								visas alla matchande kundcase.
 							</p>
 						)}
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-12 pointer-events-none">
@@ -180,7 +180,7 @@ registerBlockType(metadata.name, {
 										)}
 
 										{post.meta?.hero_tagline && (
-											<p className="text-sm opacity-60 mb-1">
+											<p className="text-sm opacity-85 mb-1">
 												{post.title?.rendered || "(No Title)"}
 											</p>
 										)}
