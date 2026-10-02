@@ -3,12 +3,19 @@
 	"apiVersion": 3,
 	"name": "create-block/my-header-block",
 	"version": "0.1.0",
-	"title": "My Header Block",
-	"category": "theme",
+	"title": "Sidhuvud",
+	"category": "beegleton-site",
 	"icon": "layout",
-	"description": "Custom header recreated from Gutenberg design.",
+	"description": "Webbplatsens sidhuvud med logotyp och meny. Används i mallen för sidhuvudet.",
+	"keywords": [
+		"sidhuvud",
+		"header",
+		"meny"
+	],
 	"supports": {
-		"align": ["full"],
+		"align": [
+			"full"
+		],
 		"color": {
 			"background": true,
 			"text": false,
@@ -63,7 +70,10 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": ["file:./index.css", "file:./style-index.css"],
+	"style": [
+		"file:./index.css",
+		"file:./style-index.css"
+	],
 	"editorStyle": "file:./editor.css",
 	"viewScript": "file:./view.js"
 }

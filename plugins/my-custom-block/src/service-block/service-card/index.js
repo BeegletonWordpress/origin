@@ -60,13 +60,13 @@ registerBlockType(metadata.name, {
 			<>
 				<InspectorControls>
 					<PanelColorSettings
-						title="Border Color"
+						title="Ramens färg"
 						colorSettings={[
 							{
 								value: strokeColor,
 								onChange: (color) =>
 									setAttributes({ strokeColor: color || metadata.attributes.strokeColor.default }),
-								label: "Hand-drawn border color",
+								label: "Färg på den handritade ramen",
 							},
 						]}
 					/>

@@ -3,10 +3,36 @@
 	"apiVersion": 3,
 	"name": "create-block/my-svg-background-container",
 	"version": "0.1.0",
-	"title": "SVG Background Container",
-	"category": "layout",
+	"title": "Container med bakgrundsform",
+	"category": "beegleton-layout",
 	"icon": "cover-image",
-	"description": "A container with the Team Gallery's hand-drawn SVG shape as its background. Put any blocks on top of it.",
+	"description": "Sektion med en stor handritad form (Splash eller Penseldrag) bakom valfritt innehåll.",
+	"keywords": [
+		"container",
+		"sektion",
+		"form",
+		"bakgrund",
+		"svg",
+		"splash",
+		"penseldrag"
+	],
+	"example": {
+		"innerBlocks": [
+			{
+				"name": "core/heading",
+				"attributes": {
+					"content": "Rubrik över formen",
+					"textAlign": "center"
+				}
+			},
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "Valfritt innehåll ovanpå bakgrundsformen."
+				}
+			}
+		]
+	},
 	"attributes": {
 		"align": {
 			"type": "string",
@@ -23,12 +49,19 @@
 		"shape": {
 			"type": "string",
 			"default": "splash"
+		},
+		"drawAnimation": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"supports": {
 		"html": false,
 		"anchor": true,
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"layout": {
 			"default": {
 				"type": "constrained"
@@ -47,5 +80,6 @@
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
 }

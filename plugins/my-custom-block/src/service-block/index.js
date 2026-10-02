@@ -47,7 +47,7 @@ registerBlockType(metadata.name, {
 							{
 								value: themeColor,
 								onChange: (val) => setAttributes({ themeColor: val || "" }),
-								label: __("Stroke & accent color"),
+								label: __("Linje- och accentfärg"),
 							},
 						]}
 					/>

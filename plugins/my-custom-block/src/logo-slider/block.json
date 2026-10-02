@@ -3,17 +3,26 @@
 	"apiVersion": 3,
 	"name": "create-block/my-logo-slider",
 	"version": "0.1.0",
-	"title": "My Logo Slider",
-	"category": "theme",
+	"title": "Logotypslinga",
+	"category": "beegleton-content",
 	"icon": "layout",
-	"description": "Logo slider block.",
+	"description": "Logotyper som rullar förbi i en oändlig slinga.",
+	"keywords": [
+		"logotyper",
+		"logo",
+		"slider",
+		"kunder"
+	],
 	"example": {},
 	"supports": {
 		"color": {
 			"background": true
 		},
 		"html": false,
-		"align": ["full", "wide"]
+		"align": [
+			"full",
+			"wide"
+		]
 	},
 	"attributes": {
 		"autoplay": {
@@ -31,6 +40,9 @@
 	},
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
-	"style": ["file:./index.css", "file:./style-index.css"],
+	"style": [
+		"file:./index.css",
+		"file:./style-index.css"
+	],
 	"viewScript": "file:./view.js"
 }

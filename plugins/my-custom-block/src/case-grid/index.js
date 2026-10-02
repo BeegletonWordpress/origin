@@ -99,7 +99,7 @@ registerBlockType(metadata.name, {
 		return (
 			<div {...blockProps}>
 				<InspectorControls>
-					<PanelBody title="Grid Settings">
+					<PanelBody title="Rutnät">
 						<QueryControls
 							numberOfItems={postsPerPage}
 							onNumberOfItemsChange={(val) =>
@@ -107,12 +107,12 @@ registerBlockType(metadata.name, {
 							}
 						/>
 						<ToggleControl
-							label="Show Button"
+							label="Visa knapp"
 							checked={showButton}
 							onChange={(val) => setAttributes({ showButton: val })}
 						/>
 						<ToggleControl
-							label="Enable Carousel"
+							label="Visa som karusell"
 							help={
 								isCarousel
 									? "Cases scroll with next/prev arrows on the front end. Number of items above sets items per page."
@@ -122,7 +122,7 @@ registerBlockType(metadata.name, {
 							onChange={(val) => setAttributes({ isCarousel: val })}
 						/>
 					</PanelBody>
-					<PanelBody title="Categories" initialOpen={true}>
+					<PanelBody title="Kategorier" initialOpen={true}>
 						<p>
 							Välj vilka kategorier som ska visas. 
 							Om inga är markerade visas alla inlägg.
@@ -148,7 +148,7 @@ registerBlockType(metadata.name, {
 				{!hasResolved ? (
 					<Placeholder
 						icon={<Spinner />}
-						label="Fetching Cases..."
+						label="Hämtar kundcase…"
 						className="min-h-50"
 					/>
 				) : posts?.length > 0 ? (

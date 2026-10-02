@@ -141,9 +141,9 @@ registerBlockType( metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="SVG Position" initialOpen={true}>
+					<PanelBody title="Formens position" initialOpen={true}>
 						<RangeControl
-							label="Horizontal position"
+							label="Vågrät position"
 							value={svgOffsetX}
 							onChange={(value) =>
 								setAttributes({ svgOffsetX: value })
@@ -154,7 +154,7 @@ registerBlockType( metadata.name, {
 						/>
 
 						<RangeControl
-							label="Vertical position"
+							label="Lodrät position"
 							value={svgOffsetY}
 							onChange={(value) =>
 								setAttributes({ svgOffsetY: value })
@@ -165,7 +165,7 @@ registerBlockType( metadata.name, {
 						/>
 					</PanelBody>
 
-					<PanelBody title="SVG Direction" initialOpen={false}>
+					<PanelBody title="Formens riktning" initialOpen={false}>
 						<RangeControl
 							label="Rotation"
 							value={svgRotation}
@@ -178,7 +178,7 @@ registerBlockType( metadata.name, {
 						/>
 
 						<ToggleControl
-							label="Flip horizontally"
+							label="Spegelvänd vågrätt"
 							checked={svgFlipX}
 							onChange={(value) =>
 								setAttributes({ svgFlipX: value })
@@ -186,7 +186,7 @@ registerBlockType( metadata.name, {
 						/>
 
 						<ToggleControl
-							label="Flip vertically"
+							label="Spegelvänd lodrätt"
 							checked={svgFlipY}
 							onChange={(value) =>
 								setAttributes({ svgFlipY: value })

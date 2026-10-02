@@ -1,5 +1,5 @@
 /**
- * "Flying bee" switch in the document sidebar of Customer Cases and Posts.
+ * "Flygande bi" switch in the document sidebar of Customer Cases and Posts.
  * Stores the mcb_bee_flight post meta; my-custom-block.php
  * (mcb_bee_flight_post_content) then lets the Bee Flight Container's bee fly
  * through that post's content on the frontend.
@@ -25,10 +25,10 @@ const BeeFlightPanel = () => {
 	}
 
 	return (
-		<PluginDocumentSettingPanel name="mcb-bee-flight" title="Flying bee">
+		<PluginDocumentSettingPanel name="mcb-bee-flight" title="Flygande bi">
 			<ToggleControl
-				label="Show the flying bee"
-				help="A bee flies through the content as visitors scroll, landing on the last button."
+				label="Visa det flygande biet"
+				help="Ett bi flyger genom innehållet när besökaren scrollar och landar på sista knappen."
 				checked={!!meta?.[META_KEY]}
 				onChange={(value) => setMeta({ ...meta, [META_KEY]: value })}
 			/>

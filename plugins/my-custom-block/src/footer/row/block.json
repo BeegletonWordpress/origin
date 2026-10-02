@@ -3,12 +3,18 @@
 	"apiVersion": 3,
 	"name": "create-block/my-footer-row",
 	"version": "0.1.0",
-	"title": "My Footer Row",
-	"category": "theme",
+	"title": "Sidfotsrad",
+	"category": "beegleton-site",
 	"icon": "minus",
-	"description": "A row inside the custom footer.",
-	"parent": [ "create-block/my-footer-block" ],
+	"description": "En rad i sidfoten.",
+	"keywords": [
+		"sidfot",
+		"rad"
+	],
 	"example": {},
+	"parent": [
+		"create-block/my-footer-block"
+	],
 	"supports": {
 		"html": false,
 		"spacing": {

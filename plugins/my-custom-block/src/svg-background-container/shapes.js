@@ -3,9 +3,16 @@
  * is saved into the container's content, so changing one breaks validation
  * of containers saved with it; add a new entry instead.
  *
- * "Brush stroke" is shapes/brush-stroke.svg (kept for reference, not loaded
+ * "Penseldrag" is shapes/brush-stroke.svg (kept for reference, not loaded
  * at runtime) with its fill set to currentColor, so the SVG Color picker
  * applies, and its fixed width/height removed, so CSS sizes it.
+ *
+ * line: true marks a shape that is a stroked line, which can use the
+ * "Draw-in animation" (the same effect as My Handdrawn Card's border, see
+ * src/draw-in.js). Filled shapes can't be drawn in, so they're line: false.
+ * A line shape is one or more <path>s with fill="none",
+ * stroke="currentColor" and a strokeWidth (optionally
+ * vectorEffect="non-scaling-stroke").
  */
 import { TEAM_BACKGROUND_SVG } from "../constants";
 
@@ -25,6 +32,6 @@ const BRUSH_STROKE_SVG = (
 export const DEFAULT_SHAPE = "splash";
 
 export const SHAPES = {
-	splash: { label: "Splash", svg: TEAM_BACKGROUND_SVG },
-	brush: { label: "Brush stroke", svg: BRUSH_STROKE_SVG },
+	splash: { label: "Splash", svg: TEAM_BACKGROUND_SVG, line: false },
+	brush: { label: "Penseldrag", svg: BRUSH_STROKE_SVG, line: false },
 };

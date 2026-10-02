@@ -31,7 +31,7 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Image">
+					<PanelBody title="Bild">
 						<MediaUploadCheck>
 							<MediaUpload
 								onSelect={onSelectImage}
@@ -88,14 +88,14 @@ registerBlockType(metadata.name, {
 						tagName="h3"
 						value={header}
 						onChange={(val) => setAttributes({ header: val })}
-						placeholder="Header..."
+						placeholder="Rubrik…"
 						className="has-cas-red-ink-font-family text-4xl! capitalize! font-bold! row-start-1 col-start-2"
 					/>
 					<RichText
 						tagName="p"
 						value={paragraph}
 						onChange={(val) => setAttributes({ paragraph: val })}
-						placeholder="Paragraph text..."
+						placeholder="Text…"
 						className="text-base row-start-2 col-span-2 md:col-span-1 md:col-start-2"
 					/>
 				</div>

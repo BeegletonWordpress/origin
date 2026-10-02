@@ -3,17 +3,25 @@
 	"apiVersion": 3,
 	"name": "create-block/scroll-sections",
 	"version": "0.1.0",
-	"title": "Scroll Sections",
-	"category": "theme",
+	"title": "Scrollsektioner",
+	"category": "beegleton-layout",
 	"icon": "align-pull-left",
-	"description": "A sticky image on the left with a list of content sections on the right.",
+	"description": "Sektioner som byts ut när man scrollar.",
+	"keywords": [
+		"scroll",
+		"sektioner",
+		"animation"
+	],
 	"attributes": {
 		"image": {
 			"type": "object"
 		}
 	},
 	"supports": {
-		"align": ["wide", "full"],
+		"align": [
+			"wide",
+			"full"
+		],
 		"html": false,
 		"spacing": {
 			"margin": true,

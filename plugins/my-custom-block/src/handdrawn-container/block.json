@@ -3,14 +3,23 @@
 	"apiVersion": 3,
 	"name": "my-custom-block/handdrawn-container",
 	"version": "0.1.0",
-	"title": "Handdrawn Container",
-	"category": "layout",
+	"title": "Handritad container",
+	"category": "beegleton-layout",
 	"icon": "layout",
-	"description": "A container with a handdrawn SVG background decoration.",
+	"description": "Sektion med en handritad form i bakgrunden bakom innehållet.",
+	"keywords": [
+		"container",
+		"sektion",
+		"handritad",
+		"bakgrund"
+	],
 	"supports": {
 		"html": false,
 		"anchor": true,
-		"align": [ "wide", "full" ],
+		"align": [
+			"wide",
+			"full"
+		],
 		"layout": {
 			"allowEditing": true,
 			"allowInheriting": true

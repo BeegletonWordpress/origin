@@ -3,10 +3,15 @@
 	"apiVersion": 3,
 	"name": "create-block/breadcrumb",
 	"version": "0.1.0",
-	"title": "Breadcrumbs",
-	"category": "theme",
+	"title": "Brödsmulor",
+	"category": "beegleton-content",
 	"icon": "shortcode",
-	"description": "Display breadcrumbs navigation.",
+	"description": "Visar var på webbplatsen sidan ligger.",
+	"keywords": [
+		"brödsmulor",
+		"breadcrumb",
+		"navigering"
+	],
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"render": "file:./render.php",

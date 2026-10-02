@@ -192,14 +192,14 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Underline Settings">
+					<PanelBody title="Understrykning">
 						<SelectControl
-							label="SVG Shape"
+							label="Form"
 							value={underlineShape}
 							options={[
-								{ label: "Default Underline", value: "underline" },
-								{ label: "Alternate Underline", value: "alt-underline" },
-								{ label: "Ring Shape", value: "ring" },
+								{ label: "Understrykning", value: "underline" },
+								{ label: "Alternativ understrykning", value: "alt-underline" },
+								{ label: "Ring", value: "ring" },
 							]}
 							onChange={(value) => setAttributes({ underlineShape: value })}
 						/>
@@ -207,7 +207,7 @@ registerBlockType(metadata.name, {
 							underlineShape === "alt-underline" && (
 								<>
 									<RangeControl
-										label="Underline Spacing (rem)"
+										label="Avstånd till understrykningen (rem)"
 										value={underlineSpacing}
 										onChange={(value) =>
 											setAttributes({ underlineSpacing: value })
@@ -217,7 +217,7 @@ registerBlockType(metadata.name, {
 										step={0.1}
 									/>
 									<RangeControl
-										label="Minimum Underline Width (px)"
+										label="Minsta bredd (px)"
 										value={minWidth}
 										onChange={(value) => setAttributes({ minWidth: value })}
 										min={50}
@@ -225,7 +225,7 @@ registerBlockType(metadata.name, {
 										step={1}
 									/>
 									<RangeControl
-										label="Underline Width (px)"
+										label="Bredd (px)"
 										value={underlineWidth}
 										onChange={(value) =>
 											setAttributes({ underlineWidth: value })
@@ -238,7 +238,7 @@ registerBlockType(metadata.name, {
 							)}
 						{underlineShape === "ring" && (
 							<RangeControl
-								label="Ring Spacing (%)"
+								label="Ringens avstånd (%)"
 								value={ringSpacing}
 								onChange={(value) => setAttributes({ ringSpacing: value })}
 								min={-200}

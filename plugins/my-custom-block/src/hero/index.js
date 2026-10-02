@@ -128,12 +128,12 @@ registerBlockType(metadata.name, {
 			<>
 				<InspectorControls>
 					<PanelColorSettings
-						title="Hero Mark Style"
+						title="Markering"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Highlight Color",
+								label: "Markeringens färg",
 							},
 						]}
 					/>

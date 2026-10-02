@@ -19,14 +19,14 @@ registerBlockType( metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Logo Settings">
+					<PanelBody title="Logotyp">
 						<TextControl
-							label="Link URL"
+							label="Länk (URL)"
 							value={ linkUrl }
 							onChange={ ( val ) =>
 								setAttributes( { linkUrl: val } )
 							}
-							help="Add a link to the logo (e.g., https://beegleton.com)"
+							help="Länk för logotypen, t.ex. https://beegleton.com"
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -42,7 +42,7 @@ registerBlockType( metadata.name, {
 							}
 							allowedTypes={ [ 'image' ] }
 							multiple={ false }
-							labels={ { title: 'Select Logo' } }
+							labels={ { title: 'Välj logotyp' } }
 						/>
 					) : (
 						<img

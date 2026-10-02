@@ -12,7 +12,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	drawUnderlines( subpageHeroBlocks );
 
 	if ( ! window.lenis ) {
-		console.log( 'Lenis not initialized, skipping subpage-hero parallax' );
 		return;
 	}
 

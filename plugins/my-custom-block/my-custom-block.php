@@ -78,6 +78,58 @@ function create_block_my_custom_block_block_init() {
 add_action( 'init', 'create_block_my_custom_block_block_init' );
 
 /**
+ * Beegleton block categories, listed first in the inserter, so editors
+ * find the site's own blocks grouped by purpose instead of mixed into
+ * WordPress's generic "Theme" category. Each block's block.json picks one.
+ */
+function mcb_block_categories( $categories ) {
+	return array_merge(
+		[
+			[ 'slug' => 'beegleton-hero', 'title' => 'Beegleton – Hjältar' ],
+			[ 'slug' => 'beegleton-layout', 'title' => 'Beegleton – Layout & sektioner' ],
+			[ 'slug' => 'beegleton-content', 'title' => 'Beegleton – Innehåll' ],
+			[ 'slug' => 'beegleton-site', 'title' => 'Beegleton – Sidhuvud & sidfot' ],
+		],
+		$categories
+	);
+}
+add_filter( 'block_categories_all', 'mcb_block_categories' );
+
+/**
+ * The site header and footer blocks (and their footer-only children, plus
+ * the unused mega menu item) belong in the header/footer template parts,
+ * not in pages or posts. Hide them from the inserter everywhere except when
+ * editing templates and template parts. Existing content still renders.
+ * Runs after the Posts allow-list (priority 10), so it narrows that too.
+ */
+const MCB_SITE_STRUCTURE_BLOCKS = [
+	'create-block/my-header-block',
+	'create-block/my-footer-block',
+	'create-block/my-footer-logos',
+	'create-block/my-footer-logo-item',
+	'create-block/my-mega-menu-item',
+];
+
+function mcb_hide_site_structure_blocks( $allowed_blocks, $context ) {
+	$is_site_editor = isset( $context->name ) && 'core/edit-site' === $context->name;
+	$post_type      = ! empty( $context->post ) ? $context->post->post_type : '';
+	if ( $is_site_editor || in_array( $post_type, [ 'wp_template', 'wp_template_part' ], true ) ) {
+		return $allowed_blocks;
+	}
+
+	if ( false === $allowed_blocks ) {
+		return $allowed_blocks;
+	}
+
+	if ( true === $allowed_blocks ) {
+		$allowed_blocks = array_keys( WP_Block_Type_Registry::get_instance()->get_all_registered() );
+	}
+
+	return array_values( array_diff( (array) $allowed_blocks, MCB_SITE_STRUCTURE_BLOCKS ) );
+}
+add_filter( 'allowed_block_types_all', 'mcb_hide_site_structure_blocks', 20, 2 );
+
+/**
  * Fluid spacing preset overrides (--wp--preset--spacing--20…80), so every
  * block using the spacing presets gets the same, smaller fluid values.
  *

@@ -54,9 +54,9 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Bee">
+					<PanelBody title="Bi">
 						<RangeControl
-							label="Bee size (px)"
+							label="Storlek (px)"
 							value={beeSize}
 							onChange={(value) => setAttributes({ beeSize: value })}
 							min={32}
@@ -64,30 +64,30 @@ registerBlockType(metadata.name, {
 							step={4}
 						/>
 						<ToggleControl
-							label="Dotted trail"
-							help="Shows the path behind the bee as it flies."
+							label="Prickat spår"
+							help="Visar vägen biet har flugit som en prickad linje."
 							checked={showTrail}
 							onChange={(value) => setAttributes({ showTrail: value })}
 						/>
 						<ToggleControl
-							label="Land on the last button"
-							help="Ends the flight sitting on top of the last button in the container."
+							label="Landa på sista knappen"
+							help="Biet avslutar flygningen sittande på den sista knappen i containern."
 							checked={landOnButton}
 							onChange={(value) => setAttributes({ landOnButton: value })}
 						/>
 						<ToggleControl
-							label="Show on mobile"
+							label="Visa på mobil"
 							checked={showOnMobile}
 							onChange={(value) => setAttributes({ showOnMobile: value })}
 						/>
 					</PanelBody>
 					<PanelColorSettings
-						title="Bee Color"
+						title="Färger"
 						colorSettings={[
 							{
 								value: beeColor,
 								onChange: (value) => setAttributes({ beeColor: value }),
-								label: "Bee color",
+								label: "Biets färg",
 							},
 						]}
 					/>

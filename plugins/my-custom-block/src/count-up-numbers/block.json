@@ -3,14 +3,23 @@
 	"apiVersion": 3,
 	"name": "create-block/my-count-up-numbers",
 	"version": "0.1.0",
-	"title": "Count Up Numbers",
-	"category": "theme",
+	"title": "Räknande siffror",
+	"category": "beegleton-content",
 	"icon": "money",
-	"description": "Numbers that count up when scrolled into view.",
+	"description": "Siffror som räknar upp när de syns, med beskrivning.",
+	"keywords": [
+		"siffror",
+		"statistik",
+		"räkna",
+		"nummer"
+	],
 	"example": {},
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"],
+		"align": [
+			"full",
+			"wide"
+		],
 		"color": {
 			"background": true,
 			"text": true
@@ -25,6 +34,8 @@
 	"textdomain": "my-custom-block",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": ["file:./style-index.css"],
+	"style": [
+		"file:./style-index.css"
+	],
 	"viewScript": "file:./view.js"
 }

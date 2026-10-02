@@ -124,7 +124,6 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	animateDraw();
 
 	if ( ! window.lenis ) {
-		console.log( 'Lenis not initialized, skipping customer-case-hero parallax' );
 		return;
 	}
 

@@ -3,13 +3,20 @@
 	"apiVersion": 3,
 	"name": "create-block/subpage-content",
 	"version": "0.1.0",
-	"title": "Subpage Content",
-	"category": "theme",
+	"title": "Undersidans innehåll",
+	"category": "beegleton-layout",
 	"icon": "layout",
-	"description": "Page content area for subpages. Uses WordPress theme colors.",
+	"description": "Innehållsdelen i undersidesmallen.",
+	"keywords": [
+		"innehåll",
+		"undersida"
+	],
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"],
+		"align": [
+			"full",
+			"wide"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true

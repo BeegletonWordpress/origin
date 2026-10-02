@@ -21,17 +21,17 @@ registerBlockType(metadata.name, {
 			<>
 				<InspectorControls>
 					<PanelColorSettings
-						title="Colors"
+						title="Färger"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (val) => setAttributes({ svgColor: val }),
-								label: "Shape Color",
+								label: "Formens färg",
 							},
 							{
 								value: textColor,
 								onChange: (val) => setAttributes({ textColor: val }),
-								label: "Text Color",
+								label: "Textfärg",
 							},
 						]}
 					/>
@@ -43,7 +43,7 @@ registerBlockType(metadata.name, {
 						className="label-text relative z-10 px-4 py-1.5 inline-block text-sm font-medium"
 						value={text}
 						onChange={(val) => setAttributes({ text: val })}
-						placeholder="Enter label text…"
+						placeholder="Skriv etikettens text…"
 						allowedFormats={[]}
 						style={{ color: textColor }}
 					/>

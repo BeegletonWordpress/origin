@@ -40,7 +40,7 @@ addFilter(
 );
 
 /**
- * Adds a "Hover Colors" panel to core/button's Inspector Controls, using
+ * Adds a "Hoverfärger" panel to core/button's Inspector Controls, using
  * the same PanelColorSettings component and theme color palette as WP's
  * own Text/Background color controls.
  */
@@ -118,21 +118,21 @@ const withHoverColorControls = createHigherOrderComponent( ( BlockEdit ) => ( pr
 			<BlockEdit { ...props } />
 			<InspectorControls>
 				<PanelColorSettings
-					title={ __( 'Hover Colors', 'my-custom-block' ) }
+					title={ __( 'Hoverfärger', 'my-custom-block' ) }
 					initialOpen={ false }
 					colorSettings={ [
 						{
 							value: hoverBackgroundColor || defaultHoverBackground,
 							onChange: ( value ) =>
 								setAttributes( { hoverBackgroundColor: value } ),
-							label: __( 'Hover Background Color', 'my-custom-block' ),
+							label: __( 'Bakgrund vid hover', 'my-custom-block' ),
 							colors,
 						},
 						{
 							value: hoverTextColor || defaultHoverText,
 							onChange: ( value ) =>
 								setAttributes( { hoverTextColor: value } ),
-							label: __( 'Hover Text Color', 'my-custom-block' ),
+							label: __( 'Text vid hover', 'my-custom-block' ),
 							colors,
 						},
 					] }

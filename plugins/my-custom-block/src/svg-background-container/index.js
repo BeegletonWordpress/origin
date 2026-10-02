@@ -19,12 +19,14 @@ const TEMPLATE = [["core/paragraph", { placeholder: "Lägg till innehåll…" }]
 // container is as tall as the shape, or as the content if that is taller.
 // `isolate` on the wrapper keeps the shape behind the content but in front
 // of the page background.
-// The is-shape-* class is only added for shapes other than the default,
-// so containers using the original shape keep their saved markup.
-const Background = ({ svgColor, showOnMobile, shape }) => {
+// The is-shape-* and is-draw-animated classes are only added when they
+// apply (a non-default shape; the draw-in on a line shape), so containers
+// without them keep their saved markup.
+const Background = ({ svgColor, showOnMobile, shape, drawAnimation }) => {
 	const shapeKey = SHAPES[shape] ? shape : DEFAULT_SHAPE;
 	const shapeClass =
-		shapeKey === DEFAULT_SHAPE ? "" : ` is-shape-${shapeKey}`;
+		(shapeKey === DEFAULT_SHAPE ? "" : ` is-shape-${shapeKey}`) +
+		(drawAnimation && SHAPES[shapeKey].line ? " is-draw-animated" : "");
 
 	return (
 		<div
@@ -54,7 +56,7 @@ const CONTENT_CLASS = "svg-background-container__content";
 registerBlockType(metadata.name, {
 	deprecated,
 	edit: ({ attributes, setAttributes }) => {
-		const { svgColor, showOnMobile, shape } = attributes;
+		const { svgColor, showOnMobile, shape, drawAnimation } = attributes;
 
 		const blockProps = useBlockProps({ className: "relative isolate" });
 		const innerBlocksProps = useInnerBlocksProps(
@@ -65,27 +67,35 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Background">
+					<PanelBody title="Bakgrund">
 						<SelectControl
-							label="Shape"
+							label="Form"
 							value={shape}
 							options={SHAPE_OPTIONS}
 							onChange={(value) => setAttributes({ shape: value })}
 						/>
+						{SHAPES[shape]?.line && (
+							<ToggleControl
+								label="Ritanimation"
+								help="Ritar fram linjen när den scrollas in i bild, som ramen på Handritat kort."
+								checked={!!drawAnimation}
+								onChange={(value) => setAttributes({ drawAnimation: value })}
+							/>
+						)}
 						<ToggleControl
-							label="Show on mobile"
-							help="The Team Gallery hides this shape below 768px."
+							label="Visa på mobil"
+							help="Annars döljs formen på skärmar smalare än 768 px."
 							checked={showOnMobile}
 							onChange={(value) => setAttributes({ showOnMobile: value })}
 						/>
 					</PanelBody>
 					<PanelColorSettings
-						title="SVG Color"
+						title="Färger"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Background SVG Color",
+								label: "Formens färg",
 							},
 						]}
 					/>
@@ -95,6 +105,7 @@ registerBlockType(metadata.name, {
 						svgColor={svgColor}
 						showOnMobile={showOnMobile}
 						shape={shape}
+						drawAnimation={drawAnimation}
 					/>
 					<div {...innerBlocksProps} />
 				</div>
@@ -102,7 +113,7 @@ registerBlockType(metadata.name, {
 		);
 	},
 	save: ({ attributes }) => {
-		const { svgColor, showOnMobile, shape } = attributes;
+		const { svgColor, showOnMobile, shape, drawAnimation } = attributes;
 
 		const blockProps = useBlockProps.save({ className: "relative isolate" });
 		const innerBlocksProps = useInnerBlocksProps.save({
@@ -115,6 +126,7 @@ registerBlockType(metadata.name, {
 						svgColor={svgColor}
 						showOnMobile={showOnMobile}
 						shape={shape}
+						drawAnimation={drawAnimation}
 					/>
 				<div {...innerBlocksProps} />
 			</div>

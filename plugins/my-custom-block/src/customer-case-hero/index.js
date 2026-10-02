@@ -143,36 +143,36 @@ registerBlockType(metadata.name, {
 		return (
 			<>
 				<InspectorControls>
-					<PanelBody title="Theme Selection">
+					<PanelBody title="Utseende">
 						<SelectControl
-							label="Hero Theme"
+							label="Tema"
 							value={theme}
 							options={[
-								{ label: "Default (Accent 1)", value: "default" },
-								{ label: "Dark 1 (Dark Gray/Blue)", value: "dark_1" },
-								{ label: "Dark 2 (Dark Gray/Yellow)", value: "dark_2" },
-								{ label: "Light 1 (Light Yellow/Blue)", value: "light_1" },
-								{ label: "Light 2 (Light Yellow/Yellow)", value: "light_2" },
+								{ label: "Standard (Accent 1)", value: "default" },
+								{ label: "Mörk 1 (mörkgrå/blå)", value: "dark_1" },
+								{ label: "Mörk 2 (mörkgrå/gul)", value: "dark_2" },
+								{ label: "Ljus 1 (ljusgul/blå)", value: "light_1" },
+								{ label: "Ljus 2 (ljusgul/gul)", value: "light_2" },
 							]}
 							onChange={(value) => setMeta({ ...meta, hero_theme: value })}
 						/>
 						<ToggleControl
-							label="Flip Layout (Image on Left)"
+							label="Spegelvänd (bild till vänster)"
 							checked={reverseLayout}
 							onChange={(value) => setAttributes({ reverseLayout: value })}
 						/>
 					</PanelBody>
 					<PanelColorSettings
-						title="SVG Color"
+						title="Färger"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Override Theme Underline Color",
+								label: "Understrykningens färg (ersätter temats)",
 							},
 						]}
 					/>
-					<PanelBody title="Tags">
+					<PanelBody title="Taggar">
 						{(categories || []).map((category) => (
 							<CheckboxControl
 								key={category.id}
@@ -182,9 +182,9 @@ registerBlockType(metadata.name, {
 							/>
 						))}
 					</PanelBody>
-					<PanelBody title="Content Settings">
+					<PanelBody title="Innehåll">
 						<SelectControl
-							label="Service Tagline"
+							label="Tjänstens tagline"
 							value={meta?.hero_tagline || ""}
 							options={taglineOptions}
 							onChange={(val) => setMeta({ ...meta, hero_tagline: val })}
@@ -234,7 +234,7 @@ registerBlockType(metadata.name, {
 								className="customer-case-hero__excerpt mt-4"
 								value={meta?.hero_body_text || ""}
 								onChange={(value) => setMeta({ ...meta, hero_body_text: value })}
-								placeholder="Write the case summary here…"
+								placeholder="Skriv en sammanfattning av caset här…"
 							/>
 						</div>
 					</div>

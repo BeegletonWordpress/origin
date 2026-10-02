@@ -3,13 +3,38 @@
 	"apiVersion": 3,
 	"name": "create-block/subpage-hero",
 	"version": "0.1.0",
-	"title": "Subpage Hero",
-	"category": "theme",
+	"title": "Undersidans hjälte",
+	"category": "beegleton-hero",
 	"icon": "welcome-widgets-menus",
-	"description": "A hero block specifically for subpages.",
+	"description": "Toppsektion för undersidor med tagline, rubrik, handritad understrykning och bild.",
+	"keywords": [
+		"hero",
+		"topp",
+		"undersida",
+		"bild",
+		"rubrik"
+	],
+	"example": {
+		"attributes": {
+			"tagline": "Vi hjälper dig",
+			"title": "Rubrik för sidan",
+			"subheader": "En kort underrubrik"
+		},
+		"innerBlocks": [
+			{
+				"name": "core/paragraph",
+				"attributes": {
+					"content": "En kort introduktion till sidan."
+				}
+			}
+		]
+	},
 	"supports": {
 		"html": false,
-		"align": ["full", "wide"],
+		"align": [
+			"full",
+			"wide"
+		],
 		"spacing": {
 			"margin": true,
 			"padding": true

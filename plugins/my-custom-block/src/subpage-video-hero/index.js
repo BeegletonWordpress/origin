@@ -34,11 +34,11 @@ import "./editor.css";
 const ALLOWED_MEDIA_TYPES = ["image", "video"];
 
 const THEME_OPTIONS = [
-	{ label: "Default (Accent 1)", value: "default" },
-	{ label: "Dark 1 (Dark Gray/Blue)", value: "dark_1" },
-	{ label: "Dark 2 (Dark Gray/Yellow)", value: "dark_2" },
-	{ label: "Light 1 (Light Yellow/Blue)", value: "light_1" },
-	{ label: "Light 2 (Light Yellow/Yellow)", value: "light_2" },
+	{ label: "Standard (Accent 1)", value: "default" },
+	{ label: "Mörk 1 (mörkgrå/blå)", value: "dark_1" },
+	{ label: "Mörk 2 (mörkgrå/gul)", value: "dark_2" },
+	{ label: "Ljus 1 (ljusgul/blå)", value: "light_1" },
+	{ label: "Ljus 2 (ljusgul/gul)", value: "light_2" },
 ];
 
 const INNER_BLOCKS_TEMPLATE = [
@@ -126,15 +126,15 @@ registerBlockType(metadata.name, {
 					</BlockControls>
 				)}
 				<InspectorControls>
-					<PanelBody title="Theme Selection">
+					<PanelBody title="Utseende">
 						<SelectControl
-							label="Hero Theme"
+							label="Tema"
 							value={theme}
 							options={THEME_OPTIONS}
 							onChange={(value) => setAttributes({ theme: value })}
 						/>
 						<SelectControl
-							label="Content Width"
+							label="Innehållets bredd"
 							value={contentWidth}
 							options={[
 								{ label: "40%", value: 40 },
@@ -145,24 +145,24 @@ registerBlockType(metadata.name, {
 							}
 						/>
 						<ToggleControl
-							label="Full screen height"
-							help="Fill the whole screen height instead of the standard hero height."
+							label="Fullskärmshöjd"
+							help="Fyller hela skärmens höjd i stället för hjältens standardhöjd."
 							checked={!!fullHeight}
 							onChange={(value) => setAttributes({ fullHeight: value })}
 						/>
 					</PanelBody>
 					<PanelColorSettings
-						title="SVG Color"
+						title="Färger"
 						colorSettings={[
 							{
 								value: svgColor,
 								onChange: (value) => setAttributes({ svgColor: value }),
-								label: "Override Theme Underline Color",
+								label: "Understrykningens färg (ersätter temats)",
 							},
 						]}
 					/>
 					<PanelColorGradientSettings
-						title="Background Overlay"
+						title="Overlay"
 						settings={[
 							{
 								label: "Overlay",
@@ -183,7 +183,7 @@ registerBlockType(metadata.name, {
 					>
 						{(overlayColor || overlayGradient) && (
 							<RangeControl
-								label="Overlay Opacity"
+								label="Overlayens täckning"
 								value={overlayOpacity}
 								onChange={(value) => setAttributes({ overlayOpacity: value })}
 								min={0}
@@ -210,7 +210,7 @@ registerBlockType(metadata.name, {
 							onSelect={onSelectMedia}
 							allowedTypes={ALLOWED_MEDIA_TYPES}
 							multiple={false}
-							labels={{ title: "Select background video or image" }}
+							labels={{ title: "Välj bakgrundsvideo eller bild" }}
 						/>
 					)}
 					<div className={getRowClasses()}>
@@ -220,20 +220,20 @@ registerBlockType(metadata.name, {
 									tagName="p"
 									value={tagline}
 									onChange={(value) => setAttributes({ tagline: value })}
-									placeholder="Tagline..."
+									placeholder="Tagline…"
 									className="has-cas-red-ink-font-family text-5xl"
 								/>
 								<RichText
 									tagName="h1"
 									value={title}
 									onChange={(value) => setAttributes({ title: value })}
-									placeholder="Hero Title"
+									placeholder="Rubrik"
 								/>
 								<RichText
 									tagName="h2"
 									value={subheader}
 									onChange={(value) => setAttributes({ subheader: value })}
-									placeholder="Optional subheader..."
+									placeholder="Underrubrik (valfri)…"
 								/>
 								<div className="scale-125 -rotate-2">
 									<UnderlineSVG color={svgColor || activeTheme.svg} />
