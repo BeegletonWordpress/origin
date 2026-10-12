@@ -1164,6 +1164,24 @@ function beegleton_output_mobile_dropdown_clip_path() {
 add_action( 'wp_footer', 'beegleton_output_mobile_dropdown_clip_path' );
 
 /**
+ * Image quality. WordPress re-encodes every generated size and every image
+ * edited in its image editor at JPEG/WebP quality 82, and scales uploads
+ * wider than 2560px down. Featured images on news posts are shown at wide
+ * width (about 1340px, so about 2700px on retina screens), which made them
+ * look soft. Use quality 90 and keep up to 3200px. This only affects new
+ * uploads and new edits; existing images keep their current files.
+ */
+function mcb_image_editor_quality( $quality, $mime_type = '' ) {
+	return 90;
+}
+add_filter( 'wp_editor_set_quality', 'mcb_image_editor_quality', 10, 2 );
+
+function mcb_big_image_size_threshold() {
+	return 3200;
+}
+add_filter( 'big_image_size_threshold', 'mcb_big_image_size_threshold' );
+
+/**
  * Allow SVG uploads in the Media Library (admins only).
  */
 function beegleton_allow_svg_upload( $mimes ) {
