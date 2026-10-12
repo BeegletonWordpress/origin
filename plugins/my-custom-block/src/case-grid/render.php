@@ -1,4 +1,12 @@
 <?php
+// The cards are square with object-cover, so a landscape featured image is
+// cropped to its height and must be about 1.5x the card's width to stay
+// sharp: about a third of the screen per card on desktop, the full width
+// on mobile. Used for the srcset "sizes" in both the grid and the carousel.
+if ( ! defined( 'MCB_CASE_IMAGE_SIZES' ) ) {
+	define( 'MCB_CASE_IMAGE_SIZES', '(min-width: 768px) 50vw, 150vw' );
+}
+
 /**
  * Render function for the Case Grid block.
  */
@@ -69,7 +77,12 @@ if ($is_carousel) :
 				'companyName'   => $hero_tagline ? get_the_title() : '',
 				'tags'          => is_wp_error($tag_terms) ? [] : $tag_terms,
 				'featuredImage' => has_post_thumbnail()
-					? get_the_post_thumbnail_url(get_the_ID(), 'medium_large')
+					? get_the_post_thumbnail_url(get_the_ID(), 'large')
+					: '',
+				// All sizes, so the browser can pick a sharp one (see
+				// MCB_CASE_IMAGE_SIZES below).
+				'featuredSrcset' => has_post_thumbnail()
+					? (string) wp_get_attachment_image_srcset(get_post_thumbnail_id(), 'large')
 					: '',
 				'permalink'     => get_permalink(),
 			];
@@ -132,6 +145,8 @@ if ($is_carousel) :
 								>
 									<img
 										data-wp-bind--src="context.case.featuredImage"
+										data-wp-bind--srcset="context.case.featuredSrcset"
+										sizes="<?php echo esc_attr( MCB_CASE_IMAGE_SIZES ); ?>"
 										alt=""
 										class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 									/>
@@ -242,8 +257,9 @@ else :
 					<article class="flex flex-col h-full">
 						<?php if (has_post_thumbnail()) : ?>
 							<div class="mb-6 aspect-square w-full overflow-hidden">
-								<?php the_post_thumbnail('medium_large', [
-									'class' => 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
+								<?php the_post_thumbnail('large', [
+									'class' => 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105',
+									'sizes' => MCB_CASE_IMAGE_SIZES,
 								]); ?>
 							</div>
 						<?php endif; ?>

@@ -164,7 +164,7 @@ registerBlockType(metadata.name, {
 								// Extract featured image URL from the embedded data
 								const featuredImage =
 									post._embedded?.["wp:featuredmedia"]?.[0]?.media_details
-										?.sizes?.medium_large?.source_url ||
+										?.sizes?.large?.source_url ||
 									post._embedded?.["wp:featuredmedia"]?.[0]?.source_url;
 
 								return (
